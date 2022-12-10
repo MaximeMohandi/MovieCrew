@@ -56,6 +56,7 @@ namespace BillB0ard_API.Test
             };
 
             dbContext.Movies.AddRange(movies);
+            dbContext.SaveChanges();
 
         }
 
@@ -66,11 +67,10 @@ namespace BillB0ard_API.Test
         }
 
         [Test]
-        public void WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
+        public async Task WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
         {
-            Movie fetchedMovies = new Movie();
-            Movie expectedMovies = fetchedMovies;
-            Assert.That(fetchedMovies, Is.EqualTo(expectedMovies));
+            Movie fetchedMovies = dbContext.Movies.Where(m => m.Name == "Lord of the ring").First();
+            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
     }
 }
