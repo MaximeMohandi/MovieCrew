@@ -11,5 +11,6 @@ namespace BillB0ard_API.Data
         }
 
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

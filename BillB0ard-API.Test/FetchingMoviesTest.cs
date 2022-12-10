@@ -58,6 +58,32 @@ namespace BillB0ard_API.Test
             };
 
             _dbContext.Movies.AddRange(movies);
+
+            User[] users = new[]
+            {
+                new User()
+                {
+                    Id = 1,
+                    Name = "Jabba",
+                    Role = 1,
+                },
+                new User()
+                {
+                    Id = 2,
+                    Name = "Dudley",
+                    Role = 1,
+                },
+                new User()
+                {
+                    Id = 3,
+                    Name = "T-Rex",
+                    Role = 1,
+                },
+
+            };
+
+            _dbContext.Users.AddRange(users);
+
             _dbContext.SaveChanges();
 
         }
