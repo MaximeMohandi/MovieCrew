@@ -26,10 +26,11 @@ namespace BillB0ard_API.Domain.Repository
         {
             var movie = await _dbContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
             var movieEntity = new MovieEntity(movie.Id, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
-            if (movie.Rates != null)
-                movieEntity.Rates = movie.Rates.Select(r => new RateEntity(movieEntity, new(r.UserId, r.User.Name), r.Note)).ToList();
 
-            return movieEntity;
+            return new(movie.Id, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate)
+            {
+                Rates = movie.Rates.Select(r => new RateEntity(movieEntity, new(r.UserId, r.User.Name), r.Note)).ToList()
+            };
         }
 
         public async Task<List<MovieEntity>> GetAll()

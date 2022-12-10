@@ -176,18 +176,17 @@ namespace BillB0ard_API.Test
         public async Task MovieWithRates()
         {
             MovieRepository movieRepository = new MovieRepository(_dbContext);
-            var ratedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12));
-            ratedMovie.Rates = new List<RateEntity>()
+            var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
+            var rates = new List<RateEntity>()
             {
-                new(ratedMovie, new(1, "Jabba"), 10.0M),
-                new(ratedMovie, new(2, "Dudley"), 2.0M),
-                new(ratedMovie, new(3, "T-Rex"), 5.25M),
+                new(baseMovie, new(1, "Jabba"), 10.0M),
+                new(baseMovie, new(2, "Dudley"), 2.0M),
+                new(baseMovie, new(3, "T-Rex"), 5.25M),
             };
 
             MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
 
-
-            Assert.That(ratedMovie.Rates[0].Rate, Is.EqualTo(fetchedMovies.Rates[0].Rate));
+            CollectionAssert.AreEqual(rates, fetchedMovies.Rates);
         }
     }
 }
