@@ -37,7 +37,7 @@ namespace BillB0ard_API.Domain.Repository
 
             return new(movie.Id, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate)
             {
-                Rates = movie.Rates.Select(r => new RateEntity(movieEntity, new(r.UserId, r.User.Name), r.Note)).ToList()
+                Rates = movie?.Rates.Select(r => new RateEntity(movieEntity, new(r.UserId, r.User.Name), r.Note)).ToList()
             };
         }
 
