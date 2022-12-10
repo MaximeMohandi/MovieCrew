@@ -14,5 +14,14 @@
                 return Rates.Average(r => r.Rate);
             }
         }
+
+        public decimal? lowestRates
+        {
+            get
+            {
+                if (Rates is null) { return null; }
+                return Rates.Min(r => r.Rate);
+            }
+        }
     }
 }
