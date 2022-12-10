@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test
 {
-    public class Tests
+    public class FetchMovieTest
     {
-        private static DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
+        private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: "MovieDbTest")
             .Options;
 
