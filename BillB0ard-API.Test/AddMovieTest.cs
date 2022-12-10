@@ -36,8 +36,11 @@ namespace BillB0ard_API.Test
 
             MovieEntity addedMovie = await movieRepository.Add("Dragon");
 
-            Assert.That(addedMovie.Id, Is.EqualTo(1));
-            Assert.That(addedMovie.Title, Is.EqualTo("Dragon"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(addedMovie.Id, Is.EqualTo(1));
+                Assert.That(addedMovie.Title, Is.EqualTo("Dragon"));
+            });
         }
 
         [Test]
@@ -60,7 +63,7 @@ namespace BillB0ard_API.Test
         {
             MovieRepository movieRepository = new(_dbContext);
 
-            movieRepository.Add("The Fith element");
+            await movieRepository.Add("The Fith element");
 
             Assert.ThrowsAsync<MovieException>(() => movieRepository.Add("The Fith element"));
         }
