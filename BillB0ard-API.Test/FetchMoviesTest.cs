@@ -23,8 +23,116 @@ namespace BillB0ard_API.Test
             _dbContext = new AppDbContext(_dbContextOptions);
             _dbContext.Database.EnsureCreated();
 
-            Movie[] movies = new[]
+            SeedInMemoryDatas();
+
+            _movieRepository = new MovieRepository(_dbContext);
+
+        }
+
+        [OneTimeTearDown]
+        public void CleanUp()
+        {
+            _dbContext.Database.EnsureDeleted();
+        }
+
+        [Test]
+        public async Task ByTitle()
+        {
+            MovieService movieService = new(_movieRepository);
+
+            MovieEntity fetchedMovies = await movieService.GetByTitle("Lord of the ring");
+
+            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task ByTitleIgnoreCase()
+        {
+            MovieService movieRepository = new(_movieRepository);
+
+            MovieEntity fetchedMovies = await movieRepository.GetByTitle("lord of The Ring");
+
+            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task ById()
+        {
+            MovieService movieService = new(_movieRepository);
+
+            MovieEntity fetchedMovies = await movieService.GetById(1);
+
+            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task All()
+        {
+            MovieService movieServices = new(_movieRepository);
+            List<MovieEntity> expected = new()
             {
+                new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)),
+                new MovieEntity(2,"Harry Potter", null,new DateTime(2015, 8, 3),null),
+                new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23)),
+                new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null)
+            };
+
+            var fetchedMovies = await movieServices.FetchAllMovies();
+
+            CollectionAssert.AreEqual(expected, fetchedMovies);
+        }
+
+        [Test]
+        public async Task MovieWithRates()
+        {
+            MovieService movieServices = new(_movieRepository);
+            var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
+            var expectedRates = new List<RateEntity>()
+            {
+                new(baseMovie, new(1, "Jabba"), 10.0M),
+                new(baseMovie, new(2, "Dudley"), 2.0M),
+                new(baseMovie, new(3, "T-Rex"), 5.25M),
+            };
+
+            MovieEntity fetchedMovies = await movieServices.GetById(1);
+
+            Assert.Multiple(() =>
+            {
+                CollectionAssert.AreEqual(expectedRates, fetchedMovies.Rates);
+                Assert.That(fetchedMovies.AverageRate, Is.EqualTo(5.75m));
+                Assert.That(fetchedMovies.LowestRates, Is.EqualTo(2M));
+                Assert.That(fetchedMovies.TopRate, Is.EqualTo(10M));
+            });
+
+        }
+
+        [Test]
+        public void TitleNotFound()
+        {
+            MovieService movieServices = new(_movieRepository);
+
+            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetByTitle("star wars VIII"));
+
+            Assert.That(ex.Message, Is.EqualTo("star wars VIII cannot be found. Please check the title and retry."));
+        }
+
+        [Test]
+        public void IdNotFound()
+        {
+            MovieService movieServices = new(_movieRepository);
+
+            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetById(-1));
+
+            Assert.That(ex.Message, Is.EqualTo("There's no movie with the id : -1. Please check the given id and retry."));
+        }
+
+
+
+
+        private void SeedInMemoryDatas()
+        {
+            Movie[] movies = new[]
+                        {
                 new Movie()
                 {
                     Id = 1,
@@ -126,105 +234,6 @@ namespace BillB0ard_API.Test
             _dbContext.Rates.AddRange(rates);
 
             _dbContext.SaveChanges();
-
-            _movieRepository = new MovieRepository(_dbContext);
-
-        }
-
-        [OneTimeTearDown]
-        public void CleanUp()
-        {
-            _dbContext.Database.EnsureDeleted();
-        }
-
-        [Test]
-        public async Task ByTitle()
-        {
-            MovieService movieService = new(_movieRepository);
-
-            MovieEntity fetchedMovies = await movieService.GetByTitle("Lord of the ring");
-
-            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
-        }
-
-        [Test]
-        public async Task ByTitleIgnoreCase()
-        {
-            MovieService movieRepository = new(_movieRepository);
-
-            MovieEntity fetchedMovies = await movieRepository.GetByTitle("lord of The Ring");
-
-            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
-        }
-
-        [Test]
-        public async Task ById()
-        {
-            MovieService movieService = new(_movieRepository);
-
-            MovieEntity fetchedMovies = await movieService.GetById(1);
-
-            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
-        }
-
-        [Test]
-        public async Task All()
-        {
-            MovieService movieServices = new(_movieRepository);
-            List<MovieEntity> expected = new()
-            {
-                new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)),
-                new MovieEntity(2,"Harry Potter", null,new DateTime(2015, 8, 3),null),
-                new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23)),
-                new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null)
-            };
-
-            var fetchedMovies = await movieServices.FetchAllMovies();
-
-            CollectionAssert.AreEqual(expected, fetchedMovies);
-        }
-
-        [Test]
-        public async Task MovieWithRates()
-        {
-            MovieService movieServices = new(_movieRepository);
-            var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
-            var rates = new List<RateEntity>()
-            {
-                new(baseMovie, new(1, "Jabba"), 10.0M),
-                new(baseMovie, new(2, "Dudley"), 2.0M),
-                new(baseMovie, new(3, "T-Rex"), 5.25M),
-            };
-
-            MovieEntity fetchedMovies = await movieServices.GetById(1);
-
-            Assert.Multiple(() =>
-            {
-                CollectionAssert.AreEqual(rates, fetchedMovies.Rates);
-                Assert.That(fetchedMovies.AverageRate, Is.EqualTo(5.75m));
-                Assert.That(fetchedMovies.LowestRates, Is.EqualTo(2M));
-                Assert.That(fetchedMovies.TopRate, Is.EqualTo(10M));
-            });
-
-        }
-
-        [Test]
-        public void TitleNotFound()
-        {
-            MovieService movieServices = new(_movieRepository);
-
-            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetByTitle("star wars VIII"));
-
-            Assert.That(ex.Message, Is.EqualTo("star wars VIII cannot be found. Please check the title and retry."));
-        }
-        [Test]
-        public void IdNotFound()
-        {
-            MovieService movieServices = new(_movieRepository);
-
-            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetById(-1));
-
-            Assert.That(ex.Message, Is.EqualTo("There's no movie with the id : -1. Please check the given id and retry."));
         }
     }
 }
