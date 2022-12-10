@@ -1,6 +1,7 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
+using BillB0ard_API.Domain.Exception;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Domain.Repository
@@ -15,7 +16,9 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task<MovieEntity> GetMovie(string title)
         {
+
             var movie = await _dbContext.Movies.Where(m => m.Name.ToLower() == title.ToLower()).FirstOrDefaultAsync();
+            if (movie is null) throw new MovieException();
             return MappedMovie(movie);
         }
 

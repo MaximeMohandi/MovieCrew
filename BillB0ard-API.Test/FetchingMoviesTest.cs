@@ -1,6 +1,7 @@
 using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
+using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -223,6 +224,13 @@ namespace BillB0ard_API.Test
             MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
 
             Assert.That(fetchedMovies.TopRate, Is.EqualTo(10M));
+        }
+
+        [Test]
+        public void MovieWithTitleNotFound()
+        {
+            var movieRepository = new MovieRepository(_dbContext);
+            Assert.ThrowsAsync<MovieException>(async () => await movieRepository.GetMovie("star wars VIII"));
         }
     }
 }
