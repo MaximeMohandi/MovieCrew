@@ -16,7 +16,7 @@ namespace BillB0ard_API.Domain.Repository
         {
             return await _dbContext.Movies
                     .Where(m => m.Name.ToLower() == title.ToLower())
-                    .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
+                    .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate, null))
                     .FirstOrDefaultAsync();
         }
 
@@ -24,14 +24,14 @@ namespace BillB0ard_API.Domain.Repository
         {
             return await _dbContext.Movies
                 .Where(m => m.Id == id)
-                .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
+                .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate, null))
                 .FirstOrDefaultAsync();
         }
 
         public async Task<List<MovieEntity>> GetAll()
         {
             return await _dbContext.Movies
-                .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
+                .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate, null))
                 .ToListAsync();
         }
     }
