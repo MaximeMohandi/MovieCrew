@@ -188,5 +188,22 @@ namespace BillB0ard_API.Test
 
             CollectionAssert.AreEqual(rates, fetchedMovies.Rates);
         }
+
+        [Test]
+        public async Task MovieWithRatesComputeMeanRate()
+        {
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
+            var rates = new List<RateEntity>()
+            {
+                new(baseMovie, new(1, "Jabba"), 10.0M),
+                new(baseMovie, new(2, "Dudley"), 2.0M),
+                new(baseMovie, new(3, "T-Rex"), 5.25M),
+            };
+
+            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
+
+            Assert.That(fetchedMovies.AverageRate, Is.EqualTo(5.75m));
+        }
     }
 }
