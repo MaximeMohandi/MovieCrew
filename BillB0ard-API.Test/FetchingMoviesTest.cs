@@ -70,7 +70,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
         {
-            MovieRepository movieRepository = new MovieRepository();
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
             Domain.Entities.Movie fetchedMovies = await movieRepository.GetMovie("Lord of the ring");
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }

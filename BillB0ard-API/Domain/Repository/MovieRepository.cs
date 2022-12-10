@@ -1,12 +1,14 @@
-﻿using BillB0ard_API.Domain.Entities;
+﻿using BillB0ard_API.Data;
+using BillB0ard_API.Domain.Entities;
 
 namespace BillB0ard_API.Domain.Repository
 {
     public class MovieRepository
     {
-        public MovieRepository()
+        private AppDbContext _dbContext;
+        public MovieRepository(AppDbContext databaseContext)
         {
-
+            _dbContext = databaseContext;
         }
 
         public async Task<Movie> GetMovie(string title)
