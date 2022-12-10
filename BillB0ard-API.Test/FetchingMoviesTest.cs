@@ -205,5 +205,14 @@ namespace BillB0ard_API.Test
 
             Assert.That(fetchedMovies.AverageRate, Is.EqualTo(5.75m));
         }
+
+        [Test]
+        public void MovieWithoutRatesDoNotHaveComputedMean()
+        {
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            MovieEntity baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12));
+
+            Assert.That(baseMovie.AverageRate, Is.Null);
+        }
     }
 }
