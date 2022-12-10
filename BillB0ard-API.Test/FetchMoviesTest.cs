@@ -141,7 +141,9 @@ namespace BillB0ard_API.Test
         public async Task ByTitle()
         {
             MovieService movieService = new(_movieRepository);
+
             MovieEntity fetchedMovies = await movieService.GetByTitle("Lord of the ring");
+
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
 
@@ -149,7 +151,9 @@ namespace BillB0ard_API.Test
         public async Task ByTitleIgnoreCase()
         {
             MovieService movieRepository = new(_movieRepository);
+
             MovieEntity fetchedMovies = await movieRepository.GetByTitle("lord of The Ring");
+
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
 
@@ -157,7 +161,9 @@ namespace BillB0ard_API.Test
         public async Task ById()
         {
             MovieService movieService = new(_movieRepository);
+
             MovieEntity fetchedMovies = await movieService.GetById(1);
+
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
 
@@ -172,6 +178,7 @@ namespace BillB0ard_API.Test
                 new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23)),
                 new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null)
             };
+
             var fetchedMovies = await movieServices.FetchAllMovies();
 
             CollectionAssert.AreEqual(expected, fetchedMovies);
@@ -190,6 +197,7 @@ namespace BillB0ard_API.Test
             };
 
             MovieEntity fetchedMovies = await movieServices.GetById(1);
+
             Assert.Multiple(() =>
             {
                 CollectionAssert.AreEqual(rates, fetchedMovies.Rates);
@@ -212,9 +220,9 @@ namespace BillB0ard_API.Test
         [Test]
         public void IdNotFound()
         {
-            var movieRepository = new MovieRepository(_dbContext);
+            MovieService movieServices = new(_movieRepository);
 
-            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieRepository.GetMovie(-1));
+            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetById(-1));
 
             Assert.That(ex.Message, Is.EqualTo("There's no movie with the id : -1. Please check the given id and retry."));
         }
