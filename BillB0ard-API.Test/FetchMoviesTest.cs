@@ -180,7 +180,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task MovieWithRates()
         {
-            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            MovieService movieServices = new(_movieRepository);
             var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
             var rates = new List<RateEntity>()
             {
@@ -189,7 +189,7 @@ namespace BillB0ard_API.Test
                 new(baseMovie, new(3, "T-Rex"), 5.25M),
             };
 
-            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
+            MovieEntity fetchedMovies = await movieServices.GetById(1);
             Assert.Multiple(() =>
             {
                 CollectionAssert.AreEqual(rates, fetchedMovies.Rates);
