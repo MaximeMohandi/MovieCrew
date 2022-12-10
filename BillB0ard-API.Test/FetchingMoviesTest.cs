@@ -1,5 +1,6 @@
 using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
+using BillB0ard_API.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test
@@ -67,9 +68,10 @@ namespace BillB0ard_API.Test
         }
 
         [Test]
-        public void WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
+        public async Task WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
         {
-            Movie fetchedMovies = _dbContext.Movies.Where(m => m.Name == "Lord of the ring").First();
+            MovieRepository movieRepository = new MovieRepository();
+            Domain.Entities.Movie fetchedMovies = await movieRepository.GetMovie("Lord of the ring");
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
     }
