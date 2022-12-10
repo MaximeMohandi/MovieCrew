@@ -16,6 +16,16 @@ namespace BillB0ard_API.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Rate>()
                 .HasKey(r => new { r.MovieId, r.UserId });
+
+            modelBuilder.Entity<Rate>()
+                .HasOne(m => m.Movie)
+                .WithMany(r => r.Rates)
+                .HasForeignKey(r => r.MovieId);
+
+            modelBuilder.Entity<Rate>()
+                .HasOne(u => u.User)
+                .WithMany(r => r.Rates)
+                .HasForeignKey(r => r.UserId);
         }
     }
 }

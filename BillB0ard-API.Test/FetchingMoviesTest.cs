@@ -65,19 +65,19 @@ namespace BillB0ard_API.Test
                 {
                     Id = 1,
                     Name = "Jabba",
-                    Role = 1,
+                    Role = 0,
                 },
                 new User()
                 {
                     Id = 2,
                     Name = "Dudley",
-                    Role = 1,
+                    Role = 0,
                 },
                 new User()
                 {
                     Id = 3,
                     Name = "T-Rex",
-                    Role = 1,
+                    Role = 0,
                 },
 
             };
@@ -170,6 +170,24 @@ namespace BillB0ard_API.Test
             var fetchedMovies = await movieRepository.GetAll();
 
             CollectionAssert.AreEqual(expected, fetchedMovies);
+        }
+
+        [Test]
+        public async Task MovieWithRates()
+        {
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            var ratedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12));
+            ratedMovie.Rates = new List<RateEntity>()
+            {
+                new(ratedMovie, new(1, "Jabba"), 10.0M),
+                new(ratedMovie, new(2, "Dudley"), 2.0M),
+                new(ratedMovie, new(3, "T-Rex"), 5.25M),
+            };
+
+            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
+
+
+            Assert.That(ratedMovie.Rates[0].Rate, Is.EqualTo(fetchedMovies.Rates[0].Rate));
         }
     }
 }
