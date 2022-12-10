@@ -10,13 +10,13 @@ namespace BillB0ard_API.Test
             .UseInMemoryDatabase(databaseName: "MovieDbTest")
             .Options;
 
-        AppDbContext dbContext;
+        AppDbContext _dbContext;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            dbContext = new AppDbContext(_dbContextOptions);
-            dbContext.Database.EnsureCreated();
+            _dbContext = new AppDbContext(_dbContextOptions);
+            _dbContext.Database.EnsureCreated();
 
             Movie[] movies = new[]
             {
@@ -55,21 +55,21 @@ namespace BillB0ard_API.Test
 
             };
 
-            dbContext.Movies.AddRange(movies);
-            dbContext.SaveChanges();
+            _dbContext.Movies.AddRange(movies);
+            _dbContext.SaveChanges();
 
         }
 
         [OneTimeTearDown]
         public void CleanUp()
         {
-            dbContext.Database.EnsureDeleted();
+            _dbContext.Database.EnsureDeleted();
         }
 
         [Test]
-        public async Task WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
+        public void WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
         {
-            Movie fetchedMovies = dbContext.Movies.Where(m => m.Name == "Lord of the ring").First();
+            Movie fetchedMovies = _dbContext.Movies.Where(m => m.Name == "Lord of the ring").First();
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
     }
