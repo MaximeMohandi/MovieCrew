@@ -16,5 +16,10 @@ namespace BillB0ard_API.Domain.Repository
         {
             return await _dbContext.Movies.Where(m => m.Name.ToLower() == title.ToLower()).Select(m => new Movie(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate)).FirstOrDefaultAsync();
         }
+
+        public async Task<Movie> GetMovie(int id)
+        {
+            return await _dbContext.Movies.Where(m => m.Id == id).Select(m => new Movie(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate)).FirstOrDefaultAsync();
+        }
     }
 }

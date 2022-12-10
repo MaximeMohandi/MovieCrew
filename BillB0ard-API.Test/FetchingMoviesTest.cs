@@ -82,5 +82,13 @@ namespace BillB0ard_API.Test
             Domain.Entities.Movie fetchedMovies = await movieRepository.GetMovie("lord of The Ring");
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
+
+        [Test]
+        public async Task ById()
+        {
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            Domain.Entities.Movie fetchedMovies = await movieRepository.GetMovie(1);
+            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+        }
     }
 }
