@@ -68,10 +68,18 @@ namespace BillB0ard_API.Test
         }
 
         [Test]
-        public async Task WhenIFetchAMovieWithItsTitle_ThenIGetTheMovie()
+        public async Task ByTitle()
         {
             MovieRepository movieRepository = new MovieRepository(_dbContext);
             Domain.Entities.Movie fetchedMovies = await movieRepository.GetMovie("Lord of the ring");
+            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task ByTitleIgnoreCase()
+        {
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            Domain.Entities.Movie fetchedMovies = await movieRepository.GetMovie("lord of The Ring");
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
     }
