@@ -213,7 +213,7 @@ namespace BillB0ard_API.Test
             MovieRepository movieRepository = new MovieRepository(_dbContext);
             MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
 
-            Assert.That(fetchedMovies.lowestRates, Is.EqualTo(2M));
+            Assert.That(fetchedMovies.LowestRates, Is.EqualTo(2M));
         }
 
         [Test]

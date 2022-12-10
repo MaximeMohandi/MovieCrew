@@ -16,16 +16,16 @@ namespace BillB0ard_API.Domain.Repository
         public async Task<MovieEntity> GetMovie(string title)
         {
             var movie = await _dbContext.Movies.Where(m => m.Name.ToLower() == title.ToLower()).FirstOrDefaultAsync();
-            return MovieWithRates(movie);
+            return MappedMovie(movie);
         }
 
         public async Task<MovieEntity> GetMovie(int id)
         {
             var movie = await _dbContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
-            return MovieWithRates(movie);
+            return MappedMovie(movie);
         }
 
-        private static MovieEntity MovieWithRates(Movie? movie)
+        private MovieEntity MappedMovie(Movie? movie)
         {
             var movieEntity = new MovieEntity(movie.Id, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
 
