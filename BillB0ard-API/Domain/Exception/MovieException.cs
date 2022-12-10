@@ -13,4 +13,9 @@
         public MovieNotFoundException(int id) : base($"There's no movie with the id : {id}. Please check the given id and retry.") { }
 
     }
+
+    public class MovieAlreadyExistException : MovieException
+    {
+        public MovieAlreadyExistException(string title) : base($"{title} is already in the list.") { }
+    }
 }
