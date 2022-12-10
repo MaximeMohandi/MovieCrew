@@ -84,6 +84,44 @@ namespace BillB0ard_API.Test
 
             _dbContext.Users.AddRange(users);
 
+            Rate[] rates = new[]
+            {
+                new Rate()
+                {
+                    MovieId= 1,
+                    UserId= 1,
+                    Note = 10.0M
+                },
+                new Rate()
+                {
+                    MovieId= 1,
+                    UserId= 2,
+                    Note = 2.0M
+                },
+                new Rate()
+                {
+                    MovieId= 1,
+                    UserId= 3,
+                    Note = 5.25M
+                },
+
+                new Rate()
+                {
+                    MovieId= 3,
+                    UserId= 1,
+                    Note = 0
+                },
+                new Rate()
+                {
+                    MovieId= 3,
+                    UserId= 2,
+                    Note = 8.50M
+                },
+
+            };
+
+            _dbContext.Rates.AddRange(rates);
+
             _dbContext.SaveChanges();
 
         }
