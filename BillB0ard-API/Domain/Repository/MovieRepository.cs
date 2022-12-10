@@ -47,5 +47,35 @@ namespace BillB0ard_API.Domain.Repository
                 .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
                 .ToListAsync();
         }
+
+        public async Task<MovieEntity> Add(string title)
+        {
+            var movie = new Movie()
+            {
+                Name = title,
+                DateAdded = DateTime.Now,
+            };
+
+            _dbContext.Movies.Add(movie);
+            int addedId = await _dbContext.SaveChangesAsync();
+
+            return new MovieEntity(addedId, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
+        }
+
+        public async Task<MovieEntity> Add(string title, string posterLink)
+        {
+            var movie = new Movie()
+            {
+                Name = title,
+                Poster = posterLink,
+                DateAdded = DateTime.Now,
+            };
+
+            _dbContext.Movies.Add(movie);
+
+            int addedId = await _dbContext.SaveChangesAsync();
+
+            return new MovieEntity(addedId, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
+        }
     }
 }
