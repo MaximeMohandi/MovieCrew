@@ -1,5 +1,6 @@
 using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
+using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -71,7 +72,7 @@ namespace BillB0ard_API.Test
         public async Task ByTitle()
         {
             MovieRepository movieRepository = new MovieRepository(_dbContext);
-            Domain.Entities.MovieEntity fetchedMovies = await movieRepository.GetMovie("Lord of the ring");
+            MovieEntity fetchedMovies = await movieRepository.GetMovie("Lord of the ring");
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
 
@@ -79,7 +80,7 @@ namespace BillB0ard_API.Test
         public async Task ByTitleIgnoreCase()
         {
             MovieRepository movieRepository = new MovieRepository(_dbContext);
-            Domain.Entities.MovieEntity fetchedMovies = await movieRepository.GetMovie("lord of The Ring");
+            MovieEntity fetchedMovies = await movieRepository.GetMovie("lord of The Ring");
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
 
@@ -87,7 +88,7 @@ namespace BillB0ard_API.Test
         public async Task ById()
         {
             MovieRepository movieRepository = new MovieRepository(_dbContext);
-            Domain.Entities.MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
+            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
     }
