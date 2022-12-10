@@ -2,7 +2,7 @@
 
 namespace BillB0ard_API.Test
 {
-    public class MovieEquality
+    public class MovieEqualityTest
     {
         [Test]
         public void SameMovie()
