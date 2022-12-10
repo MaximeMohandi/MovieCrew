@@ -105,7 +105,7 @@ namespace BillB0ard_API.Test
             };
             var fetchedMovies = await movieRepository.GetAll();
 
-            CollectionAssert.AreEquivalent(expected, fetchedMovies);
+            CollectionAssert.AreEqual(expected, fetchedMovies);
         }
     }
 }
