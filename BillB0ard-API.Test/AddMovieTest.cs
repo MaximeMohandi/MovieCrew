@@ -28,7 +28,7 @@ namespace BillB0ard_API.Test
         }
 
         [Test]
-        public async Task AddOne()
+        public async Task OnlyTitle()
         {
             MovieRepository movieService = new(_dbContext);
 
@@ -39,7 +39,7 @@ namespace BillB0ard_API.Test
         }
 
         [Test]
-        public async Task AddOne1()
+        public async Task OneWithPoster()
         {
             MovieRepository movieService = new(_dbContext);
 
