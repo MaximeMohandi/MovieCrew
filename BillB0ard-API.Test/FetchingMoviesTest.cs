@@ -186,48 +186,18 @@ namespace BillB0ard_API.Test
             };
 
             MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
+            Assert.Multiple(() =>
+            {
+                CollectionAssert.AreEqual(rates, fetchedMovies.Rates);
+                Assert.That(fetchedMovies.AverageRate, Is.EqualTo(5.75m));
+                Assert.That(fetchedMovies.LowestRates, Is.EqualTo(2M));
+                Assert.That(fetchedMovies.TopRate, Is.EqualTo(10M));
+            });
 
-            CollectionAssert.AreEqual(rates, fetchedMovies.Rates);
         }
 
         [Test]
-        public async Task MovieWithRatesComputeMeanRate()
-        {
-            MovieRepository movieRepository = new MovieRepository(_dbContext);
-            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
-
-            Assert.That(fetchedMovies.AverageRate, Is.EqualTo(5.75m));
-        }
-
-        [Test]
-        public void MovieWithoutRatesDoNotHaveComputedMean()
-        {
-            MovieRepository movieRepository = new MovieRepository(_dbContext);
-            MovieEntity baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12));
-
-            Assert.That(baseMovie.AverageRate, Is.Null);
-        }
-
-        [Test]
-        public async Task MovieWithRatesComputeMinRate()
-        {
-            MovieRepository movieRepository = new MovieRepository(_dbContext);
-            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
-
-            Assert.That(fetchedMovies.LowestRates, Is.EqualTo(2M));
-        }
-
-        [Test]
-        public async Task MovieWithRatesComputeMaxRate()
-        {
-            MovieRepository movieRepository = new MovieRepository(_dbContext);
-            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
-
-            Assert.That(fetchedMovies.TopRate, Is.EqualTo(10M));
-        }
-
-        [Test]
-        public void MovieWithTitleNotFound()
+        public void TitleNotFound()
         {
             var movieRepository = new MovieRepository(_dbContext);
 
