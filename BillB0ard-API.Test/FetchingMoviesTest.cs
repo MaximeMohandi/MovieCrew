@@ -230,7 +230,8 @@ namespace BillB0ard_API.Test
         public void MovieWithTitleNotFound()
         {
             var movieRepository = new MovieRepository(_dbContext);
-            Assert.ThrowsAsync<MovieException>(async () => await movieRepository.GetMovie("star wars VIII"));
+
+            Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieRepository.GetMovie("star wars VIII"), "star wars VIII cannot be found. Please check the title and retry.");
         }
     }
 }
