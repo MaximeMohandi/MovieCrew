@@ -50,7 +50,7 @@ namespace BillB0ard_API.Test
                 {
                     Id = 4,
                     DateAdded = new DateTime(2022, 10, 15),
-                    Name = "Lord of the ring",
+                    Name = "Lord of the ring II",
                     Poster = "fakeLink",
                     SeenDate = null
                 },
@@ -90,6 +90,22 @@ namespace BillB0ard_API.Test
             MovieRepository movieRepository = new MovieRepository(_dbContext);
             MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task All()
+        {
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            List<MovieEntity> expected = new()
+            {
+                new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)),
+                new MovieEntity(2,"Harry Potter", null,new DateTime(2015, 8, 3),null),
+                new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23)),
+                new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null)
+            };
+            var fetchedMovies = await movieRepository.GetAll();
+
+            CollectionAssert.AreEquivalent(expected, fetchedMovies);
         }
     }
 }

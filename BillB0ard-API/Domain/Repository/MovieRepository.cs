@@ -27,5 +27,12 @@ namespace BillB0ard_API.Domain.Repository
                 .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<List<MovieEntity>> GetAll()
+        {
+            return await _dbContext.Movies
+                .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
+                .ToListAsync();
+        }
     }
 }
