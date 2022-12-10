@@ -16,5 +16,10 @@ namespace BillB0ard_API.Services
         {
             return await _repository.GetAll();
         }
+
+        public async Task<MovieEntity> GetByTitle(string v)
+        {
+            return await _repository.GetMovie(v);
+        }
     }
 }
