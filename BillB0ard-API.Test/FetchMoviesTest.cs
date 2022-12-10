@@ -148,8 +148,8 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task ByTitleIgnoreCase()
         {
-            MovieRepository movieRepository = new MovieRepository(_dbContext);
-            MovieEntity fetchedMovies = await movieRepository.GetMovie("lord of The Ring");
+            MovieService movieRepository = new(_movieRepository);
+            MovieEntity fetchedMovies = await movieRepository.GetByTitle("lord of The Ring");
             Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
 
