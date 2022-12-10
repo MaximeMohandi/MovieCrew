@@ -18,6 +18,45 @@ namespace BillB0ard_API.Test
             dbContext = new AppDbContext(_dbContextOptions);
             dbContext.Database.EnsureCreated();
 
+            Movie[] movies = new[]
+            {
+                new Movie()
+                {
+                    Id = 1,
+                    DateAdded = new DateTime(2022, 5, 10),
+                    Name = "Lord of the ring",
+                    Poster = "fakeLink",
+                    SeenDate = new DateTime(2022, 5, 12)
+                },
+                new Movie()
+                {
+                    Id = 2,
+                    DateAdded = new DateTime(2015, 8, 3),
+                    Name = "Harry Potter",
+                    Poster = null,
+                    SeenDate = null
+                },
+                new Movie()
+                {
+                    Id = 3,
+                    DateAdded = new DateTime(1996, 9, 21),
+                    Name = "Jurassic Park",
+                    Poster = "fakeLink",
+                    SeenDate = new DateTime(1996, 9, 23),
+                },
+                new Movie()
+                {
+                    Id = 4,
+                    DateAdded = new DateTime(2022, 10, 15),
+                    Name = "Lord of the ring",
+                    Poster = "fakeLink",
+                    SeenDate = null
+                },
+
+            };
+
+            dbContext.Movies.AddRange(movies);
+
         }
 
         [OneTimeTearDown]
