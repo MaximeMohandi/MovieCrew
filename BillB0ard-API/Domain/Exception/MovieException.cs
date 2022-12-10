@@ -2,7 +2,6 @@
 {
     public class MovieException : System.Exception
     {
-        public MovieException() { }
         public MovieException(string message) : base(message) { }
     }
 

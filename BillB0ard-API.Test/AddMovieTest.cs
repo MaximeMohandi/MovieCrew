@@ -2,6 +2,7 @@
 using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Domain.Repository;
+using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test
@@ -13,6 +14,7 @@ namespace BillB0ard_API.Test
             .Options;
 
         AppDbContext _dbContext;
+        private MovieRepository _movieRepository;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -20,6 +22,8 @@ namespace BillB0ard_API.Test
             _dbContext = new AppDbContext(_dbContextOptions);
             _dbContext.Database.EnsureCreated();
             _dbContext.SaveChanges();
+
+            _movieRepository = new MovieRepository(_dbContext);
         }
 
         [OneTimeTearDown]
@@ -32,9 +36,9 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task OnlyTitle()
         {
-            MovieRepository movieRepository = new(_dbContext);
+            MovieService service = new(_movieRepository);
 
-            MovieEntity addedMovie = await movieRepository.Add("Dragon");
+            MovieEntity addedMovie = await service.AddMovie(new("Dragon"));
 
             Assert.Multiple(() =>
             {
@@ -46,9 +50,9 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task OneWithPoster()
         {
-            MovieRepository movieRepository = new(_dbContext);
+            MovieService service = new(_movieRepository);
 
-            MovieEntity addedMovie = await movieRepository.Add("Pinnochio", "fakelink");
+            MovieEntity addedMovie = await service.AddMovie(new("Pinnochio", "fakelink"));
 
             Assert.Multiple(() =>
             {
@@ -61,11 +65,11 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task CantAddExistMovie()
         {
-            MovieRepository movieRepository = new(_dbContext);
+            MovieService service = new(_movieRepository);
 
-            await movieRepository.Add("The Fith element");
+            await service.AddMovie(new("The Fith element"));
 
-            Assert.ThrowsAsync<MovieException>(() => movieRepository.Add("The Fith element"));
+            Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fith element")));
         }
     }
 }

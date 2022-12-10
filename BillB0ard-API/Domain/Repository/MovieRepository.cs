@@ -1,5 +1,6 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
+using BillB0ard_API.Domain.DTOs;
 using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
 using Microsoft.EntityFrameworkCore;
@@ -48,30 +49,12 @@ namespace BillB0ard_API.Domain.Repository
                 .ToListAsync();
         }
 
-        public async Task<MovieEntity> Add(string title)
-        {
-
-            var m = _dbContext.Movies.FirstOrDefault(m => m.Name == title);
-            if (m is not null) throw new MovieException();
-
-            var movie = new Movie()
-            {
-                Name = title,
-                DateAdded = DateTime.Now,
-            };
-
-            _dbContext.Movies.Add(movie);
-            int addedId = await _dbContext.SaveChangesAsync();
-
-            return new MovieEntity(addedId, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
-        }
-
-        public async Task<MovieEntity> Add(string title, string posterLink)
+        public async Task<MovieEntity> Add(MovieCreationDTO creationMovie)
         {
             var movie = new Movie()
             {
-                Name = title,
-                Poster = posterLink,
+                Name = creationMovie.Title,
+                Poster = creationMovie.Poster,
                 DateAdded = DateTime.Now,
             };
 
