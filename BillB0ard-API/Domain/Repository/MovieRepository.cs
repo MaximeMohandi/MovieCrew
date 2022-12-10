@@ -19,12 +19,15 @@ namespace BillB0ard_API.Domain.Repository
 
             var movie = await _dbContext.Movies.Where(m => m.Name.ToLower() == title.ToLower()).FirstOrDefaultAsync();
             if (movie is null) throw new MovieNotFoundException(title);
+
             return MappedMovie(movie);
         }
 
         public async Task<MovieEntity> GetMovie(int id)
         {
             var movie = await _dbContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
+            if (movie is null) throw new MovieNotFoundException(id);
+
             return MappedMovie(movie);
         }
 

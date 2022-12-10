@@ -231,7 +231,19 @@ namespace BillB0ard_API.Test
         {
             var movieRepository = new MovieRepository(_dbContext);
 
-            Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieRepository.GetMovie("star wars VIII"), "star wars VIII cannot be found. Please check the title and retry.");
+
+            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieRepository.GetMovie("star wars VIII"));
+
+            Assert.That(ex.Message, Is.EqualTo("star wars VIII cannot be found. Please check the title and retry."));
+        }
+        [Test]
+        public void IdNotFound()
+        {
+            var movieRepository = new MovieRepository(_dbContext);
+
+            MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieRepository.GetMovie(-1));
+
+            Assert.That(ex.Message, Is.EqualTo("There's no movie with the id : -1. Please check the given id and retry."));
         }
     }
 }
