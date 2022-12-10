@@ -23,5 +23,17 @@
                 return Rates.Min(r => r.Rate);
             }
         }
+
+        public decimal? TopRate
+        {
+            get
+            {
+                if (Rates is null)
+                {
+                    return null;
+                }
+                return Rates.Max(r => r.Rate);
+            }
+        }
     }
 }

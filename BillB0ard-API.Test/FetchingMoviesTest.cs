@@ -215,5 +215,14 @@ namespace BillB0ard_API.Test
 
             Assert.That(fetchedMovies.lowestRates, Is.EqualTo(2M));
         }
+
+        [Test]
+        public async Task MovieWithRatesComputeMaxRate()
+        {
+            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            MovieEntity fetchedMovies = await movieRepository.GetMovie(1);
+
+            Assert.That(fetchedMovies.TopRate, Is.EqualTo(10M));
+        }
     }
 }
