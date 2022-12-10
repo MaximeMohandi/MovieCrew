@@ -50,6 +50,10 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task<MovieEntity> Add(string title)
         {
+
+            var m = _dbContext.Movies.FirstOrDefault(m => m.Name == title);
+            if (m is not null) throw new MovieException();
+
             var movie = new Movie()
             {
                 Name = title,
