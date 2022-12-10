@@ -12,19 +12,19 @@ namespace BillB0ard_API.Domain.Repository
             _dbContext = databaseContext;
         }
 
-        public async Task<Movie> GetMovie(string title)
+        public async Task<MovieEntity> GetMovie(string title)
         {
             return await _dbContext.Movies
                     .Where(m => m.Name.ToLower() == title.ToLower())
-                    .Select(m => new Movie(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
+                    .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<Movie> GetMovie(int id)
+        public async Task<MovieEntity> GetMovie(int id)
         {
             return await _dbContext.Movies
                 .Where(m => m.Id == id)
-                .Select(m => new Movie(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
+                .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
                 .FirstOrDefaultAsync();
         }
     }
