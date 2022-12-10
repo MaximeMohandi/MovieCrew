@@ -8,5 +8,6 @@
 
         //Navigation Properties
         public Movie Movie { get; set; }
+        public User User { get; set; }
     }
 }

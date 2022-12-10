@@ -6,5 +6,8 @@
         public string Name { get; set; }
         public int Role { get; set; }
 
+        //Navigation Properties
+        public List<Rate>? Rates { get; set; }
+
     }
 }
