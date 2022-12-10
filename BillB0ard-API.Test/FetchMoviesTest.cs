@@ -3,6 +3,7 @@ using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Domain.Repository;
+using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test
@@ -13,7 +14,8 @@ namespace BillB0ard_API.Test
             .UseInMemoryDatabase(databaseName: "MovieDbTest")
             .Options;
 
-        AppDbContext _dbContext;
+        private AppDbContext _dbContext;
+        private MovieRepository _movieRepository;
 
         [OneTimeSetUp]
         public void Setup()
@@ -125,6 +127,8 @@ namespace BillB0ard_API.Test
 
             _dbContext.SaveChanges();
 
+            _movieRepository = new MovieRepository(_dbContext);
+
         }
 
         [OneTimeTearDown]
@@ -160,7 +164,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task All()
         {
-            MovieRepository movieRepository = new MovieRepository(_dbContext);
+            MovieService movieServices = new(_movieRepository);
             List<MovieEntity> expected = new()
             {
                 new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)),
@@ -168,7 +172,7 @@ namespace BillB0ard_API.Test
                 new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23)),
                 new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null)
             };
-            var fetchedMovies = await movieRepository.GetAll();
+            var fetchedMovies = await movieServices.FetchAllMovies();
 
             CollectionAssert.AreEqual(expected, fetchedMovies);
         }
