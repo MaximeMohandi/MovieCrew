@@ -1,39 +1,12 @@
-﻿using BillB0ard_API.Data;
-using BillB0ard_API.Domain.Entities;
+﻿using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
-using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
-using Microsoft.EntityFrameworkCore;
+using BillB0ard_API.Test.MovieTest;
 
 namespace BillB0ard_API.Test.Movies
 {
-    public class AddMovieTest
+    public class AddMovieTest : InMemoryMovieTestBase
     {
-        private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "MovieDbTest")
-            .Options;
-
-        AppDbContext _dbContext;
-        private MovieRepository _movieRepository;
-        private RateRepository _rateRepository;
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            _dbContext = new AppDbContext(_dbContextOptions);
-            _dbContext.Database.EnsureCreated();
-            _dbContext.SaveChanges();
-
-            _movieRepository = new MovieRepository(_dbContext);
-            _rateRepository = new RateRepository(_dbContext);
-        }
-
-        [OneTimeTearDown]
-        public void CleanUp()
-        {
-            _dbContext.Database.EnsureDeleted();
-            _dbContext.SaveChanges();
-        }
 
         [Test]
         public async Task OnlyTitle()
@@ -69,9 +42,17 @@ namespace BillB0ard_API.Test.Movies
         {
             MovieService service = new(_movieRepository, _rateRepository);
 
-            await service.AddMovie(new("The Fith element"));
-
             Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fith element")));
+        }
+
+        protected override void SeedInMemoryDatas()
+        {
+            _dbContext.Movies.Add(new()
+            {
+                Id = 1,
+                DateAdded = DateTime.Now,
+                Name = "The Fith element"
+            });
         }
     }
 }
