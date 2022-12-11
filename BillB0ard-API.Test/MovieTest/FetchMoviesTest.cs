@@ -1,41 +1,13 @@
-using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
-using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
-using Microsoft.EntityFrameworkCore;
+using BillB0ard_API.Test.MovieTest;
 
 namespace BillB0ard_API.Test.Movies
 {
-    public class FetchMovieTest
+    public class FetchMovieTest : MovieTestBase
     {
-        private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "MovieDbTest")
-            .Options;
-
-        private AppDbContext _dbContext;
-        private MovieRepository _movieRepository;
-        private RateRepository _rateRepository;
-
-        [OneTimeSetUp]
-        public void Setup()
-        {
-            _dbContext = new AppDbContext(_dbContextOptions);
-            _dbContext.Database.EnsureCreated();
-
-            SeedInMemoryDatas();
-
-            _movieRepository = new MovieRepository(_dbContext);
-
-        }
-
-        [OneTimeTearDown]
-        public void CleanUp()
-        {
-            _dbContext.Database.EnsureDeleted();
-        }
-
         [Test]
         public async Task ByTitle()
         {
@@ -127,7 +99,7 @@ namespace BillB0ard_API.Test.Movies
             Assert.That(ex.Message, Is.EqualTo("There's no movie with the id : -1. Please check the given id and retry."));
         }
 
-        private void SeedInMemoryDatas()
+        protected override void SeedInMemoryDatas()
         {
             Movie[] movies = new[]
                         {
@@ -233,5 +205,6 @@ namespace BillB0ard_API.Test.Movies
 
             _dbContext.SaveChanges();
         }
+
     }
 }
