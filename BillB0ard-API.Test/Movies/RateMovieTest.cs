@@ -23,9 +23,55 @@ namespace BillB0ard_API.Test.Movies
             _dbContext = new AppDbContext(_dbContextOptions);
             _dbContext.Database.EnsureCreated();
 
+            SeedContext();
 
+            _dbContext.SaveChanges();
+
+            _movieRepository = new MovieRepository(_dbContext);
+            _rateRepository = new RateRepository(_dbContext);
+        }
+
+        [OneTimeTearDown]
+        public void CleanUp()
+        {
+            _dbContext.Database.EnsureDeleted();
+            _dbContext.SaveChanges();
+        }
+
+        [Test]
+        public async Task MovieWithoutRate()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+            var rateCreation = new RateCreationDTO(2, 1, 2.0M);
+            var expectedRate = new Rate()
+            {
+                MovieId = 2,
+                UserId = 1,
+                Note = 2.0M
+            };
+
+            await movieService.Rate(rateCreation);
+
+            Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
+        }
+
+        [Test]
+        public async Task ExistingRate()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+            RateCreationDTO rateCreation = new(1, 1, 0.0M);
+
+            await movieService.Rate(rateCreation);
+
+            var updatedRate = _dbContext.Rates
+                .First(r => r.UserId == rateCreation.UserId && r.MovieId == rateCreation.MovieID);
+
+            Assert.That(updatedRate.Note, Is.EqualTo(0.0M));
+        }
+        private void SeedContext()
+        {
             Movie[] movies = new[]
-                        {
+                                    {
                 new Movie()
                 {
                     Id = 1,
@@ -93,50 +139,6 @@ namespace BillB0ard_API.Test.Movies
                 }
             };
             _dbContext.Rates.AddRange(rates);
-
-            _dbContext.SaveChanges();
-
-
-            _movieRepository = new MovieRepository(_dbContext);
-            _rateRepository = new RateRepository(_dbContext);
-        }
-
-        [OneTimeTearDown]
-        public void CleanUp()
-        {
-            _dbContext.Database.EnsureDeleted();
-            _dbContext.SaveChanges();
-        }
-
-        [Test]
-        public async Task MovieWithoutRate()
-        {
-            MovieService movieService = new(_movieRepository, _rateRepository);
-            var rateCreation = new RateCreationDTO(2, 1, 2.0M);
-            var expectedRate = new Rate()
-            {
-                MovieId = 2,
-                UserId = 1,
-                Note = 2.0M
-            };
-
-            await movieService.Rate(rateCreation);
-
-            Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
-        }
-
-        [Test]
-        public async Task ExistingRate()
-        {
-            MovieService movieService = new(_movieRepository, _rateRepository);
-            RateCreationDTO rateCreation = new(1, 1, 0.0M);
-
-            await movieService.Rate(rateCreation);
-
-            var updatedRate = _dbContext.Rates
-                .First(r => r.UserId == rateCreation.UserId && r.MovieId == rateCreation.MovieID);
-
-            Assert.That(updatedRate.Note, Is.EqualTo(0.0M));
         }
 
     }
