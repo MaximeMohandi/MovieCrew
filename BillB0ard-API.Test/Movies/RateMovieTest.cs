@@ -122,7 +122,7 @@ namespace BillB0ard_API.Test.Movies
 
             await movieService.Rate(rateCreation);
 
-            Assert.That(_dbContext.Rates.Any(r => r.Note == expectedRate.Note && r.MovieId == expectedRate.MovieId && r.UserId == expectedRate.UserId), Is.True);
+            Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
         }
 
         [Test]
