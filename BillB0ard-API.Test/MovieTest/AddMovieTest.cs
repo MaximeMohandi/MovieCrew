@@ -38,7 +38,7 @@ namespace BillB0ard_API.Test.Movies
         }
 
         [Test]
-        public async Task CantAddExistMovie()
+        public void CantAddExistMovie()
         {
             MovieService service = new(_movieRepository, _rateRepository);
 
