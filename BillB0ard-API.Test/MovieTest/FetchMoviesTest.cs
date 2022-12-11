@@ -127,9 +127,6 @@ namespace BillB0ard_API.Test.Movies
             Assert.That(ex.Message, Is.EqualTo("There's no movie with the id : -1. Please check the given id and retry."));
         }
 
-
-
-
         private void SeedInMemoryDatas()
         {
             Movie[] movies = new[]
