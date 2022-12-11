@@ -9,5 +9,19 @@
         //Navigation Properties
         public Movie Movie { get; set; }
         public User User { get; set; }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            Rate rate = obj as Rate;
+
+            return UserId == rate.UserId
+                   && MovieId == rate.MovieId
+                   && Note == rate.Note;
+        }
     }
 }
