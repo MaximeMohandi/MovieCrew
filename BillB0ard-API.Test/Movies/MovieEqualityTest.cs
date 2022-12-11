@@ -1,6 +1,6 @@
 ﻿using BillB0ard_API.Domain.Entities;
 
-namespace BillB0ard_API.Test
+namespace BillB0ard_API.Test.Movies
 {
     public class MovieEqualityTest
     {

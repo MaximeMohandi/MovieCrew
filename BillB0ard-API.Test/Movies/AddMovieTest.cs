@@ -5,7 +5,7 @@ using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace BillB0ard_API.Test
+namespace BillB0ard_API.Test.Movies
 {
     public class AddMovieTest
     {
