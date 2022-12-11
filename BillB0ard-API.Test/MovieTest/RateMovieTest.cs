@@ -1,6 +1,7 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.DTOs;
+using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -68,6 +69,29 @@ namespace BillB0ard_API.Test.Movies
 
             Assert.That(updatedRate.Note, Is.EqualTo(0.0M));
         }
+
+        [Test]
+        public void CannotRateAbove10()
+        {
+            MovieService movieServices = new(_movieRepository, _rateRepository);
+            RateCreationDTO rateCreation = new(1, 1, 11.0M);
+
+            var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
+
+            Assert.That(ex.Message, Is.EqualTo("The rate must be between 0 and 10. Actual : 11,0"));
+        }
+
+        [Test]
+        public void CannotGiveRateBelowZero()
+        {
+            MovieService movieServices = new(_movieRepository, _rateRepository);
+            RateCreationDTO rateCreation = new(1, 1, -1);
+
+            var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
+
+            Assert.That(ex.Message, Is.EqualTo("The rate must be between 0 and 10. Actual : -1"));
+        }
+
         private void SeedContext()
         {
             Movie[] movies = new[]
