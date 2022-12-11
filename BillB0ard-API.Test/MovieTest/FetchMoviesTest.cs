@@ -202,8 +202,6 @@ namespace BillB0ard_API.Test.Movies
             };
 
             _dbContext.Rates.AddRange(rates);
-
-            _dbContext.SaveChanges();
         }
 
     }

@@ -22,6 +22,8 @@ namespace BillB0ard_API.Test.MovieTest
 
             SeedInMemoryDatas();
 
+            _dbContext.SaveChanges();
+
             _movieRepository = new MovieRepository(_dbContext);
             _rateRepository = new RateRepository(_dbContext);
         }
