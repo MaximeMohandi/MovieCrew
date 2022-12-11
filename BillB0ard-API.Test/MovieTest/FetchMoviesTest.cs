@@ -6,7 +6,7 @@ using BillB0ard_API.Test.MovieTest;
 
 namespace BillB0ard_API.Test.Movies
 {
-    public class FetchMovieTest : MovieTestBase
+    public class FetchMovieTest : InMemoryMovieTest
     {
         [Test]
         public async Task ByTitle()

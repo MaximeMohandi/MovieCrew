@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test.MovieTest
 {
-    public abstract class MovieTestBase
+    public abstract class InMemoryTestBase
     {
         private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: "MovieDbTest")
