@@ -1,43 +1,13 @@
-﻿using BillB0ard_API.Data;
-using BillB0ard_API.Data.Models;
+﻿using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.DTOs;
 using BillB0ard_API.Domain.Exception;
-using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
-using Microsoft.EntityFrameworkCore;
+using BillB0ard_API.Test.MovieTest;
 
 namespace BillB0ard_API.Test.Movies
 {
-    public class RateMovieTest
+    public class RateMovieTest : InMemoryMovieTestBase
     {
-        private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "MovieDbTest")
-            .Options;
-
-        private AppDbContext _dbContext;
-        private MovieRepository _movieRepository;
-        private RateRepository _rateRepository;
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            _dbContext = new AppDbContext(_dbContextOptions);
-            _dbContext.Database.EnsureCreated();
-
-            SeedContext();
-
-            _dbContext.SaveChanges();
-
-            _movieRepository = new MovieRepository(_dbContext);
-            _rateRepository = new RateRepository(_dbContext);
-        }
-
-        [OneTimeTearDown]
-        public void CleanUp()
-        {
-            _dbContext.Database.EnsureDeleted();
-            _dbContext.SaveChanges();
-        }
 
         [Test]
         public async Task MovieWithoutRate()
@@ -92,7 +62,7 @@ namespace BillB0ard_API.Test.Movies
             Assert.That(ex.Message, Is.EqualTo("The rate must be between 0 and 10. Actual : -1"));
         }
 
-        private void SeedContext()
+        protected override void SeedInMemoryDatas()
         {
             Movie[] movies = new[]
                                     {
