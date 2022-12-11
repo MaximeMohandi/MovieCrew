@@ -130,11 +130,13 @@ namespace BillB0ard_API.Test.Movies
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
             RateCreationDTO rateCreation = new(1, 1, 0.0M);
+
             await movieService.Rate(rateCreation);
 
+            var updatedRate = _dbContext.Rates
+                .First(r => r.UserId == rateCreation.UserId && r.MovieId == rateCreation.MovieID);
 
-
-            Assert.That(_dbContext.Rates.First(r => r.UserId == rateCreation.UserId && r.MovieId == rateCreation.MovieID).Note, Is.EqualTo(0.0M));
+            Assert.That(updatedRate.Note, Is.EqualTo(0.0M));
         }
 
     }

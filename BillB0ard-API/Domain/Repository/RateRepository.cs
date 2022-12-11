@@ -14,10 +14,9 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task Add(RateCreationDTO rateCreationDTO)
         {
-            var rate = _dbContext.Rates
-                .FirstOrDefault(r => r.UserId == rateCreationDTO.UserId && r.MovieId == rateCreationDTO.MovieID);
+            Rate? existingRate = ExistingRate(rateCreationDTO);
 
-            if (rate is null or default(Rate))
+            if (existingRate is null)
             {
                 _dbContext.Rates.Add(new Rate()
                 {
@@ -28,11 +27,18 @@ namespace BillB0ard_API.Domain.Repository
             }
             else
             {
-                rate.Note = rateCreationDTO.Rate;
-                _dbContext.Rates.Update(rate);
+                existingRate.Note = rateCreationDTO.Rate;
+                _dbContext.Rates.Update(existingRate);
 
             }
+
             await _dbContext.SaveChangesAsync();
+        }
+
+        private Rate? ExistingRate(RateCreationDTO rateCreationDTO)
+        {
+            return _dbContext.Rates
+                .FirstOrDefault(r => r.UserId == rateCreationDTO.UserId && r.MovieId == rateCreationDTO.MovieID);
         }
     }
 }
