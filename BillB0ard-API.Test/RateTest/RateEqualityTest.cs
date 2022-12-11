@@ -1,6 +1,6 @@
 ﻿using BillB0ard_API.Data.Models;
 
-namespace BillB0ard_API.Test.NewFolder
+namespace BillB0ard_API.Test.RateTest
 {
     public class RateEqualityTest
     {
