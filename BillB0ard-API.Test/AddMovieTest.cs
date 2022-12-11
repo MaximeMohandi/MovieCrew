@@ -15,6 +15,7 @@ namespace BillB0ard_API.Test
 
         AppDbContext _dbContext;
         private MovieRepository _movieRepository;
+        private RateRepository _rateRepository;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -24,6 +25,7 @@ namespace BillB0ard_API.Test
             _dbContext.SaveChanges();
 
             _movieRepository = new MovieRepository(_dbContext);
+            _rateRepository = new RateRepository(_dbContext);
         }
 
         [OneTimeTearDown]
@@ -36,7 +38,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task OnlyTitle()
         {
-            MovieService service = new(_movieRepository);
+            MovieService service = new(_movieRepository, _rateRepository);
 
             MovieEntity addedMovie = await service.AddMovie(new("Dragon"));
 
@@ -50,7 +52,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task OneWithPoster()
         {
-            MovieService service = new(_movieRepository);
+            MovieService service = new(_movieRepository, _rateRepository);
 
             MovieEntity addedMovie = await service.AddMovie(new("Pinnochio", "fakelink"));
 
@@ -65,7 +67,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task CantAddExistMovie()
         {
-            MovieService service = new(_movieRepository);
+            MovieService service = new(_movieRepository, _rateRepository);
 
             await service.AddMovie(new("The Fith element"));
 

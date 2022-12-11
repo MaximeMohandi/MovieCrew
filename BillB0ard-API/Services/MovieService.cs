@@ -7,26 +7,28 @@ namespace BillB0ard_API.Services
 {
     public class MovieService
     {
-        private readonly MovieRepository _repository;
+        private readonly MovieRepository _movieRepository;
+        private readonly RateRepository _rateRepository;
 
-        public MovieService(MovieRepository repository)
+        public MovieService(MovieRepository movieRepository, RateRepository rateRepository)
         {
-            this._repository = repository;
+            this._movieRepository = movieRepository;
+            this._rateRepository = rateRepository;
         }
 
         public async Task<List<MovieEntity>> FetchAllMovies()
         {
-            return await _repository.GetAll();
+            return await _movieRepository.GetAll();
         }
 
         public async Task<MovieEntity> GetByTitle(string title)
         {
-            return await _repository.GetMovie(title);
+            return await _movieRepository.GetMovie(title);
         }
 
         public async Task<MovieEntity> GetById(int movieId)
         {
-            return await _repository.GetMovie(movieId);
+            return await _movieRepository.GetMovie(movieId);
         }
 
         public async Task<MovieEntity> AddMovie(MovieCreationDTO movie)
@@ -38,9 +40,15 @@ namespace BillB0ard_API.Services
             }
             catch (MovieNotFoundException)
             {
-                return await _repository.Add(movie);
+                return await _movieRepository.Add(movie);
             }
 
+        }
+
+        public async Task Rate(RateCreationDTO rateCreation)
+        {
+
+            await _rateRepository.Add(rateCreation);
         }
     }
 }

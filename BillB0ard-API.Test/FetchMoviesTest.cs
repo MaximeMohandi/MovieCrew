@@ -16,6 +16,7 @@ namespace BillB0ard_API.Test
 
         private AppDbContext _dbContext;
         private MovieRepository _movieRepository;
+        private RateRepository _rateRepository;
 
         [OneTimeSetUp]
         public void Setup()
@@ -38,7 +39,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task ByTitle()
         {
-            MovieService movieService = new(_movieRepository);
+            MovieService movieService = new(_movieRepository, _rateRepository);
 
             MovieEntity fetchedMovies = await movieService.GetByTitle("Lord of the ring");
 
@@ -48,7 +49,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task ByTitleIgnoreCase()
         {
-            MovieService movieRepository = new(_movieRepository);
+            MovieService movieRepository = new(_movieRepository, _rateRepository);
 
             MovieEntity fetchedMovies = await movieRepository.GetByTitle("lord of The Ring");
 
@@ -58,7 +59,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task ById()
         {
-            MovieService movieService = new(_movieRepository);
+            MovieService movieService = new(_movieRepository, _rateRepository);
 
             MovieEntity fetchedMovies = await movieService.GetById(1);
 
@@ -68,7 +69,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task All()
         {
-            MovieService movieServices = new(_movieRepository);
+            MovieService movieServices = new(_movieRepository, _rateRepository);
             List<MovieEntity> expected = new()
             {
                 new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)),
@@ -85,7 +86,7 @@ namespace BillB0ard_API.Test
         [Test]
         public async Task MovieWithRates()
         {
-            MovieService movieServices = new(_movieRepository);
+            MovieService movieServices = new(_movieRepository, _rateRepository);
             var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
             var expectedRates = new List<RateEntity>()
             {
@@ -109,7 +110,7 @@ namespace BillB0ard_API.Test
         [Test]
         public void TitleNotFound()
         {
-            MovieService movieServices = new(_movieRepository);
+            MovieService movieServices = new(_movieRepository, _rateRepository);
 
             MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetByTitle("star wars VIII"));
 
@@ -119,7 +120,7 @@ namespace BillB0ard_API.Test
         [Test]
         public void IdNotFound()
         {
-            MovieService movieServices = new(_movieRepository);
+            MovieService movieServices = new(_movieRepository, _rateRepository);
 
             MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetById(-1));
 
