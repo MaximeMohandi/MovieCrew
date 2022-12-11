@@ -109,7 +109,7 @@ namespace BillB0ard_API.Test.Movies
         }
 
         [Test]
-        public async Task UnseenMovieAsync()
+        public async Task MovieWithoutRate()
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
             var rateCreation = new RateCreationDTO(2, 1, 2.0M);
@@ -124,5 +124,6 @@ namespace BillB0ard_API.Test.Movies
 
             Assert.That(_dbContext.Rates.Any(r => r.Note == expectedRate.Note && r.MovieId == expectedRate.MovieId && r.UserId == expectedRate.UserId), Is.True);
         }
+
     }
 }
