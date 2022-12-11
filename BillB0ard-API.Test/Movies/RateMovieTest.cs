@@ -125,5 +125,17 @@ namespace BillB0ard_API.Test.Movies
             Assert.That(_dbContext.Rates.Any(r => r.Note == expectedRate.Note && r.MovieId == expectedRate.MovieId && r.UserId == expectedRate.UserId), Is.True);
         }
 
+        [Test]
+        public async Task ExistingRate()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+            RateCreationDTO rateCreation = new(1, 1, 0.0M);
+            await movieService.Rate(rateCreation);
+
+
+
+            Assert.That(_dbContext.Rates.First(r => r.UserId == rateCreation.UserId && r.MovieId == rateCreation.MovieID).Note, Is.EqualTo(0.0M));
+        }
+
     }
 }

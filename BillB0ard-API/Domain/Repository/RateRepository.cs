@@ -14,14 +14,24 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task Add(RateCreationDTO rateCreationDTO)
         {
-            var newRate = new Rate()
-            {
-                MovieId = rateCreationDTO.MovieID,
-                UserId = rateCreationDTO.UserId,
-                Note = rateCreationDTO.Rate
-            };
+            var rate = _dbContext.Rates
+                .FirstOrDefault(r => r.UserId == rateCreationDTO.UserId && r.MovieId == rateCreationDTO.MovieID);
 
-            _dbContext.Add(newRate);
+            if (rate is null or default(Rate))
+            {
+                _dbContext.Rates.Add(new Rate()
+                {
+                    UserId = rateCreationDTO.UserId,
+                    MovieId = rateCreationDTO.MovieID,
+                    Note = rateCreationDTO.Rate
+                });
+            }
+            else
+            {
+                rate.Note = rateCreationDTO.Rate;
+                _dbContext.Rates.Update(rate);
+
+            }
             await _dbContext.SaveChangesAsync();
         }
     }
