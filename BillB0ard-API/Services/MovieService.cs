@@ -47,7 +47,6 @@ namespace BillB0ard_API.Services
 
         public async Task Rate(RateCreationDTO rateCreation)
         {
-
             await _rateRepository.Add(rateCreation);
         }
     }
