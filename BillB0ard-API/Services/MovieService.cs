@@ -49,5 +49,11 @@ namespace BillB0ard_API.Services
         {
             await _movieRepository.Update(renameDto);
         }
+
+        public async Task AddPoster(MovieChangePosterDTO changePoster)
+        {
+            await _movieRepository.Update(changePoster);
+
+        }
     }
 }

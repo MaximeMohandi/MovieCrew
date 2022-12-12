@@ -90,5 +90,19 @@ namespace BillB0ard_API.Domain.Repository
 
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task Update(MovieChangePosterDTO changePoster)
+        {
+            var movieToChange = _dbContext.Movies.FirstOrDefault(m => m.Id == changePoster.MovieId);
+
+            if (movieToChange is null) throw new MovieNotFoundException(changePoster.MovieId);
+
+            movieToChange.Poster = changePoster.newPosterLink;
+            _dbContext.Movies.Update(movieToChange);
+
+
+            await _dbContext.SaveChangesAsync();
+
+        }
     }
 }

@@ -28,6 +28,18 @@ namespace BillB0ard_API.Test.MovieTest
             Assert.That(ex.Message, Is.EqualTo($"Asterix & Obelix : Mission Cléopatre is already in the list."));
         }
 
+        [Test]
+        public async Task AddPoster()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+
+            await movieService.AddPoster(new(1, "http://newPoster.com"));
+
+            var moviePoster = _dbContext.Movies.First(m => m.Id == 1);
+
+            Assert.That(moviePoster.Poster, Is.EqualTo("http://newPoster.com"));
+        }
+
         protected override void SeedInMemoryDatas()
         {
             _dbContext.Movies.Add(
