@@ -51,7 +51,7 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task<MovieEntity> Add(MovieCreationDTO creationMovie)
         {
-            if (MovieAlreadyExist(creationMovie.Title))
+            if (TitleExist(creationMovie.Title))
                 throw new MovieAlreadyExistException(creationMovie.Title);
 
             var movie = new Movie()
@@ -68,18 +68,16 @@ namespace BillB0ard_API.Domain.Repository
             return MappedMovie(movie);
         }
 
-        private bool MovieAlreadyExist(string title)
+        private bool TitleExist(string title)
         {
             return _dbContext.Movies.Any(m => m.Name.ToLower() == title.ToLower());
         }
 
         public async Task Update(MovieRenameDTO renameDto)
         {
-            var movieToRename = _dbContext.Movies.FirstOrDefault(m => m.Id == renameDto.MovieID);
+            Movie? movieToRename = ExistingMovie(renameDto.MovieID);
 
-            if (movieToRename is null) throw new MovieNotFoundException(renameDto.MovieTitle);
-
-            if (MovieAlreadyExist(renameDto.NewTitle))
+            if (TitleExist(renameDto.NewTitle))
             {
                 throw new MovieAlreadyExistException(renameDto.NewTitle);
             }
@@ -93,7 +91,7 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task Update(MovieChangePosterDTO changePoster)
         {
-            var movieToChange = _dbContext.Movies.FirstOrDefault(m => m.Id == changePoster.MovieId);
+            var movieToChange = ExistingMovie(changePoster.MovieId);
 
             if (movieToChange is null) throw new MovieNotFoundException(changePoster.MovieId);
 
@@ -104,5 +102,11 @@ namespace BillB0ard_API.Domain.Repository
             await _dbContext.SaveChangesAsync();
 
         }
+
+        private Movie ExistingMovie(int id)
+        {
+            return _dbContext.Movies.FirstOrDefault(m => m.Id == id) ?? throw new MovieNotFoundException(id);
+        }
+
     }
 }
