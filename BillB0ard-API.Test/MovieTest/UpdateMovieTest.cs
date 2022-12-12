@@ -40,6 +40,18 @@ namespace BillB0ard_API.Test.MovieTest
             Assert.That(moviePoster.Poster, Is.EqualTo("http://newPoster.com"));
         }
 
+        [TestCase("htt://www.test.com")]
+        [TestCase("alink")]
+        [TestCase("www.test.fr")]
+        [TestCase("www.test.")]
+        [TestCase("poster.com")]
+        public void CantAddPosterWithIncorrectFormat(string url)
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+
+            Assert.ThrowsAsync<FormatException>(async () => await movieService.AddPoster(new(1, url)));
+        }
+
         protected override void SeedInMemoryDatas()
         {
             _dbContext.Movies.Add(
