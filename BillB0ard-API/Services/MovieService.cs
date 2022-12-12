@@ -52,12 +52,17 @@ namespace BillB0ard_API.Services
 
         public async Task AddPoster(MovieChangePosterDTO changePoster)
         {
-            if (!Uri.IsWellFormedUriString(changePoster.newPosterLink, UriKind.Absolute) || !changePoster.newPosterLink.StartsWith("http"))
+            if (!IsValidUrl(changePoster))
             {
                 throw new FormatException("Poster must be a valid link. Please check the link and retry.");
             }
             await _movieRepository.Update(changePoster);
 
+        }
+
+        private bool IsValidUrl(MovieChangePosterDTO changePoster)
+        {
+            return Uri.IsWellFormedUriString(changePoster.newPosterLink, UriKind.Absolute) && changePoster.newPosterLink.StartsWith("http");
         }
     }
 }
