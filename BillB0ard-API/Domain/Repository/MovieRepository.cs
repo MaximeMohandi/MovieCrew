@@ -64,5 +64,18 @@ namespace BillB0ard_API.Domain.Repository
 
             return new MovieEntity(addedId, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
         }
+
+        public async Task Update(MovieRenameDTO renameDto)
+        {
+            var movieToRename = _dbContext.Movies.FirstOrDefault(m => m.Id == renameDto.MovieID);
+
+            if (movieToRename is null) throw new MovieNotFoundException(renameDto.MovieTitle);
+
+            movieToRename.Name = renameDto.NewTitle;
+
+            _dbContext.Movies.Update(movieToRename);
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

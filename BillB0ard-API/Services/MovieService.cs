@@ -53,5 +53,10 @@ namespace BillB0ard_API.Services
             }
             await _rateRepository.Add(rateCreation);
         }
+
+        public async Task ChangeTitle(MovieRenameDTO renameDto)
+        {
+            await _movieRepository.Update(renameDto);
+        }
     }
 }
