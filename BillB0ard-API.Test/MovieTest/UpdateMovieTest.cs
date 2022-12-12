@@ -1,4 +1,5 @@
 ﻿using BillB0ard_API.Data.Models;
+using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Services;
 
 namespace BillB0ard_API.Test.MovieTest
@@ -13,6 +14,16 @@ namespace BillB0ard_API.Test.MovieTest
             await movieService.ChangeTitle(new(1, "Asterix & Obelix : Mission Cléopatre", "nouveau nom"));
 
             Assert.That(_dbContext.Movies.First(m => m.Name == "nouveau nom").Name, Is.EqualTo("nouveau nom"));
+        }
+
+        [Test]
+        public async Task CantRenameAMovieWithAlreadyUsedTitle()
+        {
+            MovieService movieService = new MovieService(_movieRepository, _rateRepository);
+
+            MovieAlreadyExistException ex = Assert.ThrowsAsync<MovieAlreadyExistException>(async () => await movieService.ChangeTitle(new(1, "Asterix & Obelix : Mission Cléopatre", "Asterix & Obelix : Mission Cléopatre")));
+
+            Assert.That(ex.Message, Is.EqualTo($"Asterix & Obelix : Mission Cléopatre is already in the list."));
         }
 
         protected override void SeedInMemoryDatas()

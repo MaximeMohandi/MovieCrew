@@ -73,11 +73,21 @@ namespace BillB0ard_API.Domain.Repository
             return _dbContext.Movies.Any(m => m.Name == creationMovie.Title);
         }
 
+        private bool MovieAlreadyExist(MovieRenameDTO renameDto)
+        {
+            return _dbContext.Movies.Any(m => m.Name == renameDto.NewTitle);
+        }
+
         public async Task Update(MovieRenameDTO renameDto)
         {
             var movieToRename = _dbContext.Movies.FirstOrDefault(m => m.Id == renameDto.MovieID);
 
             if (movieToRename is null) throw new MovieNotFoundException(renameDto.MovieTitle);
+
+            if (MovieAlreadyExist(renameDto))
+            {
+                throw new MovieAlreadyExistException(renameDto.NewTitle);
+            }
 
             movieToRename.Name = renameDto.NewTitle;
 
