@@ -51,6 +51,9 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task<MovieEntity> Add(MovieCreationDTO creationMovie)
         {
+            if (MovieAlreadyExist(creationMovie))
+                throw new MovieAlreadyExistException(creationMovie.Title);
+
             var movie = new Movie()
             {
                 Name = creationMovie.Title,
@@ -60,9 +63,14 @@ namespace BillB0ard_API.Domain.Repository
 
             _dbContext.Movies.Add(movie);
 
-            int addedId = await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-            return new MovieEntity(addedId, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
+            return MappedMovie(movie);
+        }
+
+        private bool MovieAlreadyExist(MovieCreationDTO creationMovie)
+        {
+            return _dbContext.Movies.Any(m => m.Name == creationMovie.Title);
         }
 
         public async Task Update(MovieRenameDTO renameDto)

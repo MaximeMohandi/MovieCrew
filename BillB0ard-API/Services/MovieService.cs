@@ -33,16 +33,7 @@ namespace BillB0ard_API.Services
 
         public async Task<MovieEntity> AddMovie(MovieCreationDTO movie)
         {
-            try
-            {
-                var existMovie = await GetByTitle(movie.Title);
-                throw new MovieAlreadyExistException(movie.Title);
-            }
-            catch (MovieNotFoundException)
-            {
-                return await _movieRepository.Add(movie);
-            }
-
+            return await _movieRepository.Add(movie);
         }
 
         public async Task Rate(RateCreationDTO rateCreation)

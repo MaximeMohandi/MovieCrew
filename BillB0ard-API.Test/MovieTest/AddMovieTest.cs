@@ -17,7 +17,6 @@ namespace BillB0ard_API.Test.Movies
 
             Assert.Multiple(() =>
             {
-                Assert.That(addedMovie.Id, Is.EqualTo(1));
                 Assert.That(addedMovie.Title, Is.EqualTo("Dragon"));
             });
         }
@@ -31,7 +30,6 @@ namespace BillB0ard_API.Test.Movies
 
             Assert.Multiple(() =>
             {
-                Assert.That(addedMovie.Id, Is.EqualTo(1));
                 Assert.That(addedMovie.Title, Is.EqualTo("Pinnochio"));
                 Assert.That(addedMovie.Poster, Is.EqualTo("fakelink"));
             });
