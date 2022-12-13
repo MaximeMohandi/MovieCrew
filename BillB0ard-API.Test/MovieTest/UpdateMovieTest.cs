@@ -52,6 +52,17 @@ namespace BillB0ard_API.Test.MovieTest
             Assert.ThrowsAsync<FormatException>(async () => await movieService.AddPoster(new(1, url)));
         }
 
+        [Test]
+        public async Task SetSeenDate()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+            var updatedMovie = _dbContext.Movies.Single(m => m.Id == 1);
+
+            await movieService.SetSeenDate(new MovieSetSeenDateDTO(1, DateTime.Now));
+
+            Assert.That(updatedMovie.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date));
+        }
+
         protected override void SeedInMemoryDatas()
         {
             _dbContext.Movies.Add(

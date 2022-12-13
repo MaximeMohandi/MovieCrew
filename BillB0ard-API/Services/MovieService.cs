@@ -64,5 +64,10 @@ namespace BillB0ard_API.Services
         {
             return Uri.IsWellFormedUriString(changePoster.newPosterLink, UriKind.Absolute) && changePoster.newPosterLink.StartsWith("http");
         }
+
+        public async Task SetSeenDate(MovieSetSeenDateDTO movieSetSeenDateDTO)
+        {
+            await _movieRepository.Update(movieSetSeenDateDTO);
+        }
     }
 }

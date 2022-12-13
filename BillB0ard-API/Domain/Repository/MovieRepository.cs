@@ -103,6 +103,13 @@ namespace BillB0ard_API.Domain.Repository
 
         }
 
+        public async Task Update(MovieSetSeenDateDTO movieSetSeenDateDTO)
+        {
+            var existingMovie = ExistingMovie(movieSetSeenDateDTO.MovieID);
+            existingMovie.SeenDate = new DateTime(movieSetSeenDateDTO.seenDate.Year, movieSetSeenDateDTO.seenDate.Month, movieSetSeenDateDTO.seenDate.Day);
+            await _dbContext.SaveChangesAsync();
+        }
+
         private Movie ExistingMovie(int id)
         {
             return _dbContext.Movies.FirstOrDefault(m => m.Id == id) ?? throw new MovieNotFoundException(id);
