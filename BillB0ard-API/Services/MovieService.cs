@@ -43,6 +43,7 @@ namespace BillB0ard_API.Services
                 throw new RateLimitException(rateCreation.Rate);
             }
             await _rateRepository.Add(rateCreation);
+            await this.SetSeenDate(new(rateCreation.MovieID, DateTime.Now));
         }
 
         public async Task ChangeTitle(MovieRenameDTO renameDto)

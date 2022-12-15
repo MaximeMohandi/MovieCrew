@@ -62,6 +62,18 @@ namespace BillB0ard_API.Test.Movies
             Assert.That(ex.Message, Is.EqualTo("The rate must be between 0 and 10. Actual : -1"));
         }
 
+        [Test]
+        public async Task SetSeenDateToTodayWhenRatingAMovieForTheFirstTieme()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+
+            await movieService.Rate(new(2, 1, 10M));
+
+            Movie actual = _dbContext.Movies.Single(x => x.Id == 2);
+
+            Assert.That(actual.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date.Date));
+        }
+
         protected override void SeedInMemoryDatas()
         {
             Movie[] movies = new[]
