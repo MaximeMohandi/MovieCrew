@@ -7,7 +7,7 @@ namespace BillB0ard_API.Test.RateTest
         [Test]
         public void SameRate()
         {
-            Rate expectedRate = new Rate
+            Rate expectedRate = new()
             {
                 Movie = new Movie(),
                 MovieId = 1,

@@ -61,7 +61,7 @@ namespace BillB0ard_API.Services
 
         }
 
-        private bool IsValidUrl(MovieChangePosterDTO changePoster)
+        private static bool IsValidUrl(MovieChangePosterDTO changePoster)
         {
             return Uri.IsWellFormedUriString(changePoster.newPosterLink, UriKind.Absolute) && changePoster.newPosterLink.StartsWith("http");
         }

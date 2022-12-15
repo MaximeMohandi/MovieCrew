@@ -118,14 +118,12 @@ namespace BillB0ard_API.Test.Movies
             .UseInMemoryDatabase(databaseName: "MovieDbTest2")
             .Options;
 
-            using (AppDbContext db = new(_options))
-            {
-                MovieService movieServices = new(new(db), new(db));
+            using AppDbContext db = new(_options);
+            MovieService movieServices = new(new(db), new(db));
 
-                AllMoviesHaveBeenSeenException ex = Assert.ThrowsAsync<AllMoviesHaveBeenSeenException>(async () => await movieServices.RandomMovie());
+            AllMoviesHaveBeenSeenException ex = Assert.ThrowsAsync<AllMoviesHaveBeenSeenException>(async () => await movieServices.RandomMovie());
 
-                Assert.That(ex.Message, Is.EqualTo("It seems that you have seen all the movies in the list. Please try to add new one"));
-            }
+            Assert.That(ex.Message, Is.EqualTo("It seems that you have seen all the movies in the list. Please try to add new one"));
 
         }
 
