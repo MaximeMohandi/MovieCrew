@@ -75,12 +75,13 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task Update(MovieRenameDTO renameDto)
         {
-            Movie? movieToRename = ExistingMovie(renameDto.MovieID);
-
             if (TitleExist(renameDto.NewTitle))
             {
                 throw new MovieAlreadyExistException(renameDto.NewTitle);
             }
+
+
+            Movie? movieToRename = ExistingMovie(renameDto.MovieID);
 
             movieToRename.Name = renameDto.NewTitle;
 
