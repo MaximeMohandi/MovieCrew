@@ -17,4 +17,9 @@
     {
         public MovieAlreadyExistException(string title) : base($"{title} is already in the list.") { }
     }
+
+    public class AllMoviesHaveBeenSeenException : MovieException
+    {
+        public AllMoviesHaveBeenSeenException() : base("It seems that you have seen all the movies in the list. Please try to add new one") { }
+    }
 }

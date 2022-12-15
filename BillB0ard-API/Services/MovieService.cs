@@ -73,9 +73,14 @@ namespace BillB0ard_API.Services
 
         public async Task<MovieEntity> RandomMovie()
         {
-            Random rand = new Random();
+            Random rand = new();
 
             var unseenMovies = await _movieRepository.GetAllUnSeen();
+
+            if (unseenMovies is null || unseenMovies.Count == 0)
+            {
+                throw new AllMoviesHaveBeenSeenException();
+            }
 
             int randomIndex = rand.Next(unseenMovies.Count);
 

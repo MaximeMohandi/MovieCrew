@@ -1,8 +1,10 @@
+using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Services;
 using BillB0ard_API.Test.MovieTest;
+using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test.Movies
 {
@@ -107,6 +109,24 @@ namespace BillB0ard_API.Test.Movies
             MovieEntity randomMovie = await movieServices.RandomMovie();
 
             Assert.That(randomMovie.Id, Is.EqualTo(2).Or.EqualTo(4));
+        }
+
+        [Test]
+        public void IfNoUnseenMovieThrowExceptionWhenGettingRandomMovie()
+        {
+            var _options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(databaseName: "MovieDbTest2")
+            .Options;
+
+            using (AppDbContext db = new(_options))
+            {
+                MovieService movieServices = new(new(db), new(db));
+
+                AllMoviesHaveBeenSeenException ex = Assert.ThrowsAsync<AllMoviesHaveBeenSeenException>(async () => await movieServices.RandomMovie());
+
+                Assert.That(ex.Message, Is.EqualTo("It seems that you have seen all the movies in the list. Please try to add new one"));
+            }
+
         }
 
         protected override void SeedInMemoryDatas()
