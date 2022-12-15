@@ -49,7 +49,7 @@ namespace BillB0ard_API.Test.MovieTest
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
 
-            Assert.ThrowsAsync<FormatException>(async () => await movieService.AddPoster(new(1, url)));
+            Assert.ThrowsAsync<MoviePosterFormatException>(async () => await movieService.AddPoster(new(1, url)));
         }
 
         [Test]

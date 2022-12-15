@@ -55,7 +55,7 @@ namespace BillB0ard_API.Services
         {
             if (!IsValidUrl(changePoster))
             {
-                throw new FormatException("Poster must be a valid link. Please check the link and retry.");
+                throw new MoviePosterFormatException();
             }
             await _movieRepository.Update(changePoster);
 

@@ -22,4 +22,9 @@
     {
         public AllMoviesHaveBeenSeenException() : base("It seems that you have seen all the movies in the list. Please try to add new one") { }
     }
+
+    public class MoviePosterFormatException : MovieException
+    {
+        public MoviePosterFormatException() : base("Poster must be a valid link. Please check the link and retry.") { }
+    }
 }
