@@ -115,5 +115,12 @@ namespace BillB0ard_API.Domain.Repository
             return _dbContext.Movies.FirstOrDefault(m => m.Id == id) ?? throw new MovieNotFoundException(id);
         }
 
+        public async Task<List<MovieEntity>> GetAllUnSeen()
+        {
+            return await _dbContext.Movies
+                .Where(m => !m.SeenDate.HasValue)
+                .Select(m => MappedMovie(m))
+                .ToListAsync();
+        }
     }
 }

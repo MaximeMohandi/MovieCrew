@@ -70,5 +70,18 @@ namespace BillB0ard_API.Services
         {
             await _movieRepository.Update(movieSetSeenDateDTO);
         }
+
+        public async Task<MovieEntity> RandomMovie()
+        {
+            Random rand = new Random();
+
+            var unseenMovies = await _movieRepository.GetAllUnSeen();
+
+            int randomIndex = rand.Next(unseenMovies.Count);
+
+            return unseenMovies[randomIndex];
+
+
+        }
     }
 }
