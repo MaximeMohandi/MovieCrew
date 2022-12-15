@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>BillB0ard_API</RootNamespace>
-    <CodeAnalysisRuleSet>.sonarlint\billboard-apicsharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>BillB0ard-API.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
