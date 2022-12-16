@@ -17,9 +17,9 @@ jobs:
         uses: highbyte/sonarscan-dotnet@v2.2.1
         with:
           # The key of the SonarQube project
-          sonarProjectKey: your_projectkey
+          sonarProjectKey: billboard-api
           # The name of the SonarQube project
-          sonarProjectName:  your_projectname
+          sonarProjectName:  billboard-api
           # The SonarQube server URL. For SonarCloud, skip this setting.
           sonarHostname:  ${{ secrets.SONAR_HOST_URL }}
     env:
