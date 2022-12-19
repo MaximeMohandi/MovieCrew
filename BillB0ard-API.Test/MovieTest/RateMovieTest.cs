@@ -71,7 +71,7 @@ namespace BillB0ard_API.Test.Movies
 
             Movie actual = _dbContext.Movies.Single(x => x.Id == 2);
 
-            Assert.That(actual?.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date.Date));
+            Assert.That(actual?.SeenDate?.Date, Is.EqualTo(DateTime.Now.Date.Date));
         }
 
         protected override void SeedInMemoryDatas()

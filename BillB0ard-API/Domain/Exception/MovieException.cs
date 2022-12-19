@@ -1,5 +1,6 @@
 ﻿namespace BillB0ard_API.Domain.Exception
 {
+    [Serializable]
     public class MovieException : System.Exception
     {
         public MovieException(string message) : base(message) { }

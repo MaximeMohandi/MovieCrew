@@ -60,7 +60,7 @@ namespace BillB0ard_API.Test.MovieTest
 
             await movieService.SetSeenDate(new MovieSetSeenDateDto(1, DateTime.Now));
 
-            Assert.That(updatedMovie?.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date));
+            Assert.That(updatedMovie?.SeenDate?.Date, Is.EqualTo(DateTime.Now.Date));
         }
 
         protected override void SeedInMemoryDatas()

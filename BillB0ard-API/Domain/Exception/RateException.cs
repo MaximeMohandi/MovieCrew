@@ -1,5 +1,6 @@
 ﻿namespace BillB0ard_API.Domain.Exception
 {
+    [Serializable]
     public class RateException : System.Exception
     {
         public RateException(string message) : base(message) { }

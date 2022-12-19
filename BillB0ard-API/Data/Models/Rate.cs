@@ -7,11 +7,11 @@
         public decimal Note { get; set; }
 
         //Navigation Properties
-        public Movie Movie { get; set; }
-        public User User { get; set; }
+        public Movie Movie { get; set; } = null!;
+        public User User { get; set; } = null!;
 
         // override object.Equals
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
