@@ -1,4 +1,4 @@
 ﻿namespace BillB0ard_API.Domain.Entities
 {
-    public record UserEntity(long id, string name, int role = 0);
+    public record UserEntity(long Id, string Name, int Role = 0);
 }

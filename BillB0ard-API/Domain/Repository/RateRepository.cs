@@ -12,7 +12,7 @@ namespace BillB0ard_API.Domain.Repository
             _dbContext = dbContext;
         }
 
-        public async Task Add(RateCreationDTO rateCreationDTO)
+        public async Task Add(RateCreationDto rateCreationDTO)
         {
             Rate? existingRate = ExistingRate(rateCreationDTO);
 
@@ -35,7 +35,7 @@ namespace BillB0ard_API.Domain.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        private Rate? ExistingRate(RateCreationDTO rateCreationDTO)
+        private Rate? ExistingRate(RateCreationDto rateCreationDTO)
         {
             return _dbContext.Rates
                 .FirstOrDefault(r => r.UserId == rateCreationDTO.UserId && r.MovieId == rateCreationDTO.MovieID);

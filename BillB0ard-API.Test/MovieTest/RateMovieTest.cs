@@ -13,7 +13,7 @@ namespace BillB0ard_API.Test.Movies
         public async Task MovieWithoutRate()
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
-            var rateCreation = new RateCreationDTO(2, 1, 2.0M);
+            var rateCreation = new RateCreationDto(2, 1, 2.0M);
             var expectedRate = new Rate()
             {
                 MovieId = 2,
@@ -30,7 +30,7 @@ namespace BillB0ard_API.Test.Movies
         public async Task ExistingRate()
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
-            RateCreationDTO rateCreation = new(1, 1, 0.0M);
+            RateCreationDto rateCreation = new(1, 1, 0.0M);
 
             await movieService.Rate(rateCreation);
 
@@ -44,7 +44,7 @@ namespace BillB0ard_API.Test.Movies
         public void CannotRateAbove10()
         {
             MovieService movieServices = new(_movieRepository, _rateRepository);
-            RateCreationDTO rateCreation = new(1, 1, 11.0M);
+            RateCreationDto rateCreation = new(1, 1, 11.0M);
 
             var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
 
@@ -55,7 +55,7 @@ namespace BillB0ard_API.Test.Movies
         public void CannotGiveRateBelowZero()
         {
             MovieService movieServices = new(_movieRepository, _rateRepository);
-            RateCreationDTO rateCreation = new(1, 1, -1);
+            RateCreationDto rateCreation = new(1, 1, -1);
 
             var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
 
@@ -71,7 +71,7 @@ namespace BillB0ard_API.Test.Movies
 
             Movie actual = _dbContext.Movies.Single(x => x.Id == 2);
 
-            Assert.That(actual.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date.Date));
+            Assert.That(actual?.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date.Date));
         }
 
         protected override void SeedInMemoryDatas()

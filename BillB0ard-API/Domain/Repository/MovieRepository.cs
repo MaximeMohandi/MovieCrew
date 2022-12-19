@@ -9,7 +9,7 @@ namespace BillB0ard_API.Domain.Repository
 {
     public class MovieRepository
     {
-        private AppDbContext _dbContext;
+        private readonly AppDbContext _dbContext;
         public MovieRepository(AppDbContext databaseContext)
         {
             _dbContext = databaseContext;
@@ -32,7 +32,7 @@ namespace BillB0ard_API.Domain.Repository
             return MappedMovie(movie);
         }
 
-        private MovieEntity MappedMovie(Movie movie)
+        private static MovieEntity MappedMovie(Movie movie)
         {
             var movieEntity = new MovieEntity(movie.Id, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate);
 
@@ -49,7 +49,7 @@ namespace BillB0ard_API.Domain.Repository
                 .ToListAsync();
         }
 
-        public async Task<MovieEntity> Add(MovieCreationDTO creationMovie)
+        public async Task<MovieEntity> Add(MovieCreationDto creationMovie)
         {
             if (TitleExist(creationMovie.Title))
                 throw new MovieAlreadyExistException(creationMovie.Title);
@@ -73,7 +73,7 @@ namespace BillB0ard_API.Domain.Repository
             return _dbContext.Movies.Any(m => m.Name.ToLower() == title.ToLower());
         }
 
-        public async Task Update(MovieRenameDTO renameDto)
+        public async Task Update(MovieRenameDto renameDto)
         {
             if (TitleExist(renameDto.NewTitle))
             {
@@ -96,7 +96,7 @@ namespace BillB0ard_API.Domain.Repository
 
             if (movieToChange is null) throw new MovieNotFoundException(changePoster.MovieId);
 
-            movieToChange.Poster = changePoster.newPosterLink;
+            movieToChange.Poster = changePoster.NewPosterLink;
             _dbContext.Movies.Update(movieToChange);
 
 
@@ -107,7 +107,7 @@ namespace BillB0ard_API.Domain.Repository
         public async Task Update(MovieSetSeenDateDTO movieSetSeenDateDTO)
         {
             var existingMovie = ExistingMovie(movieSetSeenDateDTO.MovieID);
-            existingMovie.SeenDate = new DateTime(movieSetSeenDateDTO.seenDate.Year, movieSetSeenDateDTO.seenDate.Month, movieSetSeenDateDTO.seenDate.Day);
+            existingMovie.SeenDate = new DateTime(movieSetSeenDateDTO.SeenDate.Year, movieSetSeenDateDTO.SeenDate.Month, movieSetSeenDateDTO.SeenDate.Day);
             await _dbContext.SaveChangesAsync();
         }
 

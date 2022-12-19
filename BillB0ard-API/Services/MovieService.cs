@@ -31,12 +31,12 @@ namespace BillB0ard_API.Services
             return await _movieRepository.GetMovie(movieId);
         }
 
-        public async Task<MovieEntity> AddMovie(MovieCreationDTO movie)
+        public async Task<MovieEntity> AddMovie(MovieCreationDto movie)
         {
             return await _movieRepository.Add(movie);
         }
 
-        public async Task Rate(RateCreationDTO rateCreation)
+        public async Task Rate(RateCreationDto rateCreation)
         {
             if (rateCreation.Rate > 10 || rateCreation.Rate < 0)
             {
@@ -46,7 +46,7 @@ namespace BillB0ard_API.Services
             await this.SetSeenDate(new(rateCreation.MovieID, DateTime.Now));
         }
 
-        public async Task ChangeTitle(MovieRenameDTO renameDto)
+        public async Task ChangeTitle(MovieRenameDto renameDto)
         {
             await _movieRepository.Update(renameDto);
         }
@@ -63,7 +63,7 @@ namespace BillB0ard_API.Services
 
         private static bool IsValidUrl(MovieChangePosterDTO changePoster)
         {
-            return Uri.IsWellFormedUriString(changePoster.newPosterLink, UriKind.Absolute) && changePoster.newPosterLink.StartsWith("http");
+            return Uri.IsWellFormedUriString(changePoster.NewPosterLink, UriKind.Absolute) && changePoster.NewPosterLink.StartsWith("http");
         }
 
         public async Task SetSeenDate(MovieSetSeenDateDTO movieSetSeenDateDTO)

@@ -17,7 +17,7 @@
             {
                 return false;
             }
-            Rate rate = obj as Rate;
+            Rate rate = (Rate)obj;
 
             return UserId == rate.UserId
                    && MovieId == rate.MovieId

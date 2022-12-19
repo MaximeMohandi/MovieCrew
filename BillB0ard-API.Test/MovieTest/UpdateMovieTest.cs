@@ -21,7 +21,7 @@ namespace BillB0ard_API.Test.MovieTest
         public void CantRenameAMovieWithAlreadyUsedTitle()
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
-            MovieRenameDTO renameMovieData = new(1, "Asterix & Obelix : Mission Cléopatre", "Asterix & Obelix : Mission Cléopatre");
+            MovieRenameDto renameMovieData = new(1, "Asterix & Obelix : Mission Cléopatre", "Asterix & Obelix : Mission Cléopatre");
 
             MovieAlreadyExistException ex = Assert.ThrowsAsync<MovieAlreadyExistException>(async () => await movieService.ChangeTitle(renameMovieData));
 
@@ -60,7 +60,7 @@ namespace BillB0ard_API.Test.MovieTest
 
             await movieService.SetSeenDate(new MovieSetSeenDateDTO(1, DateTime.Now));
 
-            Assert.That(updatedMovie.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date));
+            Assert.That(updatedMovie?.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date));
         }
 
         protected override void SeedInMemoryDatas()
