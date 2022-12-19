@@ -51,7 +51,7 @@ namespace BillB0ard_API.Services
             await _movieRepository.Update(renameDto);
         }
 
-        public async Task AddPoster(MovieChangePosterDTO changePoster)
+        public async Task AddPoster(MovieChangePosterDto changePoster)
         {
             if (!IsValidUrl(changePoster))
             {
@@ -61,12 +61,12 @@ namespace BillB0ard_API.Services
 
         }
 
-        private static bool IsValidUrl(MovieChangePosterDTO changePoster)
+        private static bool IsValidUrl(MovieChangePosterDto changePoster)
         {
             return Uri.IsWellFormedUriString(changePoster.NewPosterLink, UriKind.Absolute) && changePoster.NewPosterLink.StartsWith("http");
         }
 
-        public async Task SetSeenDate(MovieSetSeenDateDTO movieSetSeenDateDTO)
+        public async Task SetSeenDate(MovieSetSeenDateDto movieSetSeenDateDTO)
         {
             await _movieRepository.Update(movieSetSeenDateDTO);
         }

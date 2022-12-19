@@ -90,7 +90,7 @@ namespace BillB0ard_API.Domain.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(MovieChangePosterDTO changePoster)
+        public async Task Update(MovieChangePosterDto changePoster)
         {
             var movieToChange = ExistingMovie(changePoster.MovieId);
 
@@ -104,7 +104,7 @@ namespace BillB0ard_API.Domain.Repository
 
         }
 
-        public async Task Update(MovieSetSeenDateDTO movieSetSeenDateDTO)
+        public async Task Update(MovieSetSeenDateDto movieSetSeenDateDTO)
         {
             var existingMovie = ExistingMovie(movieSetSeenDateDTO.MovieID);
             existingMovie.SeenDate = new DateTime(movieSetSeenDateDTO.SeenDate.Year, movieSetSeenDateDTO.SeenDate.Month, movieSetSeenDateDTO.SeenDate.Day);

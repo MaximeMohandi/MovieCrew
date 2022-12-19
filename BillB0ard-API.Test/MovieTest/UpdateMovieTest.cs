@@ -58,7 +58,7 @@ namespace BillB0ard_API.Test.MovieTest
             MovieService movieService = new(_movieRepository, _rateRepository);
             var updatedMovie = _dbContext.Movies.Single(m => m.Id == 1);
 
-            await movieService.SetSeenDate(new MovieSetSeenDateDTO(1, DateTime.Now));
+            await movieService.SetSeenDate(new MovieSetSeenDateDto(1, DateTime.Now));
 
             Assert.That(updatedMovie?.SeenDate.Value.Date, Is.EqualTo(DateTime.Now.Date));
         }
