@@ -23,5 +23,10 @@
                    && MovieId == rate.MovieId
                    && Note == rate.Note;
         }
+
+        public override int GetHashCode()
+        {
+            return UserId.GetHashCode() + MovieId.GetHashCode();
+        }
     }
 }
