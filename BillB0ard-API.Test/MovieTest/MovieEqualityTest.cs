@@ -7,15 +7,22 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public void SameMovie()
         {
-            var ratedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12));
-            ratedMovie.Rates = new List<RateEntity>()
+            var ratedMovies = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12));
+            ratedMovies.Rates = new List<RateEntity>()
             {
-                new(ratedMovie, new(1, "Jabba"), 10.0M),
-                new(ratedMovie, new(2, "Dudley"), 2.0M),
-                new(ratedMovie, new(3, "T-Rex"), 5.25M),
+                new(ratedMovies, new(1, "Jabba"), 10.0M),
+                new(ratedMovies, new(2, "Dudley"), 2.0M),
+                new(ratedMovies, new(3, "T-Rex"), 5.25M),
+            };
+            var expextedMovie = ratedMovies;
+            expextedMovie.Rates = new List<RateEntity>()
+            {
+                new(expextedMovie, new(1, "Jabba"), 10.0M),
+                new(expextedMovie, new(2, "Dudley"), 2.0M),
+                new(expextedMovie, new(3, "T-Rex"), 5.25M),
             };
 
-            Assert.That(ratedMovie, Is.EqualTo(ratedMovie));
+            Assert.That(ratedMovies, Is.EqualTo(expextedMovie));
         }
     }
 }

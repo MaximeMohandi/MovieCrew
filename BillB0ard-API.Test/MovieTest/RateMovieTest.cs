@@ -48,7 +48,7 @@ namespace BillB0ard_API.Test.Movies
 
             var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
 
-            Assert.That(ex.Message, Is.EqualTo("The rate must be between 0 and 10. Actual : 11,0"));
+            Assert.That(ex.Message, Is.EqualTo($"The rate must be between 0 and 10. Actual : {11.0M}"));
         }
 
         [Test]
