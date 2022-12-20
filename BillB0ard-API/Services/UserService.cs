@@ -14,5 +14,10 @@ namespace BillB0ard_API.Services
         {
             await _userRepository.Add(new(name));
         }
+
+        public async Task AddUserWithRole(string name, int role)
+        {
+            await _userRepository.Add(new(name, role));
+        }
     }
 }

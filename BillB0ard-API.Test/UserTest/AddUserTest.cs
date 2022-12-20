@@ -41,6 +41,25 @@ namespace BillB0ard_API.Test.UserTest
             Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
         }
 
+        [Test]
+        public async Task WithRole()
+        {
+            User expectedUser = new()
+            {
+                Id = 1,
+                Name = "Leodagan",
+                Rates = null,
+                Role = 1
+            };
+
+            UserRepository userRepository = new(_dbContext);
+            UserService userService = new(userRepository);
+
+            await userService.AddUserWithRole("Leodagan", 1);
+
+            Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
+        }
+
         [OneTimeTearDown]
         public void CleanUp()
         {
