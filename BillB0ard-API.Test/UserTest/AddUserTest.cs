@@ -25,19 +25,20 @@ namespace BillB0ard_API.Test.UserTest
         [Test]
         public async Task FromName()
         {
-            User createdUser = new()
+            User expectedUser = new()
             {
                 Id = 1,
                 Name = "Leodagan",
                 Rates = null,
                 Role = 0
             };
+
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
             await userService.AddUser("Leodagan");
 
-            Assert.That(_dbContext.Users.Contains(createdUser), Is.True);
+            Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
         }
 
         [OneTimeTearDown]
