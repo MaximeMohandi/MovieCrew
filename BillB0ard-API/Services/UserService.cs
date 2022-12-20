@@ -1,4 +1,5 @@
-﻿using BillB0ard_API.Domain.Repository;
+﻿using BillB0ard_API.Domain.DTOs;
+using BillB0ard_API.Domain.Repository;
 
 namespace BillB0ard_API.Services
 {
@@ -10,14 +11,9 @@ namespace BillB0ard_API.Services
             _userRepository = userRepository;
         }
 
-        public async Task AddUser(string name)
+        public async Task AddUser(UserCreationDto userCreation)
         {
-            await _userRepository.Add(new(name));
-        }
-
-        public async Task AddUserWithRole(string name, int role)
-        {
-            await _userRepository.Add(new(name, role));
+            await _userRepository.Add(userCreation);
         }
     }
 }

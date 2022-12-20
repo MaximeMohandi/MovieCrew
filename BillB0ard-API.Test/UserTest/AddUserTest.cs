@@ -36,7 +36,7 @@ namespace BillB0ard_API.Test.UserTest
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            await userService.AddUser("Leodagan");
+            await userService.AddUser(new("Leodagan"));
 
             Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
         }
@@ -55,7 +55,7 @@ namespace BillB0ard_API.Test.UserTest
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            await userService.AddUserWithRole("Leodagan", 1);
+            await userService.AddUser(new("Leodagan", 1));
 
             Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
         }
