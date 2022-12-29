@@ -24,7 +24,7 @@ namespace BillB0ard_API.Test.UserTest
         }
 
         [Test]
-        public async Task FromName()
+        public async Task WithIdAndName()
         {
             User expectedUser = new()
             {
@@ -37,7 +37,7 @@ namespace BillB0ard_API.Test.UserTest
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            await userService.AddUser(new("Leodagan"));
+            await userService.AddUser(new(1234, "Leodagan"));
 
             Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
         }
@@ -56,11 +56,10 @@ namespace BillB0ard_API.Test.UserTest
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            await userService.AddUser(new("Leodagan", UserRoles.Admin));
+            await userService.AddUser(new(123456, "Leodagan", UserRoles.Admin));
 
             Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
         }
-
 
         [OneTimeTearDown]
         public void CleanUp()
