@@ -17,7 +17,9 @@ namespace BillB0ard_API.Domain.Repository
         {
             User newUser = new()
             {
+                Id = userCreation.Id,
                 Name = userCreation.Name,
+                Role = (int)userCreation.Role
             };
 
             _dbContext.Add(newUser);

@@ -28,7 +28,7 @@ namespace BillB0ard_API.Test.UserTest
         {
             User expectedUser = new()
             {
-                Id = 1,
+                Id = 1234,
                 Name = "Leodagan",
                 Rates = null,
                 Role = 0
@@ -47,7 +47,7 @@ namespace BillB0ard_API.Test.UserTest
         {
             User expectedUser = new()
             {
-                Id = 1,
+                Id = 123456,
                 Name = "Leodagan",
                 Rates = null,
                 Role = 1
