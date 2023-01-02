@@ -2,6 +2,7 @@
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.DTOs;
 using BillB0ard_API.Domain.Entities;
+using BillB0ard_API.Domain.Enums;
 using BillB0ard_API.Domain.Exception;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,7 @@ namespace BillB0ard_API.Domain.Repository
         {
             var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
-            UserEntity user = new(dbUser.Id, dbUser.Name, dbUser.Role);
+            UserEntity user = new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
 
             return user;
         }

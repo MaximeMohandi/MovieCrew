@@ -1,6 +1,7 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
+using BillB0ard_API.Domain.Enums;
 using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@ namespace BillB0ard_API.Test.UserTest
         public async Task FetchUserById()
         {
             UserRepository userRepository = new(_dbContext);
-            UserEntity expectedUser = new(1, "Arthur", 1);
+            UserEntity expectedUser = new(1, "Arthur", UserRoles.Admin);
             UserService userService = new(userRepository);
 
             UserEntity actualUser = await userService.GetByID(1);
