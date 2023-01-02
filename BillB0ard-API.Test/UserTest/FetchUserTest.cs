@@ -23,15 +23,21 @@ namespace BillB0ard_API.Test.UserTest
         }
 
         [Test]
-        public void FetchUserById()
+        public async Task FetchUserById()
         {
             UserRepository userRepository = new(_dbContext);
             UserEntity expectedUser = new(1, "Arthur", 1);
             UserService userService = new(userRepository);
 
-            UserEntity actualUser = userService.GetByID(1);
+            UserEntity actualUser = await userService.GetByID(1);
 
             Assert.That(actualUser, Is.EqualTo(expectedUser));
+        }
+
+        [OneTimeTearDown]
+        public void CleanUp()
+        {
+            _dbContext.Database.EnsureDeleted();
         }
     }
 }

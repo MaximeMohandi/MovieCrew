@@ -17,9 +17,9 @@ namespace BillB0ard_API.Services
             await _userRepository.Add(userCreation);
         }
 
-        public UserEntity GetByID(int v)
+        public async Task<UserEntity> GetByID(int id)
         {
-            return new(1, "Arthur", 1);
+            return new(id, "Arthur", 1);
         }
     }
 }
