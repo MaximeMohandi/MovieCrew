@@ -1,4 +1,5 @@
 ﻿using BillB0ard_API.Domain.DTOs;
+using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Repository;
 
 namespace BillB0ard_API.Services
@@ -14,6 +15,11 @@ namespace BillB0ard_API.Services
         public async Task AddUser(UserCreationDto userCreation)
         {
             await _userRepository.Add(userCreation);
+        }
+
+        public UserEntity GetByID(int v)
+        {
+            return new(1, "Arthur", 1);
         }
     }
 }
