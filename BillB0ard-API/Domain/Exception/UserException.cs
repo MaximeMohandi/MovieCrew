@@ -16,9 +16,9 @@ namespace BillB0ard_API.Domain.Exception
     [Serializable]
     public class UserAlreadyExistException : UserException
     {
-        public UserAlreadyExistException() : base($"The given user already exist, please change id or name and try again") { }
+        public UserAlreadyExistException() : base($"The given user already exist. please change id or name and try again") { }
 
-        public UserAlreadyExistException(string name) : base($"The user {name} already exist, please verify the name and try again") { }
+        public UserAlreadyExistException(string name) : base($"The user {name} already exist. please verify the name and try again") { }
 
         protected UserAlreadyExistException(SerializationInfo serializationInfo, StreamingContext streamingContext)
             : base(serializationInfo, streamingContext)
@@ -26,5 +26,18 @@ namespace BillB0ard_API.Domain.Exception
         }
     }
 
+    [Serializable]
+    public class UserNotFoundException : UserException
+    {
+        public UserNotFoundException() : base($"User not found. please check the userid or username and try again") { }
+
+        public UserNotFoundException(long id) : base($"User with id: {id} not found. Please check the conformity and try again ") { }
+        public UserNotFoundException(string name) : base($"User '{name}' not found. Please check the username and try again ") { }
+
+        protected UserNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+            : base(serializationInfo, streamingContext)
+        {
+        }
+    }
 
 }

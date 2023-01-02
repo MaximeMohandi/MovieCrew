@@ -37,14 +37,16 @@ namespace BillB0ard_API.Domain.Repository
         {
             var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
-            UserEntity user = new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
+            if (dbUser is null) throw new UserNotFoundException(id);
 
-            return user;
+            return new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
         }
 
         public async Task<UserEntity> GetBy(string userName)
         {
             var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Name == userName);
+
+            if (dbUser is null) throw new UserNotFoundException(userName);
 
             return new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
         }
