@@ -2,7 +2,7 @@
 using BillB0ard_API.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace BillB0ard_API.Test.MovieTest
+namespace BillB0ard_API.Test.Movies
 {
     public abstract class InMemoryMovieTestBase
     {

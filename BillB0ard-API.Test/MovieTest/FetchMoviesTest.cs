@@ -3,7 +3,6 @@ using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Services;
-using BillB0ard_API.Test.MovieTest;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test.Movies
