@@ -19,7 +19,7 @@ namespace BillB0ard_API.Services
 
         public async Task<UserEntity> GetByID(int id)
         {
-            return new(id, "Arthur", 1);
+            return await _userRepository.GetBy(id);
         }
     }
 }

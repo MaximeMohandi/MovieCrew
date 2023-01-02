@@ -1,6 +1,7 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.DTOs;
+using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Exception;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,15 @@ namespace BillB0ard_API.Domain.Repository
             _dbContext.Add(newUser);
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<UserEntity> GetBy(long id)
+        {
+            var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
+
+            UserEntity user = new(dbUser.Id, dbUser.Name, dbUser.Role);
+
+            return user;
         }
     }
 }

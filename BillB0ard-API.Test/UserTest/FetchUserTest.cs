@@ -1,4 +1,5 @@
 ﻿using BillB0ard_API.Data;
+using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
 using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
@@ -19,6 +20,21 @@ namespace BillB0ard_API.Test.UserTest
         {
             _dbContext = new AppDbContext(_dbContextOptions);
             _dbContext.Database.EnsureCreated();
+
+
+            User[] users = new[]
+            {
+                new User()
+                {
+                    Id = 1,
+                    Name = "Arthur",
+                    Role = 1,
+                }
+
+            };
+
+            _dbContext.Users.AddRange(users);
+
             _dbContext.SaveChanges();
         }
 
