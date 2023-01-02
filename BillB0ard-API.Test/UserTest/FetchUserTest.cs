@@ -31,7 +31,6 @@ namespace BillB0ard_API.Test.UserTest
                     Name = "Arthur",
                     Role = 1,
                 }
-
             };
 
             _dbContext.Users.AddRange(users);
@@ -47,6 +46,18 @@ namespace BillB0ard_API.Test.UserTest
             UserService userService = new(userRepository);
 
             UserEntity actualUser = await userService.GetByID(1);
+
+            Assert.That(actualUser, Is.EqualTo(expectedUser));
+        }
+
+        [Test]
+        public async Task FetchUserByName()
+        {
+            UserRepository userRepository = new(_dbContext);
+            UserEntity expectedUser = new(1, "Arthur", UserRoles.Admin);
+            UserService userService = new(userRepository);
+
+            UserEntity actualUser = await userService.GetByName("Arthur");
 
             Assert.That(actualUser, Is.EqualTo(expectedUser));
         }
