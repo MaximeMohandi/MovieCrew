@@ -66,10 +66,10 @@ namespace BillB0ard_API.Test.RateTest
         }
 
         [Test]
-        public void RateEntiTyAreEquals()
+        public void RateEntityAreEquals()
         {
             RateEntity firstRate = new(new MovieEntity(1, "test", "", new DateTime(2023, 1, 3), new DateTime(2023, 1, 3)), new(1, "test", Domain.Enums.UserRoles.Admin), 2M);
-            RateEntity secondRate = firstRate;
+            RateEntity secondRate = new(new MovieEntity(1, "test", "", new DateTime(2023, 1, 3), new DateTime(2023, 1, 3)), new(1, "test", Domain.Enums.UserRoles.Admin), 2M);
 
             Assert.That(firstRate, Is.EqualTo(secondRate));
         }
@@ -81,7 +81,10 @@ namespace BillB0ard_API.Test.RateTest
             {
                 new(new MovieEntity(1, "test", "", new DateTime(2023, 1, 3), new DateTime(2023, 1, 3)), new(1, "test", Domain.Enums.UserRoles.Admin), 2M)
             };
-            List<RateEntity> secondList = firstList;
+            List<RateEntity> secondList = new()
+            {
+                new(new MovieEntity(1, "test", "", new DateTime(2023, 1, 3), new DateTime(2023, 1, 3)), new(1, "test", Domain.Enums.UserRoles.Admin), 2M)
+            };
 
             Assert.That(firstList, Is.EqualTo(secondList));
         }
