@@ -1,4 +1,5 @@
 ﻿using BillB0ard_API.Data.Models;
+using BillB0ard_API.Domain.Entities;
 
 namespace BillB0ard_API.Test.RateTest
 {
@@ -63,5 +64,27 @@ namespace BillB0ard_API.Test.RateTest
 
             Assert.That(actualRate, Is.Not.EqualTo(otherObject));
         }
+
+        [Test]
+        public void RateEntiTyAreEquals()
+        {
+            RateEntity firstRate = new(new MovieEntity(1, "test", "", new DateTime(2023, 1, 3), new DateTime(2023, 1, 3)), new(1, "test", Domain.Enums.UserRoles.Admin), 2M);
+            RateEntity secondRate = firstRate;
+
+            Assert.That(firstRate, Is.EqualTo(secondRate));
+        }
+
+        [Test]
+        public void ListOfRateEntityAreEqual()
+        {
+            List<RateEntity> firstList = new()
+            {
+                new(new MovieEntity(1, "test", "", new DateTime(2023, 1, 3), new DateTime(2023, 1, 3)), new(1, "test", Domain.Enums.UserRoles.Admin), 2M)
+            };
+            List<RateEntity> secondList = firstList;
+
+            Assert.That(firstList, Is.EqualTo(secondList));
+        }
+
     }
 }
