@@ -23,5 +23,22 @@ namespace BillB0ard_API.Test.MovieTest
 
             Assert.That(entity, Is.EqualTo(expectedEntity));
         }
+
+        [Test]
+        public void MapEntityToModel()
+        {
+            MovieEntity movieEntity = new(8, "Lamar Jackson", "http://MVP2019.NFL", new(2023, 1, 8), null);
+            Movie expectedModel = new Movie
+            {
+                Id = 8,
+                Name = "Lamar Jackson",
+                DateAdded = new(2023, 1, 8),
+                Poster = "http://MVP2019.NFL"
+            };
+
+            Movie movie = movieEntity.ToModel();
+
+            Assert.That(movie, Is.EqualTo(expectedModel));
+        }
     }
 }
