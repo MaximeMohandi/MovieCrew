@@ -13,7 +13,7 @@
         public UserEntity RatedBy { get; }
         public decimal Rate { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -25,7 +25,7 @@
         }
         public override int GetHashCode()
         {
-            return MovieRated.GetHashCode() + RatedBy.GetHashCode() + Rate.GetHashCode();
+            return HashCode.Combine(MovieRated, RatedBy, Rate);
         }
     }
 }
