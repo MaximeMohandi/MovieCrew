@@ -1,7 +1,7 @@
 ﻿using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
 
-namespace BillB0ard_API.Test.RateTest
+namespace BillB0ard_API.Test.DataEqualityTest
 {
     public class RateEqualityTest
     {
