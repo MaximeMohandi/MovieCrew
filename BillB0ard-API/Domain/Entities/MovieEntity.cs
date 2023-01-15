@@ -20,7 +20,7 @@
         public decimal? LowestRates => Rates?.Min(r => r.Rate);
         public decimal? TopRate => Rates?.Max(r => r.Rate);
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -34,7 +34,7 @@
         }
         public override int GetHashCode()
         {
-            return Id.GetHashCode() + Title.GetHashCode() + AddedDate.GetHashCode() + SeenDate.GetHashCode();
+            return HashCode.Combine(Id, Title, AddedDate);
         }
     }
 }
