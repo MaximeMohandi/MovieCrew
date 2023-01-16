@@ -49,5 +49,66 @@ namespace BillB0ard_API.Test.DataEqualityTest
 
             Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
         }
+
+        [Test]
+        public void SameMovieModelWithRates()
+        {
+            var ratedMovie = new Movie()
+            {
+                Id = 1,
+                Name = "Lord of the ring",
+                Poster = "fakelink",
+                DateAdded = new DateTime(2022, 5, 10),
+                SeenDate = new DateTime(2022, 5, 12)
+            };
+            ratedMovie.Rates = new List<Rate>
+            {
+                new Rate()
+                {
+                    UserId= 1,
+                    MovieId= 1,
+                    Note=1L,
+                    Movie = ratedMovie,
+                    User=new User()
+                },
+                new Rate()
+                {
+                    UserId= 2,
+                    MovieId= 1,
+                    Note=1L,
+                    Movie = ratedMovie,
+                    User=new User()
+                },
+            };
+
+            var ratedMovie2 = new Movie()
+            {
+                Id = 1,
+                Name = "Lord of the ring",
+                Poster = "fakelink",
+                DateAdded = new DateTime(2022, 5, 10),
+                SeenDate = new DateTime(2022, 5, 12),
+            };
+            ratedMovie2.Rates = new List<Rate>
+            {
+                new Rate()
+                {
+                    UserId= 1,
+                    MovieId= 1,
+                    Note=1L,
+                    Movie = ratedMovie2,
+                    User=new User()
+                },
+                new Rate()
+                {
+                    UserId= 2,
+                    MovieId= 1,
+                    Note=1L,
+                    Movie = ratedMovie2,
+                    User=new User()
+                },
+            };
+            Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
+        }
     }
 }

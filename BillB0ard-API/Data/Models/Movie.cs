@@ -22,7 +22,14 @@
 
             return toCompare.Id == Id && toCompare.Name == Name
                 && toCompare.Poster == Poster && toCompare.DateAdded.Equals(DateAdded)
-                && toCompare.SeenDate.Equals(SeenDate) && toCompare.Rates == Rates;
+                && toCompare.SeenDate.Equals(SeenDate) && RatesAreEquals(toCompare.Rates);
+        }
+
+        private bool RatesAreEquals(List<Rate> rates)
+        {
+            if (Rates is null) return rates is null;
+
+            return Enumerable.SequenceEqual(Rates, rates);
         }
 
         // override object.GetHashCode
