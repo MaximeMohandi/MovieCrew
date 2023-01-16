@@ -30,8 +30,16 @@
             MovieEntity toCompare = (MovieEntity)obj;
             return Id.Equals(toCompare.Id) && Title == toCompare.Title
                 && Poster == toCompare.Poster && AddedDate == toCompare.AddedDate
-                && SeenDate == toCompare.SeenDate && Rates == toCompare.Rates;
+                && SeenDate == toCompare.SeenDate && RatesAreEquals(toCompare.Rates);
         }
+
+        private bool RatesAreEquals(List<RateEntity>? rates)
+        {
+            if (Rates is null) return rates is null;
+
+            return Enumerable.SequenceEqual(Rates, rates);
+        }
+
         public override int GetHashCode()
         {
             return HashCode.Combine(Id, Title, AddedDate);

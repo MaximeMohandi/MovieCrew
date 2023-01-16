@@ -63,9 +63,7 @@ namespace BillB0ard_API.Test.Movies
             var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
             var expectedRates = new List<RateEntity>()
             {
-                new(baseMovie, new(1, "Jabba"), 10.0M),
-                new(baseMovie, new(2, "Dudley"), 2.0M),
-                new(baseMovie, new(3, "T-Rex"), 5.25M),
+                new(new(1, "Jabba"), 10.0M) , new(new(2, "Dudley"), 2.0M) , new(new(3, "T-Rex"), 5.25M),
             };
 
             MovieEntity fetchedMovies = await movieServices.GetById(1);
