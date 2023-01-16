@@ -11,8 +11,7 @@
         //Navigation Properties
         public List<Rate>? Rates { get; set; }
 
-        // override object.Equals
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -35,7 +34,7 @@
         // override object.GetHashCode
         public override int GetHashCode()
         {
-            return GetHashCode();
+            return HashCode.Combine(Id, Name, DateAdded);
         }
     }
 }
