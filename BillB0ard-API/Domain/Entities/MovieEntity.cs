@@ -37,7 +37,7 @@
         {
             if (Rates is null) return rates is null;
 
-            return Enumerable.SequenceEqual(Rates, rates);
+            return Enumerable.SequenceEqual(Rates, rates!);
         }
 
         public override int GetHashCode()

@@ -24,11 +24,11 @@
                 && toCompare.SeenDate.Equals(SeenDate) && RatesAreEquals(toCompare.Rates);
         }
 
-        private bool RatesAreEquals(List<Rate> rates)
+        private bool RatesAreEquals(List<Rate>? rates)
         {
-            if (Rates is null) return rates is null;
+            if (Rates is null && rates is null) return rates is null;
 
-            return Enumerable.SequenceEqual(Rates, rates);
+            return Enumerable.SequenceEqual(Rates, rates!);
         }
 
         // override object.GetHashCode
