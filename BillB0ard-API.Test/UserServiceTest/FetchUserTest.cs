@@ -7,7 +7,7 @@ using BillB0ard_API.Domain.Repository;
 using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace BillB0ard_API.Test.UserTest
+namespace BillB0ard_API.Test.UserServiceTest
 {
     public class FetchUserTest
     {

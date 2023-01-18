@@ -5,7 +5,7 @@ using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace BillB0ard_API.Test.Movies
+namespace BillB0ard_API.Test.MovieServiceTest
 {
     public class FetchMovieTest : InMemoryMovieTestBase
     {
@@ -60,7 +60,6 @@ namespace BillB0ard_API.Test.Movies
         public async Task MovieWithRates()
         {
             MovieService movieServices = new(_movieRepository, _rateRepository);
-            var baseMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)) { Rates = null };
             var expectedRates = new List<RateEntity>()
             {
                 new(new(1, "Jabba"), 10.0M) , new(new(2, "Dudley"), 2.0M) , new(new(3, "T-Rex"), 5.25M),

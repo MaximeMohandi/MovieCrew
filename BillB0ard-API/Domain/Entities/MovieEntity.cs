@@ -35,7 +35,7 @@
 
         private bool RatesAreEquals(List<RateEntity>? rates)
         {
-            if (Rates is null) return rates is null;
+            if (Rates is null || rates is null) return rates is null && Rates is null;
 
             return Enumerable.SequenceEqual(Rates, rates!);
         }
