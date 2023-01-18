@@ -1,4 +1,4 @@
-name: Code OK
+name: BUild + Sonarr
 
 on:
   push:
