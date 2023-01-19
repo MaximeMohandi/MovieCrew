@@ -13,10 +13,8 @@
 
         public override bool Equals(object? obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (obj == null) return false;
+
             Movie toCompare = (Movie)obj;
 
             return toCompare.Id == Id && toCompare.Name == Name

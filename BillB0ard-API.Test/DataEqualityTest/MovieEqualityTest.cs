@@ -27,7 +27,11 @@ namespace BillB0ard_API.Test.DataEqualityTest
                 }
             };
 
-            Assert.That(ratedMovies, Is.EqualTo(expextedMovie));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ratedMovies, Is.EqualTo(expextedMovie));
+                Assert.That(ratedMovies.GetHashCode(), Is.EqualTo(expextedMovie.GetHashCode()));
+            });
         }
 
         [Test]
@@ -51,7 +55,12 @@ namespace BillB0ard_API.Test.DataEqualityTest
                 SeenDate = new DateTime(2022, 5, 12)
             };
 
-            Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
+                Assert.That(ratedMovie.GetHashCode(), Is.EqualTo(ratedMovie2.GetHashCode()));
+            });
+
         }
 
         [Test]
@@ -112,7 +121,11 @@ namespace BillB0ard_API.Test.DataEqualityTest
                     User=new User()
                 },
             };
-            Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
+                Assert.That(ratedMovie.GetHashCode(), Is.EqualTo(ratedMovie2.GetHashCode()));
+            });
         }
 
         [Test]
@@ -174,6 +187,18 @@ namespace BillB0ard_API.Test.DataEqualityTest
                 },
             };
             Assert.That(ratedMovie, Is.Not.EqualTo(ratedMovie2));
+        }
+
+        [Test]
+        public void MovieModelCompareToNull()
+        {
+            var actualMovie = new Movie()
+            {
+                Id = 1,
+                Name = "Chat Potte 2",
+                DateAdded = DateTime.Now,
+            };
+            Assert.That(actualMovie, Is.Not.EqualTo(null));
         }
     }
 }

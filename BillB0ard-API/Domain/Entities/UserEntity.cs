@@ -18,11 +18,10 @@ namespace BillB0ard_API.Domain.Entities
         // override object.Equals
         public override bool Equals(object? obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (obj == null) return false;
+
             UserEntity toCompare = (UserEntity)obj;
+
             return Id.Equals(toCompare.Id) && Name.Equals(toCompare.Name)
                 && Role.Equals(toCompare.Role);
         }

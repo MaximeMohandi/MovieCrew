@@ -13,11 +13,9 @@
 
         public override bool Equals(object? obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (obj == null) return false;
             RateEntity toCompare = (RateEntity)obj;
+
             return RatedBy.Equals(toCompare.RatedBy)
                 && Rate == toCompare.Rate;
         }
