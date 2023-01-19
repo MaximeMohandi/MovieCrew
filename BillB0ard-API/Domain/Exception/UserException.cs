@@ -16,8 +16,6 @@ namespace BillB0ard_API.Domain.Exception
     [Serializable]
     public class UserAlreadyExistException : UserException
     {
-        public UserAlreadyExistException() : base($"The given user already exist. please change id or name and try again") { }
-
         public UserAlreadyExistException(string name) : base($"The user {name} already exist. please verify the name and try again") { }
 
         protected UserAlreadyExistException(SerializationInfo serializationInfo, StreamingContext streamingContext)
