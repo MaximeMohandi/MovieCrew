@@ -69,7 +69,8 @@ namespace BillB0ard_API.Test.UserServiceTest
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetByName("Perceval"));
+            UserNotFoundException exception = Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetByName("Perceval"));
+            Assert.That(exception.Message, Is.EqualTo("User 'Perceval' not found. Please check the username and try again"));
         }
 
         [Test]
@@ -78,7 +79,9 @@ namespace BillB0ard_API.Test.UserServiceTest
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetById(-1));
+            UserNotFoundException exception = Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetById(-1));
+            Assert.That(exception.Message, Is.EqualTo("User with id: -1 not found. Please check the conformity and try again"));
+
         }
 
         [OneTimeTearDown]
