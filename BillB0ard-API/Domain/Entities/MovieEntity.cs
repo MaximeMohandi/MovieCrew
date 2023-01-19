@@ -22,12 +22,10 @@
 
         public override bool Equals(object? obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
+            MovieEntity toCompare = obj as MovieEntity;
+            if (obj == null) return false;
 
-            MovieEntity toCompare = (MovieEntity)obj;
+
             return Id.Equals(toCompare.Id) && Title == toCompare.Title
                 && Poster == toCompare.Poster && AddedDate == toCompare.AddedDate
                 && SeenDate == toCompare.SeenDate && RatesAreEquals(toCompare.Rates);
