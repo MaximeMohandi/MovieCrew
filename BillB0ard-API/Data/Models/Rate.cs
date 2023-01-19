@@ -13,10 +13,7 @@
         // override object.Equals
         public override bool Equals(object? obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (obj == null) return false;
             Rate rate = (Rate)obj;
 
             return UserId == rate.UserId

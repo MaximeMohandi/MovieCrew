@@ -22,8 +22,9 @@
 
         public override bool Equals(object? obj)
         {
-            MovieEntity toCompare = obj as MovieEntity;
             if (obj == null) return false;
+
+            MovieEntity toCompare = (MovieEntity)obj;
 
 
             return Id.Equals(toCompare.Id) && Title == toCompare.Title

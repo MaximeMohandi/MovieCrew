@@ -6,7 +6,7 @@ namespace BillB0ard_API.Test.DataEqualityTest
     public class RateEqualityTest
     {
         [Test]
-        public void SameRate()
+        public void SameRateModel()
         {
             Rate expectedRate = new()
             {
@@ -28,7 +28,11 @@ namespace BillB0ard_API.Test.DataEqualityTest
 
             };
 
-            Assert.That(actualRate, Is.EqualTo(expectedRate));
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualRate, Is.EqualTo(expectedRate));
+                Assert.That(actualRate.GetHashCode(), Is.EqualTo(expectedRate.GetHashCode()));
+            });
         }
 
         [Test]
@@ -71,7 +75,11 @@ namespace BillB0ard_API.Test.DataEqualityTest
             RateEntity firstRate = new(new(1, "test", Domain.Enums.UserRoles.Admin), 2M);
             RateEntity secondRate = new(new(1, "test", Domain.Enums.UserRoles.Admin), 2M);
 
-            Assert.That(firstRate, Is.EqualTo(secondRate));
+            Assert.Multiple(() =>
+            {
+                Assert.That(firstRate, Is.EqualTo(secondRate));
+                Assert.That(firstRate.GetHashCode(), Is.EqualTo(secondRate.GetHashCode()));
+            });
         }
 
         [Test]
@@ -86,7 +94,7 @@ namespace BillB0ard_API.Test.DataEqualityTest
                 new(new(1, "test", Domain.Enums.UserRoles.Admin), 2M)
             };
 
-            Assert.That(firstList, Is.EqualTo(secondList));
+            CollectionAssert.AreEqual(firstList, secondList);
         }
 
     }
