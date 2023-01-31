@@ -53,7 +53,7 @@ namespace BillB0ard_API.Test.MovieServiceTest
 
             var actual = await movieServices.FetchAllMovies();
 
-            CollectionAssert.AreEqual(actual, expected);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
