@@ -57,6 +57,22 @@ namespace BillB0ard_API.Test.MovieServiceTest
         }
 
         [Test]
+        public void NoMoviesAtAll()
+        {
+            var _options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(databaseName: "MovieDbTest2")
+            .Options;
+
+            using AppDbContext db = new(_options);
+            MovieService movieServices = new(new(db), new(db));
+
+            Assert.ThrowsAsync<NoMoviesFoundException>(
+                async () => await movieServices.FetchAllMovies(),
+                "It seem that there's no movies in the list. Please try to add new one"
+            );
+        }
+
+        [Test]
         public void TitleNotFound()
         {
             MovieService movieServices = new(_movieRepository, _rateRepository);

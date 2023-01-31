@@ -58,4 +58,15 @@ namespace BillB0ard_API.Domain.Exception
         {
         }
     }
+
+    [Serializable]
+    public class NoMoviesFoundException : MovieException
+    {
+        public NoMoviesFoundException() : base("It seem that there's no movies in the list. Please try to add new one") { }
+
+        protected NoMoviesFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+            : base(serializationInfo, streamingContext)
+        {
+        }
+    }
 }

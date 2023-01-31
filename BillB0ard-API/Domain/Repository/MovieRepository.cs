@@ -46,9 +46,13 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task<List<MovieEntity>> GetAll()
         {
-            return await _dbContext.Movies
+            var movies = await _dbContext.Movies
                 .Select(m => new MovieEntity(m.Id, m.Name, m.Poster, m.DateAdded, m.SeenDate))
                 .ToListAsync();
+
+            if (movies.Count == 0) throw new NoMoviesFoundException();
+
+            return movies;
         }
 
         public async Task<MovieEntity> Add(MovieCreationDto creationMovie)
