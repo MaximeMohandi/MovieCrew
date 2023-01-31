@@ -34,10 +34,14 @@ namespace BillB0ard_API.Domain.Repository
 
         private static MovieEntity MappedMovie(Movie movie)
         {
-            return new(movie.Id, movie.Name, movie.Poster, movie.DateAdded, movie.SeenDate)
-            {
-                Rates = movie.Rates?.Select(r => new RateEntity(new(r.UserId, r.User.Name), r.Note)).ToList()
-            };
+            return new(
+                movie.Id,
+                movie.Name,
+                movie.Poster,
+                movie.DateAdded,
+                movie.SeenDate,
+                movie.Rates?.Average(r => r.Note)
+            );
         }
 
         public async Task<List<MovieEntity>> GetAll()

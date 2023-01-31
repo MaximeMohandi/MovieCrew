@@ -57,27 +57,6 @@ namespace BillB0ard_API.Test.MovieServiceTest
         }
 
         [Test]
-        public async Task MovieWithRates()
-        {
-            MovieService movieServices = new(_movieRepository, _rateRepository);
-            var expectedRates = new List<RateEntity>()
-            {
-                new(new(1, "Jabba"), 10.0M) , new(new(2, "Dudley"), 2.0M) , new(new(3, "T-Rex"), 5.25M),
-            };
-
-            MovieEntity fetchedMovies = await movieServices.GetById(1);
-
-            Assert.Multiple(() =>
-            {
-                CollectionAssert.AreEqual(expectedRates, fetchedMovies.Rates);
-                Assert.That(fetchedMovies.AverageRate, Is.EqualTo(5.75m));
-                Assert.That(fetchedMovies.LowestRates, Is.EqualTo(2M));
-                Assert.That(fetchedMovies.TopRate, Is.EqualTo(10M));
-            });
-
-        }
-
-        [Test]
         public void TitleNotFound()
         {
             MovieService movieServices = new(_movieRepository, _rateRepository);

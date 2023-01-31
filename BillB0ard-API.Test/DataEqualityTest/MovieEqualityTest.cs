@@ -8,24 +8,8 @@ namespace BillB0ard_API.Test.DataEqualityTest
         [Test]
         public void SameMovie()
         {
-            var ratedMovies = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12))
-            {
-                Rates = new List<RateEntity>()
-                {
-                    new(new(1, "Jabba"), 10.0M),
-                    new(new(2, "Dudley"), 2.0M),
-                    new(new(3, "T-Rex"), 5.25M),
-                }
-            };
-            var expextedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12))
-            {
-                Rates = new List<RateEntity>()
-                {
-                    new(new(1, "Jabba"), 10.0M),
-                    new(new(2, "Dudley"), 2.0M),
-                    new(new(3, "T-Rex"), 5.25M),
-                }
-            };
+            var ratedMovies = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M);
+            var expextedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M); ;
 
             Assert.Multiple(() =>
             {
