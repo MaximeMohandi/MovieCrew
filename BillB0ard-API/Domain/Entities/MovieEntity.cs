@@ -2,15 +2,6 @@
 {
     public class MovieEntity
     {
-        public MovieEntity(int id, string title, string? poster, DateTime dateAdded, DateTime? viewingDate)
-        {
-            this.Id = id;
-            this.Title = title;
-            this.Poster = poster;
-            this.DateAdded = dateAdded;
-            this.ViewingDate = viewingDate;
-        }
-
         public MovieEntity(int id, string title, string? poster, DateTime addedDate, DateTime? seenDate, decimal? averageRate)
         {
             this.Id = id;

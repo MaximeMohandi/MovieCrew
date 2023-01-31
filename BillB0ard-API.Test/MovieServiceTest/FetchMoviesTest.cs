@@ -45,15 +45,15 @@ namespace BillB0ard_API.Test.MovieServiceTest
             MovieService movieServices = new(_movieRepository, _rateRepository);
             List<MovieEntity> expected = new()
             {
-                new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12)),
-                new MovieEntity(2,"Harry Potter", null,new DateTime(2015, 8, 3),null),
-                new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23)),
-                new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null)
+                new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M),
+                new MovieEntity(2,"Harry Potter", null,new DateTime(2015, 8, 3),null, null),
+                new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23),4.25M),
+                new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null, null)
             };
 
-            var fetchedMovies = await movieServices.FetchAllMovies();
+            var actual = await movieServices.FetchAllMovies();
 
-            CollectionAssert.AreEqual(expected, fetchedMovies);
+            CollectionAssert.AreEqual(actual, expected);
         }
 
         [Test]
