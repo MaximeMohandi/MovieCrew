@@ -31,6 +31,22 @@ namespace BillB0ard_API.Services
             return await _movieRepository.GetMovie(movieId);
         }
 
+        public async Task<MovieEntity> RandomMovie()
+        {
+            Random rand = new();
+
+            var unseenMovies = await _movieRepository.GetAllUnSeen();
+
+            if (unseenMovies is null || unseenMovies.Count == 0)
+            {
+                throw new AllMoviesHaveBeenSeenException();
+            }
+
+            int randomIndex = rand.Next(unseenMovies.Count);
+
+            return unseenMovies[randomIndex];
+        }
+
         public async Task<MovieEntity> AddMovie(MovieCreationDto movie)
         {
             return await _movieRepository.Add(movie);
@@ -58,7 +74,6 @@ namespace BillB0ard_API.Services
                 throw new MoviePosterFormatException();
             }
             await _movieRepository.Update(changePoster);
-
         }
 
         private static bool IsValidUrl(MovieChangePosterDto changePoster)
@@ -71,22 +86,5 @@ namespace BillB0ard_API.Services
             await _movieRepository.Update(movieSetSeenDateDTO);
         }
 
-        public async Task<MovieEntity> RandomMovie()
-        {
-            Random rand = new();
-
-            var unseenMovies = await _movieRepository.GetAllUnSeen();
-
-            if (unseenMovies is null || unseenMovies.Count == 0)
-            {
-                throw new AllMoviesHaveBeenSeenException();
-            }
-
-            int randomIndex = rand.Next(unseenMovies.Count);
-
-            return unseenMovies[randomIndex];
-
-
-        }
     }
 }
