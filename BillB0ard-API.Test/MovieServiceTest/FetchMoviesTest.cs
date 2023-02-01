@@ -10,8 +10,11 @@ namespace BillB0ard_API.Test.MovieServiceTest
 {
     public class FetchMovieTest : InMemoryMovieTestBase
     {
-        [Test]
-        public async Task MovieDetailByTitle()
+        [TestCase("Lord of the ring")]
+        [TestCase("lord of the ring")]
+        [TestCase("Lord Of The Ring")]
+        [TestCase("loRd of tHe rIng")]
+        public async Task MovieDetailByTitle(string title)
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
 
@@ -24,19 +27,9 @@ namespace BillB0ard_API.Test.MovieServiceTest
             MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
 
 
-            MovieDetailsEntity actual = await movieService.GetByTitle("Lord of the ring");
+            MovieDetailsEntity actual = await movieService.GetByTitle(title);
 
             Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [Test]
-        public async Task ByTitleIgnoreCase()
-        {
-            MovieService movieRepository = new(_movieRepository, _rateRepository);
-
-            MovieEntity fetchedMovies = await movieRepository.GetByTitle("lord of The Ring");
-
-            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
         }
 
         [Test]
