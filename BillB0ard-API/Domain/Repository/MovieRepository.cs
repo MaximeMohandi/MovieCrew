@@ -30,15 +30,24 @@ namespace BillB0ard_API.Domain.Repository
                        movie.Rates?
                        .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
                        .ToList()
-            );
+                    );
         }
 
-        public async Task<MovieEntity> GetMovie(int id)
+        public async Task<MovieDetailsEntity> GetMovie(int id)
         {
             var movie = await _dbContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
             if (movie is null) throw new MovieNotFoundException(id);
 
-            return MappedMovie(movie);
+            return new(movie.Id,
+                       movie.Name,
+                       movie.Poster,
+                       movie.DateAdded,
+                       movie.SeenDate,
+                       movie.Rates?.Average(r => r.Note),
+                       movie.Rates?
+                       .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
+                       .ToList()
+                    );
         }
 
         private static MovieEntity MappedMovie(Movie movie)

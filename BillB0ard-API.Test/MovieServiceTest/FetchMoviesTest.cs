@@ -37,9 +37,18 @@ namespace BillB0ard_API.Test.MovieServiceTest
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
 
-            MovieEntity fetchedMovies = await movieService.GetById(1);
+            List<MovieRateEntity> expectedRates = new()
+            {
+                new(new(1, "Jabba", UserRoles.User), 10.0M),
+                new(new(2, "Dudley", UserRoles.User), 2.0M),
+                new(new(3, "T-Rex", UserRoles.User), 5.25M),
+            };
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
 
-            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+
+            MovieDetailsEntity actual = await movieService.GetById(1);
+
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         [Test]
