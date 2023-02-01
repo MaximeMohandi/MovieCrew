@@ -33,7 +33,7 @@ namespace BillB0ard_API.Test.MovieServiceTest
         }
 
         [Test]
-        public async Task ById()
+        public async Task MovieDetailByTitle()
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
 
