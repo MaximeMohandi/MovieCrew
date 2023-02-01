@@ -10,47 +10,6 @@ namespace BillB0ard_API.Test.MovieServiceTest
 {
     public class FetchMovieTest : InMemoryMovieTestBase
     {
-        [TestCase("Lord of the ring")]
-        [TestCase("lord of the ring")]
-        [TestCase("Lord Of The Ring")]
-        [TestCase("loRd of tHe rIng")]
-        public async Task MovieDetailByTitle(string title)
-        {
-            MovieService movieService = new(_movieRepository, _rateRepository);
-
-            List<MovieRateEntity> expectedRates = new()
-            {
-                new(new(1, "Jabba", UserRoles.User), 10.0M),
-                new(new(2, "Dudley", UserRoles.User), 2.0M),
-                new(new(3, "T-Rex", UserRoles.User), 5.25M),
-            };
-            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
-
-
-            MovieDetailsEntity actual = await movieService.GetByTitle(title);
-
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [Test]
-        public async Task MovieDetailByTitle()
-        {
-            MovieService movieService = new(_movieRepository, _rateRepository);
-
-            List<MovieRateEntity> expectedRates = new()
-            {
-                new(new(1, "Jabba", UserRoles.User), 10.0M),
-                new(new(2, "Dudley", UserRoles.User), 2.0M),
-                new(new(3, "T-Rex", UserRoles.User), 5.25M),
-            };
-            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
-
-
-            MovieDetailsEntity actual = await movieService.GetById(1);
-
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
         [Test]
         public async Task All()
         {
@@ -84,6 +43,28 @@ namespace BillB0ard_API.Test.MovieServiceTest
             );
         }
 
+        [TestCase("Lord of the ring")]
+        [TestCase("lord of the ring")]
+        [TestCase("Lord Of The Ring")]
+        [TestCase("loRd of tHe rIng")]
+        public async Task MovieDetailByTitle(string title)
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+
+            List<MovieRateEntity> expectedRates = new()
+            {
+                new(new(1, "Jabba", UserRoles.User), 10.0M),
+                new(new(2, "Dudley", UserRoles.User), 2.0M),
+                new(new(3, "T-Rex", UserRoles.User), 5.25M),
+            };
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
+
+
+            MovieDetailsEntity actual = await movieService.GetByTitle(title);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
         [Test]
         public void TitleNotFound()
         {
@@ -92,6 +73,25 @@ namespace BillB0ard_API.Test.MovieServiceTest
             MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetByTitle("star wars VIII"));
 
             Assert.That(ex.Message, Is.EqualTo("star wars VIII cannot be found. Please check the title and retry."));
+        }
+
+        [Test]
+        public async Task MovieDetailById()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+
+            List<MovieRateEntity> expectedRates = new()
+            {
+                new(new(1, "Jabba", UserRoles.User), 10.0M),
+                new(new(2, "Dudley", UserRoles.User), 2.0M),
+                new(new(3, "T-Rex", UserRoles.User), 5.25M),
+            };
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
+
+
+            MovieDetailsEntity actual = await movieService.GetById(1);
+
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         [Test]
@@ -105,7 +105,19 @@ namespace BillB0ard_API.Test.MovieServiceTest
         }
 
         [Test]
-        public async Task FetchARandomMovieInTheUnseenMovie()
+        public async Task MovieDetailButWithNoRates()
+        {
+            MovieService movieService = new(_movieRepository, _rateRepository);
+
+            MovieDetailsEntity expected = new(2, "Harry Potter", null, new DateTime(2015, 8, 3), null, null, null);
+
+            MovieDetailsEntity actual = await movieService.GetById(2);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public async Task RandomMovieFromUnseenList()
         {
             MovieService movieServices = new(_movieRepository, _rateRepository);
 
@@ -115,7 +127,7 @@ namespace BillB0ard_API.Test.MovieServiceTest
         }
 
         [Test]
-        public void IfNoUnseenMovieThrowExceptionWhenGettingRandomMovie()
+        public void NoMovieLeftToWatch()
         {
             var _options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: "MovieDbTest2")
