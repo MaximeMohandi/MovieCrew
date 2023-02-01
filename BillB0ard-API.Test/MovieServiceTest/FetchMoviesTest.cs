@@ -1,6 +1,7 @@
 using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Entities;
+using BillB0ard_API.Domain.Enums;
 using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,22 @@ namespace BillB0ard_API.Test.MovieServiceTest
     public class FetchMovieTest : InMemoryMovieTestBase
     {
         [Test]
-        public async Task ByTitle()
+        public async Task MovieDetailByTitle()
         {
             MovieService movieService = new(_movieRepository, _rateRepository);
 
-            MovieEntity fetchedMovies = await movieService.GetByTitle("Lord of the ring");
+            List<MovieRateEntity> expectedRates = new()
+            {
+                new(new(1, "Jabba", UserRoles.User), 10.0M),
+                new(new(2, "Dudley", UserRoles.User), 2.0M),
+                new(new(3, "T-Rex", UserRoles.User), 5.25M),
+            };
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
 
-            Assert.That(fetchedMovies.Id, Is.EqualTo(1));
+
+            MovieDetailsEntity actual = await movieService.GetByTitle("Lord of the ring");
+
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         [Test]
@@ -165,19 +175,19 @@ namespace BillB0ard_API.Test.MovieServiceTest
                 {
                     Id = 1,
                     Name = "Jabba",
-                    Role = 0,
+                    Role = 2,
                 },
                 new User()
                 {
                     Id = 2,
                     Name = "Dudley",
-                    Role = 0,
+                    Role = 2,
                 },
                 new User()
                 {
                     Id = 3,
                     Name = "T-Rex",
-                    Role = 0,
+                    Role = 2,
                 },
 
             };
