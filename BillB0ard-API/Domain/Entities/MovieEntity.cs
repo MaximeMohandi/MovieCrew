@@ -17,7 +17,7 @@
         public string? Poster { get; }
         public DateTime DateAdded { get; }
         public DateTime? ViewingDate { get; }
-        public decimal? AverageRate { get; } = null;
+        public decimal? AverageRate { get; }
 
         public override bool Equals(object? obj)
         {

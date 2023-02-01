@@ -11,25 +11,31 @@ namespace BillB0ard_API.Domain.Entities
             Role = role;
         }
 
+        public UserEntity(long id, string name, int role)
+        {
+            Id = id;
+            Name = name;
+            Role = (UserRoles)role;
+        }
+
         public long Id { get; }
         public string Name { get; }
         public UserRoles Role { get; }
 
-        // override object.Equals
         public override bool Equals(object? obj)
         {
             if (obj == null) return false;
 
             UserEntity toCompare = (UserEntity)obj;
 
-            return Id.Equals(toCompare.Id) && Name.Equals(toCompare.Name)
-                && Role.Equals(toCompare.Role);
+            return Id == toCompare.Id
+                && Name == toCompare.Name
+                && Role == toCompare.Role;
         }
 
-        // override object.GetHashCode
         public override int GetHashCode()
         {
-            return Id.GetHashCode() ^ Name.GetHashCode();
+            return HashCode.Combine(Id, Name, Role);
         }
     }
 }
