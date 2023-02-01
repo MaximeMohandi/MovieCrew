@@ -8,19 +8,6 @@ namespace BillB0ard_API.Test.MovieServiceTest
     {
 
         [Test]
-        public async Task OnlyTitle()
-        {
-            MovieService service = new(_movieRepository, _rateRepository);
-
-            MovieEntity addedMovie = await service.AddMovie(new("Dragon"));
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(addedMovie.Title, Is.EqualTo("Dragon"));
-            });
-        }
-
-        [Test]
         public async Task OneWithPoster()
         {
             MovieService service = new(_movieRepository, _rateRepository);
@@ -31,6 +18,7 @@ namespace BillB0ard_API.Test.MovieServiceTest
             {
                 Assert.That(addedMovie.Title, Is.EqualTo("Pinnochio"));
                 Assert.That(addedMovie.Poster, Is.EqualTo("fakelink"));
+                Assert.That(addedMovie.DateAdded.ToShortDateString(), Is.EqualTo(DateTime.Now.ToShortDateString()));
             });
         }
 
@@ -39,7 +27,7 @@ namespace BillB0ard_API.Test.MovieServiceTest
         {
             MovieService service = new(_movieRepository, _rateRepository);
 
-            Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fith element")));
+            Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fith element", "")));
         }
 
         protected override void SeedInMemoryDatas()
@@ -48,7 +36,8 @@ namespace BillB0ard_API.Test.MovieServiceTest
             {
                 Id = 1,
                 DateAdded = DateTime.Now,
-                Name = "The Fith element"
+                Name = "The Fith element",
+                Poster = ""
             });
         }
     }
