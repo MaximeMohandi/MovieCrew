@@ -17,12 +17,16 @@ namespace BillB0ard_API.Test.MovieServiceTest
             {
                 MovieId = 2,
                 UserId = 1,
-                Note = 2.0M
+                Note = 2.0M,
             };
 
             await movieService.Rate(rateCreation);
-
-            Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
+                Assert.That(_dbContext.Movies.FirstOrDefault(m => m.Id == 2).SeenDate?.ToShortDateString(),
+                    Is.EqualTo(DateTime.Now.ToShortDateString()));
+            });
         }
 
         [Test]
@@ -39,38 +43,17 @@ namespace BillB0ard_API.Test.MovieServiceTest
             Assert.That(updatedRate.Note, Is.EqualTo(0.0M));
         }
 
-        [Test]
-        public void CannotRateAbove10()
+        [TestCase(11.0)]
+        [TestCase(-1.0)]
+        [TestCase(10.1)]
+        public void RateMustBeBetween0To10(decimal rate)
         {
             MovieService movieServices = new(_movieRepository, _rateRepository);
-            RateCreationDto rateCreation = new(1, 1, 11.0M);
+            RateCreationDto rateCreation = new(1, 1, rate);
 
             var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
 
-            Assert.That(ex.Message, Is.EqualTo($"The rate must be between 0 and 10. Actual : {11.0M}"));
-        }
-
-        [Test]
-        public void CannotGiveRateBelowZero()
-        {
-            MovieService movieServices = new(_movieRepository, _rateRepository);
-            RateCreationDto rateCreation = new(1, 1, -1);
-
-            var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
-
-            Assert.That(ex.Message, Is.EqualTo("The rate must be between 0 and 10. Actual : -1"));
-        }
-
-        [Test]
-        public async Task SetSeenDateToTodayWhenRatingAMovieForTheFirstTieme()
-        {
-            MovieService movieService = new(_movieRepository, _rateRepository);
-
-            await movieService.Rate(new(2, 1, 10M));
-
-            Movie actual = _dbContext.Movies.Single(x => x.Id == 2);
-
-            Assert.That(actual?.SeenDate?.Date, Is.EqualTo(DateTime.Now.Date.Date));
+            Assert.That(ex.Message, Is.EqualTo($"The rate must be between 0 and 10. Actual : {rate}"));
         }
 
         protected override void SeedInMemoryDatas()
