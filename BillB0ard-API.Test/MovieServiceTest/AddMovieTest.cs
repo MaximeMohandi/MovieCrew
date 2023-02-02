@@ -8,7 +8,7 @@ namespace BillB0ard_API.Test.MovieServiceTest
     {
 
         [Test]
-        public async Task OneWithPoster()
+        public async Task AddMovie()
         {
             MovieService service = new(_movieRepository, _rateRepository);
 
