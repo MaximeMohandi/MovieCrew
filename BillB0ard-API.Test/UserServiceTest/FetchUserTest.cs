@@ -40,7 +40,7 @@ namespace BillB0ard_API.Test.UserServiceTest
         }
 
         [Test]
-        public async Task FetchUserById()
+        public async Task ById()
         {
             UserRepository userRepository = new(_dbContext);
             UserEntity expectedUser = new(1, "Arthur", UserRoles.Admin);
@@ -52,36 +52,13 @@ namespace BillB0ard_API.Test.UserServiceTest
         }
 
         [Test]
-        public async Task FetchUserByName()
-        {
-            UserRepository userRepository = new(_dbContext);
-            UserEntity expectedUser = new(1, "Arthur", UserRoles.Admin);
-            UserService userService = new(userRepository);
-
-            UserEntity actualUser = await userService.GetByName("Arthur");
-
-            Assert.That(actualUser, Is.EqualTo(expectedUser));
-        }
-
-        [Test]
-        public void CantFetchUserWithUnknownUserName()
-        {
-            UserRepository userRepository = new(_dbContext);
-            UserService userService = new(userRepository);
-
-            UserNotFoundException exception = Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetByName("Perceval"));
-            Assert.That(exception.Message, Is.EqualTo("User 'Perceval' not found. Please check the username and try again"));
-        }
-
-        [Test]
-        public void CantFetchUserWithUnknownUserId()
+        public void UnknownId()
         {
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
             UserNotFoundException exception = Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetById(-1));
             Assert.That(exception.Message, Is.EqualTo("User with id: -1 not found. Please check the conformity and try again"));
-
         }
 
         [OneTimeTearDown]

@@ -21,10 +21,5 @@ namespace BillB0ard_API.Services
         {
             return await _userRepository.GetBy(id);
         }
-
-        public async Task<UserEntity> GetByName(string userName)
-        {
-            return await _userRepository.GetBy(userName);
-        }
     }
 }
