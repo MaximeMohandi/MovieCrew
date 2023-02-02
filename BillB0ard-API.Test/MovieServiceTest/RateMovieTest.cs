@@ -24,7 +24,7 @@ namespace BillB0ard_API.Test.MovieServiceTest
             Assert.Multiple(() =>
             {
                 Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
-                Assert.That(_dbContext.Movies.FirstOrDefault(m => m.Id == 2).SeenDate?.ToShortDateString(),
+                Assert.That(_dbContext.Movies.First(m => m.Id == 2).SeenDate?.ToShortDateString(),
                     Is.EqualTo(DateTime.Now.ToShortDateString()));
             });
         }

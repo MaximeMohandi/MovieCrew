@@ -19,11 +19,10 @@ namespace BillB0ard_API.Domain.Repository
 
         public async Task Add(UserCreationDto userCreation)
         {
-            var isUserExist = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == userCreation.Id || u.Name == userCreation.Name);
+            var isUserExist = await _dbContext.Users.SingleOrDefaultAsync(u => u.Name == userCreation.Name);
             if (isUserExist is not null) throw new UserAlreadyExistException(userCreation.Name);
             User newUser = new()
             {
-                Id = userCreation.Id,
                 Name = userCreation.Name,
                 Role = (int)userCreation.Role
             };

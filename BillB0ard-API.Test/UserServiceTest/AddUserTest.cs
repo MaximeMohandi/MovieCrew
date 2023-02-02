@@ -24,40 +24,23 @@ namespace BillB0ard_API.Test.UserServiceTest
             _dbContext.SaveChanges();
         }
 
-        [Test]
-        public async Task WithIdAndName()
+        [TestCase(1, "Ygerne", UserRoles.User)]
+        [TestCase(2, "Tio", UserRoles.Admin)]
+        [TestCase(3, "Gloria", UserRoles.Bot)]
+        public async Task WithIdAndName(long id, string name, UserRoles role)
         {
             User expectedUser = new()
             {
-                Id = 1234,
-                Name = "Ygerne",
+                Id = id,
+                Name = name,
                 Rates = null,
-                Role = 0
+                Role = (int)role
             };
 
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            await userService.AddUser(new(1234, "Ygerne"));
-
-            Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
-        }
-
-        [Test]
-        public async Task WithRole()
-        {
-            User expectedUser = new()
-            {
-                Id = 123456,
-                Name = "Leodagan",
-                Rates = null,
-                Role = 1
-            };
-
-            UserRepository userRepository = new(_dbContext);
-            UserService userService = new(userRepository);
-
-            await userService.AddUser(new(123456, "Leodagan", UserRoles.Admin));
+            await userService.AddUser(new(name, role));
 
             Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
         }
@@ -69,9 +52,9 @@ namespace BillB0ard_API.Test.UserServiceTest
             UserRepository userRepository = new(_dbContext);
             UserService userService = new(userRepository);
 
-            await userService.AddUser(new(1234567, "Arthur", UserRoles.Bot));
+            await userService.AddUser(new("Arthur", UserRoles.Bot));
 
-            Assert.ThrowsAsync<UserAlreadyExistException>(async () => await userService.AddUser(new(1234567, "Arthur", UserRoles.Bot)));
+            Assert.ThrowsAsync<UserAlreadyExistException>(async () => await userService.AddUser(new("Arthur", UserRoles.Bot)));
         }
 
         [OneTimeTearDown]

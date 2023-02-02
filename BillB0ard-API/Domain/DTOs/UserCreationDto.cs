@@ -2,5 +2,5 @@
 
 namespace BillB0ard_API.Domain.DTOs
 {
-    public record UserCreationDto(long Id, string Name, UserRoles Role = UserRoles.None);
+    public record UserCreationDto(string Name, UserRoles Role = UserRoles.None);
 }
