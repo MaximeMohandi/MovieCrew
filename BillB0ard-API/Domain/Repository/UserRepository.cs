@@ -40,14 +40,5 @@ namespace BillB0ard_API.Domain.Repository
 
             return new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
         }
-
-        public async Task<UserEntity> GetBy(string userName)
-        {
-            var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Name == userName);
-
-            if (dbUser is null) throw new UserNotFoundException(userName);
-
-            return new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
-        }
     }
 }
