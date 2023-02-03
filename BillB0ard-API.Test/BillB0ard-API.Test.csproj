@@ -28,4 +28,9 @@
     <ProjectReference Include="..\BillB0ard-API\BillB0ard-API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataEqualityTest\" />
+    <Folder Include="MovieServiceTest\" />
+  </ItemGroup>
+
 </Project>
