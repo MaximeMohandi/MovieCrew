@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<I do not use serialization in this project>", Scope = "namespaceanddescendants", Target = "BillB0ard_API.Domain.Exception")]
+[assembly: SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<I do not use serialization in this project>", Scope = "namespaceanddescendants", Target = "~N:BillB0ard_API.Domain.Exception")]

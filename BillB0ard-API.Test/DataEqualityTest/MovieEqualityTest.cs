@@ -9,7 +9,7 @@ namespace BillB0ard_API.Test.DataEqualityTest
         public void SameMovie()
         {
             var ratedMovies = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M);
-            var expextedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M); ;
+            var expextedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M);
 
             Assert.Multiple(() =>
             {
