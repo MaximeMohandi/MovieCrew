@@ -33,14 +33,11 @@
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Title, DateAdded) + HashcodesNullablePropoerties();
-        }
-
-        private int HashcodesNullablePropoerties()
-        {
-            return (Poster is null ? 0 : Poster.GetHashCode())
-                + (ViewingDate is null ? 0 : ViewingDate.GetHashCode())
-                + (AverageRate is null ? 0 : AverageRate.GetHashCode());
+            int hash = HashCode.Combine(Id, Title, DateAdded);
+            hash = HashCode.Combine(hash, Poster is null ? 0 : Poster.GetHashCode());
+            hash = HashCode.Combine(hash, ViewingDate is null ? 0 : ViewingDate.GetHashCode());
+            hash = HashCode.Combine(hash, AverageRate is null ? 0 : AverageRate.GetHashCode());
+            return hash;
         }
     }
 }

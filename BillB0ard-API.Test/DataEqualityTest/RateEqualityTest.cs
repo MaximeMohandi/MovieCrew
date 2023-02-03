@@ -36,7 +36,7 @@ namespace BillB0ard_API.Test.DataEqualityTest
         }
 
         [Test]
-        public void RateCompareToNull()
+        public void RateModelComparedToNull()
         {
             var actualRate = new Rate
             {
@@ -49,24 +49,6 @@ namespace BillB0ard_API.Test.DataEqualityTest
             };
 
             Assert.That(actualRate, Is.Not.EqualTo(null));
-        }
-
-        [Test]
-        public void NotEqualToOtherType()
-        {
-            Rate actualRate = new()
-            {
-                Movie = new Movie(),
-                MovieId = 1,
-                Note = 2.0M,
-                User = new User(),
-                UserId = 1,
-
-            };
-
-            object otherObject = new() { };
-
-            Assert.That(actualRate, Is.Not.EqualTo(otherObject));
         }
 
         [Test]

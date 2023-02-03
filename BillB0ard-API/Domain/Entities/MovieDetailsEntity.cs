@@ -39,10 +39,20 @@
 
         public override int GetHashCode()
         {
-            return base.GetHashCode()
-                + (MovieRates is null ? 0 : MovieRates.GetHashCode())
-                + (BestRate is null ? 0 : BestRate.GetHashCode())
-                + (WorstRate is null ? 0 : WorstRate.GetHashCode());
+            int hash = base.GetHashCode();
+            if (MovieRates is null)
+            {
+                return HashCode.Combine(hash, 0);
+            }
+
+            foreach (MovieRateEntity rate in MovieRates)
+            {
+                hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate));
+            }
+
+            hash = HashCode.Combine(hash, BestRate!.GetHashCode(), WorstRate!.GetHashCode());
+
+            return hash;
         }
     }
 }

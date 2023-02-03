@@ -62,7 +62,11 @@ namespace BillB0ard_API.Test.MovieServiceTest
 
             MovieDetailsEntity actual = await movieService.GetByTitle(title);
 
-            Assert.That(actual, Is.EqualTo(expected));
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual, Is.EqualTo(expected));
+                Assert.That(actual.GetHashCode(), Is.EqualTo(expected.GetHashCode()));
+            });
         }
 
         [Test]
@@ -91,7 +95,11 @@ namespace BillB0ard_API.Test.MovieServiceTest
 
             MovieDetailsEntity actual = await movieService.GetById(1);
 
-            Assert.That(actual, Is.EqualTo(expected));
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual, Is.EqualTo(expected));
+                Assert.That(actual.GetHashCode(), Is.EqualTo(expected.GetHashCode()));
+            });
         }
 
         [Test]
@@ -113,7 +121,11 @@ namespace BillB0ard_API.Test.MovieServiceTest
 
             MovieDetailsEntity actual = await movieService.GetById(2);
 
-            Assert.That(actual, Is.EqualTo(expected));
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual, Is.EqualTo(expected));
+                Assert.That(actual.GetHashCode(), Is.EqualTo(expected.GetHashCode()));
+            });
         }
 
         [Test]
