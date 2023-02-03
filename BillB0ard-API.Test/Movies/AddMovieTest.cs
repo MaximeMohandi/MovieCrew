@@ -2,7 +2,7 @@
 using BillB0ard_API.Domain.Exception;
 using BillB0ard_API.Services;
 
-namespace BillB0ard_API.Test.MovieServiceTest
+namespace BillB0ard_API.Test.Movies
 {
     public class AddMovieTest : InMemoryMovieTestBase
     {
