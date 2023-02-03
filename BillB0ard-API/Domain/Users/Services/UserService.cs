@@ -1,8 +1,8 @@
-﻿using BillB0ard_API.Domain.DTOs;
-using BillB0ard_API.Domain.Entities;
-using BillB0ard_API.Domain.Repository;
+﻿using BillB0ard_API.Domain.Users.Dtos;
+using BillB0ard_API.Domain.Users.Entities;
+using BillB0ard_API.Domain.Users.Repository;
 
-namespace BillB0ard_API.Services
+namespace BillB0ard_API.Domain.Users.Services
 {
     public class UserService
     {

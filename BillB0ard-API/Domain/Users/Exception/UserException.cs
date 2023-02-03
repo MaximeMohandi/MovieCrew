@@ -1,4 +1,4 @@
-﻿namespace BillB0ard_API.Domain.Exception
+﻿namespace BillB0ard_API.Domain.Users.Exception
 {
     public class UserException : System.Exception
     {

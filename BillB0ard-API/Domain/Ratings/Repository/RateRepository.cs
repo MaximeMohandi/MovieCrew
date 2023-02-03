@@ -1,8 +1,8 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
-using BillB0ard_API.Domain.DTOs;
+using BillB0ard_API.Domain.Ratings.Dtos;
 
-namespace BillB0ard_API.Domain.Repository
+namespace BillB0ard_API.Domain.Ratings.Repository
 {
     public class RateRepository
     {

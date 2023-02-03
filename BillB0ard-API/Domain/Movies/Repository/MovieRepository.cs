@@ -1,11 +1,11 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
-using BillB0ard_API.Domain.DTOs;
-using BillB0ard_API.Domain.Entities;
-using BillB0ard_API.Domain.Exception;
+using BillB0ard_API.Domain.Movies.Dtos;
+using BillB0ard_API.Domain.Movies.Entities;
+using BillB0ard_API.Domain.Movies.Exception;
 using Microsoft.EntityFrameworkCore;
 
-namespace BillB0ard_API.Domain.Repository
+namespace BillB0ard_API.Domain.Movies.Repository
 {
     public class MovieRepository
     {

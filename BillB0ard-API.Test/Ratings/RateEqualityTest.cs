@@ -1,5 +1,6 @@
 ﻿using BillB0ard_API.Data.Models;
-using BillB0ard_API.Domain.Entities;
+using BillB0ard_API.Domain.Ratings.Entities;
+using BillB0ard_API.Domain.Users.Enums;
 
 namespace BillB0ard_API.Test.Ratings
 {
@@ -54,8 +55,8 @@ namespace BillB0ard_API.Test.Ratings
         [Test]
         public void RateEntityAreEquals()
         {
-            RateEntity firstRate = new(new(1, "test", Domain.Enums.UserRoles.Admin), 2M);
-            RateEntity secondRate = new(new(1, "test", Domain.Enums.UserRoles.Admin), 2M);
+            RateEntity firstRate = new(new(1, "test", UserRoles.Admin), 2M);
+            RateEntity secondRate = new(new(1, "test", UserRoles.Admin), 2M);
 
             Assert.Multiple(() =>
             {
@@ -69,11 +70,11 @@ namespace BillB0ard_API.Test.Ratings
         {
             List<RateEntity> firstList = new()
             {
-                new(new(1, "test", Domain.Enums.UserRoles.Admin), 2M)
+                new(new(1, "test", UserRoles.Admin), 2M)
             };
             List<RateEntity> secondList = new()
             {
-                new(new(1, "test", Domain.Enums.UserRoles.Admin), 2M)
+                new(new(1, "test", UserRoles.Admin), 2M)
             };
 
             CollectionAssert.AreEqual(firstList, secondList);

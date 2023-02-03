@@ -1,5 +1,6 @@
 ﻿using BillB0ard_API.Data;
-using BillB0ard_API.Domain.Repository;
+using BillB0ard_API.Domain.Movies.Repository;
+using BillB0ard_API.Domain.Ratings.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test

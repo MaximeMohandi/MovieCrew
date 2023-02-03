@@ -1,4 +1,6 @@
-﻿namespace BillB0ard_API.Domain.Entities
+﻿using BillB0ard_API.Domain.Users.Entities;
+
+namespace BillB0ard_API.Domain.Movies.Entities
 {
     public class MovieRateEntity
     {

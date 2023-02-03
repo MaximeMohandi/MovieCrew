@@ -1,9 +1,12 @@
-﻿using BillB0ard_API.Domain.DTOs;
-using BillB0ard_API.Domain.Entities;
-using BillB0ard_API.Domain.Exception;
-using BillB0ard_API.Domain.Repository;
+﻿using BillB0ard_API.Domain.Movies.Dtos;
+using BillB0ard_API.Domain.Movies.Entities;
+using BillB0ard_API.Domain.Movies.Exception;
+using BillB0ard_API.Domain.Movies.Repository;
+using BillB0ard_API.Domain.Ratings.Dtos;
+using BillB0ard_API.Domain.Ratings.Exception;
+using BillB0ard_API.Domain.Ratings.Repository;
 
-namespace BillB0ard_API.Services
+namespace BillB0ard_API.Domain.Movies.Services
 {
     public class MovieService
     {
@@ -12,8 +15,8 @@ namespace BillB0ard_API.Services
 
         public MovieService(MovieRepository movieRepository, RateRepository rateRepository)
         {
-            this._movieRepository = movieRepository;
-            this._rateRepository = rateRepository;
+            _movieRepository = movieRepository;
+            _rateRepository = rateRepository;
         }
 
         public async Task<List<MovieEntity>> FetchAllMovies()
@@ -59,7 +62,7 @@ namespace BillB0ard_API.Services
                 throw new RateLimitException(rateCreation.Rate);
             }
             await _rateRepository.Add(rateCreation);
-            await this.SetSeenDate(new(rateCreation.MovieID, DateTime.Now));
+            await SetSeenDate(new(rateCreation.MovieID, DateTime.Now));
         }
 
         public async Task ChangeTitle(MovieRenameDto renameDto)

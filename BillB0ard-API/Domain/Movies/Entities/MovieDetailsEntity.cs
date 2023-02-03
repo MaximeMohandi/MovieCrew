@@ -1,4 +1,4 @@
-﻿namespace BillB0ard_API.Domain.Entities
+﻿namespace BillB0ard_API.Domain.Movies.Entities
 {
     public class MovieDetailsEntity : MovieEntity
     {
@@ -34,7 +34,7 @@
         {
             if (MovieRates is null || rates is null) return rates is null && MovieRates is null;
 
-            return Enumerable.SequenceEqual(MovieRates, rates!);
+            return MovieRates.SequenceEqual(rates!);
         }
 
         public override int GetHashCode()

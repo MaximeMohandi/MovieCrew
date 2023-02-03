@@ -1,10 +1,10 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Data.Models;
-using BillB0ard_API.Domain.Entities;
-using BillB0ard_API.Domain.Enums;
-using BillB0ard_API.Domain.Exception;
-using BillB0ard_API.Domain.Repository;
-using BillB0ard_API.Services;
+using BillB0ard_API.Domain.Users.Entities;
+using BillB0ard_API.Domain.Users.Enums;
+using BillB0ard_API.Domain.Users.Exception;
+using BillB0ard_API.Domain.Users.Repository;
+using BillB0ard_API.Domain.Users.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test.UserServiceTest

@@ -1,6 +1,6 @@
-﻿using BillB0ard_API.Domain.Entities;
-using BillB0ard_API.Domain.Exception;
-using BillB0ard_API.Services;
+﻿using BillB0ard_API.Domain.Movies.Entities;
+using BillB0ard_API.Domain.Movies.Exception;
+using BillB0ard_API.Domain.Movies.Services;
 
 namespace BillB0ard_API.Test.Movies
 {

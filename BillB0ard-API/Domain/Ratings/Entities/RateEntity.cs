@@ -1,11 +1,13 @@
-﻿namespace BillB0ard_API.Domain.Entities
+﻿using BillB0ard_API.Domain.Users.Entities;
+
+namespace BillB0ard_API.Domain.Ratings.Entities
 {
     public class RateEntity
     {
         public RateEntity(UserEntity ratedBy, decimal rate)
         {
-            this.RatedBy = ratedBy;
-            this.Rate = rate;
+            RatedBy = ratedBy;
+            Rate = rate;
         }
 
         public UserEntity RatedBy { get; }

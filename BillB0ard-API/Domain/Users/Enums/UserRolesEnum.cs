@@ -1,4 +1,4 @@
-﻿namespace BillB0ard_API.Domain.Enums
+﻿namespace BillB0ard_API.Domain.Users.Enums
 {
     public enum UserRoles
     {

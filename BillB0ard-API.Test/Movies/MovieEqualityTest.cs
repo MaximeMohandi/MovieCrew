@@ -1,5 +1,5 @@
 ﻿using BillB0ard_API.Data.Models;
-using BillB0ard_API.Domain.Entities;
+using BillB0ard_API.Domain.Movies.Entities;
 
 namespace BillB0ard_API.Test.Movies
 {

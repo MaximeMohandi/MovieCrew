@@ -1,6 +1,6 @@
-﻿using BillB0ard_API.Domain.Enums;
+﻿using BillB0ard_API.Domain.Users.Enums;
 
-namespace BillB0ard_API.Domain.Entities
+namespace BillB0ard_API.Domain.Users.Entities
 {
     public class UserEntity
     {

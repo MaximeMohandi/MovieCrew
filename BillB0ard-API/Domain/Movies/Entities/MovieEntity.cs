@@ -1,15 +1,15 @@
-﻿namespace BillB0ard_API.Domain.Entities
+﻿namespace BillB0ard_API.Domain.Movies.Entities
 {
     public class MovieEntity
     {
         public MovieEntity(int id, string title, string? poster, DateTime addedDate, DateTime? seenDate, decimal? averageRate)
         {
-            this.Id = id;
-            this.Title = title;
-            this.Poster = poster;
-            this.DateAdded = addedDate;
-            this.ViewingDate = seenDate;
-            this.AverageRate = averageRate;
+            Id = id;
+            Title = title;
+            Poster = poster;
+            DateAdded = addedDate;
+            ViewingDate = seenDate;
+            AverageRate = averageRate;
         }
 
         public int Id { get; }
