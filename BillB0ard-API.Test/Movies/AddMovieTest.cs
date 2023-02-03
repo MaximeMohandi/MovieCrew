@@ -10,7 +10,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task AddMovie()
         {
-            MovieService service = new(_movieRepository, _rateRepository);
+            MovieService service = new(_movieRepository);
 
             MovieEntity addedMovie = await service.AddMovie(new("Pinnochio", "fakelink"));
 
@@ -25,7 +25,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public void CantAddExistMovie()
         {
-            MovieService service = new(_movieRepository, _rateRepository);
+            MovieService service = new(_movieRepository);
 
             Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fith element", "")));
         }

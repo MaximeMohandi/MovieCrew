@@ -1,7 +1,7 @@
 ﻿using BillB0ard_API.Data.Models;
-using BillB0ard_API.Domain.Movies.Services;
 using BillB0ard_API.Domain.Ratings.Dtos;
 using BillB0ard_API.Domain.Ratings.Exception;
+using BillB0ard_API.Domain.Ratings.Services;
 
 namespace BillB0ard_API.Test.Ratings
 {
@@ -11,7 +11,7 @@ namespace BillB0ard_API.Test.Ratings
         [Test]
         public async Task MovieWithoutRate()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            RatingServices rateService = new(_rateRepository);
             var rateCreation = new RateCreationDto(2, 1, 2.0M);
             var expectedRate = new Rate()
             {
@@ -20,7 +20,7 @@ namespace BillB0ard_API.Test.Ratings
                 Note = 2.0M,
             };
 
-            await movieService.Rate(rateCreation);
+            await rateService.RateMovie(rateCreation);
             Assert.Multiple(() =>
             {
                 Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
@@ -32,10 +32,10 @@ namespace BillB0ard_API.Test.Ratings
         [Test]
         public async Task ExistingRate()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            RatingServices rateService = new(_rateRepository);
             RateCreationDto rateCreation = new(1, 1, 0.0M);
 
-            await movieService.Rate(rateCreation);
+            await rateService.RateMovie(rateCreation);
 
             var updatedRate = _dbContext.Rates
                 .First(r => r.UserId == rateCreation.UserId && r.MovieId == rateCreation.MovieID);
@@ -48,10 +48,10 @@ namespace BillB0ard_API.Test.Ratings
         [TestCase(10.1)]
         public void RateMustBeBetween0To10(decimal rate)
         {
-            MovieService movieServices = new(_movieRepository, _rateRepository);
+            RatingServices rateService = new(_rateRepository);
             RateCreationDto rateCreation = new(1, 1, rate);
 
-            var ex = Assert.ThrowsAsync<RateLimitException>(async () => await movieServices.Rate(rateCreation));
+            var ex = Assert.ThrowsAsync<RateLimitException>(async () => await rateService.RateMovie(rateCreation));
 
             Assert.That(ex.Message, Is.EqualTo($"The rate must be between 0 and 10. Actual : {rate}"));
         }

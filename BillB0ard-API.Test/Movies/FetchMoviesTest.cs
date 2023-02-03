@@ -12,7 +12,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task All()
         {
-            MovieService movieServices = new(_movieRepository, _rateRepository);
+            MovieService movieServices = new(_movieRepository);
             List<MovieEntity> expected = new()
             {
                 new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M),
@@ -34,7 +34,7 @@ namespace BillB0ard_API.Test.Movies
             .Options;
 
             using AppDbContext db = new(_options);
-            MovieService movieServices = new(new(db), new(db));
+            MovieService movieServices = new(new(db));
 
             Assert.ThrowsAsync<NoMoviesFoundException>(
                 async () => await movieServices.FetchAllMovies(),
@@ -45,7 +45,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task RandomMovieFromUnseenList()
         {
-            MovieService movieServices = new(_movieRepository, _rateRepository);
+            MovieService movieServices = new(_movieRepository);
 
             MovieEntity randomMovie = await movieServices.RandomMovie();
 
@@ -60,7 +60,7 @@ namespace BillB0ard_API.Test.Movies
             .Options;
 
             using AppDbContext db = new(_options);
-            MovieService movieServices = new(new(db), new(db));
+            MovieService movieServices = new(new(db));
 
             AllMoviesHaveBeenSeenException ex = Assert.ThrowsAsync<AllMoviesHaveBeenSeenException>(async () => await movieServices.RandomMovie());
 

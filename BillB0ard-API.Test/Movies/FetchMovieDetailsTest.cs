@@ -15,7 +15,7 @@ namespace BillB0ard_API.Test.Movies
         [TestCase("loRd of tHe rIng")]
         public async Task MovieDetailByTitle(string title)
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
 
             List<MovieRateEntity> expectedRates = new()
             {
@@ -38,7 +38,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public void TitleNotFound()
         {
-            MovieService movieServices = new(_movieRepository, _rateRepository);
+            MovieService movieServices = new(_movieRepository);
 
             MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetByTitle("star wars VIII"));
 
@@ -48,7 +48,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task MovieDetailById()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
 
             List<MovieRateEntity> expectedRates = new()
             {
@@ -71,7 +71,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public void IdNotFound()
         {
-            MovieService movieServices = new(_movieRepository, _rateRepository);
+            MovieService movieServices = new(_movieRepository);
 
             MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetById(-1));
 
@@ -81,7 +81,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task MovieDetailButWithNoRates()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
 
             MovieDetailsEntity expected = new(2, "Harry Potter", null, new DateTime(2015, 8, 3), null, null, null);
 

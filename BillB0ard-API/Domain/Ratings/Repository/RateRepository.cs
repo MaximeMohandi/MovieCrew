@@ -29,12 +29,10 @@ namespace BillB0ard_API.Domain.Ratings.Repository
             {
                 existingRate.Note = rateCreationDTO.Rate;
                 _dbContext.Rates.Update(existingRate);
-
             }
 
             await _dbContext.SaveChangesAsync();
         }
-
         private Rate? ExistingRate(RateCreationDto rateCreationDTO)
         {
             return _dbContext.Rates

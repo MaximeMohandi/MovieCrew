@@ -10,7 +10,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task Rename()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
 
             await movieService.ChangeTitle(new(1, "Asterix & Obelix : Mission Cléopatre", "nouveau nom"));
 
@@ -20,7 +20,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public void CantRenameAMovieWithAlreadyUsedTitle()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
             MovieRenameDto renameMovieData = new(1, "Asterix & Obelix : Mission Cléopatre", "Asterix & Obelix : Mission Cléopatre");
 
             MovieAlreadyExistException ex = Assert.ThrowsAsync<MovieAlreadyExistException>(async () => await movieService.ChangeTitle(renameMovieData));
@@ -31,7 +31,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task AddPoster()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
 
             await movieService.AddPoster(new(1, "http://newPoster.com"));
 
@@ -47,7 +47,7 @@ namespace BillB0ard_API.Test.Movies
         [TestCase("poster.com")]
         public void CantAddPosterWithIncorrectFormat(string url)
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
 
             Assert.ThrowsAsync<MoviePosterFormatException>(async () => await movieService.AddPoster(new(1, url)));
         }
@@ -55,7 +55,7 @@ namespace BillB0ard_API.Test.Movies
         [Test]
         public async Task SetSeenDate()
         {
-            MovieService movieService = new(_movieRepository, _rateRepository);
+            MovieService movieService = new(_movieRepository);
             var updatedMovie = _dbContext.Movies.Single(m => m.Id == 1);
 
             await movieService.SetSeenDate(new MovieSetSeenDateDto(1, DateTime.Now));
