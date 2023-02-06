@@ -24,6 +24,10 @@ namespace BillB0ard_API.Domain.Ratings.Repository
                     MovieId = rateCreationDTO.MovieID,
                     Note = rateCreationDTO.Rate
                 });
+
+                var toRateMovie = _dbContext.Movies.First(m => m.Id == rateCreationDTO.MovieID);
+                toRateMovie.SeenDate = DateTime.Now;
+                _dbContext.Movies.Update(toRateMovie);
             }
             else
             {
