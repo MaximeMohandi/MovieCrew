@@ -24,10 +24,7 @@ namespace BillB0ard_API.Domain.Ratings.Repository
                     MovieId = rateCreationDTO.MovieID,
                     Note = rateCreationDTO.Rate
                 });
-
-                var toRateMovie = _dbContext.Movies.First(m => m.Id == rateCreationDTO.MovieID);
-                toRateMovie.SeenDate = DateTime.Now;
-                _dbContext.Movies.Update(toRateMovie);
+                AddViewingDateToMovieRated(rateCreationDTO);
             }
             else
             {
@@ -37,6 +34,14 @@ namespace BillB0ard_API.Domain.Ratings.Repository
 
             await _dbContext.SaveChangesAsync();
         }
+
+        private void AddViewingDateToMovieRated(RateCreationDto rateCreationDTO)
+        {
+            var toRateMovie = _dbContext.Movies.First(m => m.Id == rateCreationDTO.MovieID);
+            toRateMovie.SeenDate = DateTime.Now;
+            _dbContext.Movies.Update(toRateMovie);
+        }
+
         private Rate? ExistingRate(RateCreationDto rateCreationDTO)
         {
             return _dbContext.Rates
