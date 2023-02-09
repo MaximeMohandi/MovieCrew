@@ -6,7 +6,7 @@ using BillB0ard_API.Domain.Users.Repository;
 using BillB0ard_API.Domain.Users.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace BillB0ard_API.Test.UserServiceTest
+namespace BillB0ard_API.Test.Users
 {
     public class AddUserTest
     {

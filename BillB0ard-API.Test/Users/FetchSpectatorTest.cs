@@ -4,7 +4,7 @@ using BillB0ard_API.Domain.Users.Entities;
 using BillB0ard_API.Domain.Users.Exception;
 using BillB0ard_API.Domain.Users.Services;
 
-namespace BillB0ard_API.Test.UserServiceTest
+namespace BillB0ard_API.Test.Users
 {
     public class FetchSpectatorTest : InMemoryMovieTestBase
     {
