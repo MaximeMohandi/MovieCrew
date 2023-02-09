@@ -1,10 +1,8 @@
-﻿using BillB0ard_API.Domain.Users.Entities;
-
-namespace BillB0ard_API.Domain.Movies.Entities
+﻿namespace BillB0ard_API.Domain.Users.Entities
 {
-    public class SpectatorEntity
+    public class SpectatorDetailsEntity
     {
-        public SpectatorEntity(UserEntity spectator, List<SpectatorRateEntity>? rates)
+        public SpectatorDetailsEntity(UserEntity spectator, List<SpectatorRateEntity>? rates)
         {
             Spectator = spectator;
             Rates = rates;
@@ -18,7 +16,7 @@ namespace BillB0ard_API.Domain.Movies.Entities
         {
             if (obj == null) return false;
 
-            var toCompare = (SpectatorEntity)obj;
+            var toCompare = (SpectatorDetailsEntity)obj;
 
             return Equals(Spectator, toCompare.Spectator)
                 && RatesAreEquals(toCompare.Rates)

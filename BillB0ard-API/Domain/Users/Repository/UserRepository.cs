@@ -40,5 +40,18 @@ namespace BillB0ard_API.Domain.Users.Repository
 
             return new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
         }
+
+        public async Task<SpectatorDetailsEntity> GetSpectatorDetails(long idSpectator)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == idSpectator);
+
+            List<SpectatorRateEntity> spectatorRates = user.Rates
+                .Select(r =>
+                    new SpectatorRateEntity(
+                        new(r.MovieId, r.Movie.Name, r.Movie.Poster, r.Movie.DateAdded, r.Movie.SeenDate, r.Movie.Rates?.Average(r => r.Note)),
+                        r.Note)
+                ).ToList();
+            return new SpectatorDetailsEntity(new(user.Id, user.Name, user.Role), spectatorRates);
+        }
     }
 }

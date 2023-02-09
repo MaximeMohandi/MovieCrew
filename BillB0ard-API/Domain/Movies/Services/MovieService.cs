@@ -73,6 +73,5 @@ namespace BillB0ard_API.Domain.Movies.Services
         {
             await _movieRepository.Update(movieSetSeenDateDTO);
         }
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BillB0ard_API.Data;
 using BillB0ard_API.Domain.Movies.Repository;
 using BillB0ard_API.Domain.Ratings.Repository;
+using BillB0ard_API.Domain.Users.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillB0ard_API.Test
@@ -14,6 +15,7 @@ namespace BillB0ard_API.Test
         protected AppDbContext _dbContext;
         protected MovieRepository _movieRepository;
         protected RateRepository _rateRepository;
+        protected UserRepository _userRepository;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -27,6 +29,7 @@ namespace BillB0ard_API.Test
 
             _movieRepository = new MovieRepository(_dbContext);
             _rateRepository = new RateRepository(_dbContext);
+            _userRepository = new UserRepository(_dbContext);
         }
 
         [OneTimeTearDown]
