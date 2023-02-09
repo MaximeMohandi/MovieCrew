@@ -43,7 +43,10 @@ namespace BillB0ard_API.Domain.Users.Repository
 
         public async Task<SpectatorDetailsEntity> GetSpectatorDetails(long idSpectator)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == idSpectator);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == idSpectator)
+                ?? throw new UserNotFoundException(idSpectator);
+
+            if (user.Rates is null) throw new UserIsNotSpectatorException(idSpectator);
 
             List<SpectatorRateEntity> spectatorRates = user.Rates
                 .Select(r =>

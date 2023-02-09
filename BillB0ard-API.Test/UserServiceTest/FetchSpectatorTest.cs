@@ -1,6 +1,7 @@
 ﻿using BillB0ard_API.Data.Models;
 using BillB0ard_API.Domain.Movies.Entities;
 using BillB0ard_API.Domain.Users.Entities;
+using BillB0ard_API.Domain.Users.Exception;
 using BillB0ard_API.Domain.Users.Services;
 
 namespace BillB0ard_API.Test.UserServiceTest
@@ -24,6 +25,26 @@ namespace BillB0ard_API.Test.UserServiceTest
                 Assert.That(actual, Is.EqualTo(expected));
                 Assert.That(actual.GetHashCode(), Is.EqualTo(expected.GetHashCode()));
             });
+        }
+
+        [Test]
+        public void IsUserButNotSpectator()
+        {
+            SpectatorService service = new(_userRepository);
+            Assert.ThrowsAsync<UserIsNotSpectatorException>(async () =>
+            {
+                await service.FetchSpectator(2);
+            }, "The user 2 did not rate any movie yet.");
+        }
+
+        [Test]
+        public void SpectatorDoNotExist()
+        {
+            SpectatorService service = new(_userRepository);
+            Assert.ThrowsAsync<UserNotFoundException>(async () =>
+            {
+                await service.FetchSpectator(-1);
+            }, "User with id: -1 not found. Please check the conformity and try again");
         }
 
         protected override void SeedInMemoryDatas()
