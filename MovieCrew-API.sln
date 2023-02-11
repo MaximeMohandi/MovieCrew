@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCrew.Core", "MovieCrew_core\MovieCrew.Core.csproj", "{6486A9E3-6E49-451D-A4A1-6A1B1F9508CD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCrew.Core.Test", "MovieCrew_core.Test\MovieCrew.Core.Test.csproj", "{6B706AD2-0F7E-467D-AFAF-CB0B5DD60EF4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCrew.Core", "MovieCrew_core\MovieCrew.Core.csproj", "{397B415E-0990-4EA6-B14A-B02550A33A3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6486A9E3-6E49-451D-A4A1-6A1B1F9508CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6486A9E3-6E49-451D-A4A1-6A1B1F9508CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6486A9E3-6E49-451D-A4A1-6A1B1F9508CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6486A9E3-6E49-451D-A4A1-6A1B1F9508CD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B706AD2-0F7E-467D-AFAF-CB0B5DD60EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B706AD2-0F7E-467D-AFAF-CB0B5DD60EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B706AD2-0F7E-467D-AFAF-CB0B5DD60EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B706AD2-0F7E-467D-AFAF-CB0B5DD60EF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{397B415E-0990-4EA6-B14A-B02550A33A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{397B415E-0990-4EA6-B14A-B02550A33A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{397B415E-0990-4EA6-B14A-B02550A33A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{397B415E-0990-4EA6-B14A-B02550A33A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
