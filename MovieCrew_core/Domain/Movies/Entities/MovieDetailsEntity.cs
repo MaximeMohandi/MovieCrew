@@ -1,4 +1,6 @@
-﻿namespace MovieCrew_core.Domain.Movies.Entities
+﻿using MovieCrew_core.Domain.Users.Entities;
+
+namespace MovieCrew_core.Domain.Movies.Entities
 {
     public class MovieDetailsEntity : MovieEntity
     {
@@ -8,15 +10,18 @@
                                   DateTime addedDate,
                                   DateTime? seenDate,
                                   decimal? averageRate,
-                                  List<MovieRateEntity>? movieRates) :
+                                  List<MovieRateEntity>? movieRates,
+                                  UserEntity? proposedBy) :
             base(id, title, poster, addedDate, seenDate, averageRate)
         {
             MovieRates = movieRates;
+            ProposedBy = proposedBy;
         }
 
         public List<MovieRateEntity>? MovieRates { get; }
         public MovieRateEntity? BestRate => MovieRates?.MaxBy(r => r.Rate);
         public MovieRateEntity? WorstRate => MovieRates?.MinBy(r => r.Rate);
+        public UserEntity? ProposedBy { get; }
 
         public override bool Equals(object? obj)
         {

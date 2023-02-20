@@ -2,6 +2,7 @@
 using MovieCrew_core.Domain.Movies.Entities;
 using MovieCrew_core.Domain.Movies.Exception;
 using MovieCrew_core.Domain.Movies.Services;
+using MovieCrew_core.Domain.Users.Entities;
 using MovieCrew_core.Domain.Users.Enums;
 
 namespace MovieCrew_core.Test.Movies
@@ -23,7 +24,7 @@ namespace MovieCrew_core.Test.Movies
                 new(new(2, "Dudley", UserRoles.User), 2.0M),
                 new(new(3, "T-Rex", UserRoles.User), 5.25M),
             };
-            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates, new UserEntity(1, "Jabba", UserRoles.User));
 
 
             MovieDetailsEntity actual = await movieService.GetByTitle(title);
@@ -56,7 +57,7 @@ namespace MovieCrew_core.Test.Movies
                 new(new(2, "Dudley", UserRoles.User), 2.0M),
                 new(new(3, "T-Rex", UserRoles.User), 5.25M),
             };
-            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates);
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates, null);
 
 
             MovieDetailsEntity actual = await movieService.GetById(1);
@@ -83,7 +84,7 @@ namespace MovieCrew_core.Test.Movies
         {
             MovieService movieService = new(_movieRepository);
 
-            MovieDetailsEntity expected = new(2, "Harry Potter", null, new DateTime(2015, 8, 3), null, null, null);
+            MovieDetailsEntity expected = new(2, "Harry Potter", null, new DateTime(2015, 8, 3), null, null, null, null);
 
             MovieDetailsEntity actual = await movieService.GetById(2);
 
@@ -104,7 +105,8 @@ namespace MovieCrew_core.Test.Movies
                     DateAdded = new DateTime(2022, 5, 10),
                     Name = "Lord of the ring",
                     Poster = "fakeLink",
-                    SeenDate = new DateTime(2022, 5, 12)
+                    SeenDate = new DateTime(2022, 5, 12),
+                    ProposedById = 1
                 },
                 new Movie()
                 {
@@ -112,7 +114,8 @@ namespace MovieCrew_core.Test.Movies
                     DateAdded = new DateTime(2015, 8, 3),
                     Name = "Harry Potter",
                     Poster = null,
-                    SeenDate = null
+                    SeenDate = null,
+                    ProposedBy = null
                 },
                 new Movie()
                 {
@@ -121,6 +124,7 @@ namespace MovieCrew_core.Test.Movies
                     Name = "Jurassic Park",
                     Poster = "fakeLink",
                     SeenDate = new DateTime(1996, 9, 23),
+                    ProposedBy = null
                 },
                 new Movie()
                 {
@@ -128,7 +132,8 @@ namespace MovieCrew_core.Test.Movies
                     DateAdded = new DateTime(2022, 10, 15),
                     Name = "Lord of the ring II",
                     Poster = "fakeLink",
-                    SeenDate = null
+                    SeenDate = null,
+                    ProposedBy = null
                 },
 
             };

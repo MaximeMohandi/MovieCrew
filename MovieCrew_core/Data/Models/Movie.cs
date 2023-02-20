@@ -7,9 +7,11 @@
         public string? Poster { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime? SeenDate { get; set; } = null;
+        public long? ProposedById { get; set; } = null;
 
         //Navigation Properties
         public List<Rate>? Rates { get; set; }
+        public User? ProposedBy { get; set; }
 
         public override bool Equals(object? obj)
         {
