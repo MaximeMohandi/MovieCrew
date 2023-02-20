@@ -12,13 +12,14 @@ namespace MovieCrew_core.Test.Movies
         {
             MovieService service = new(_movieRepository);
 
-            MovieEntity addedMovie = await service.AddMovie(new("Pinnochio", "fakelink"));
+            MovieEntity addedMovie = await service.AddMovie(new("Pinnochio", "fakelink", 1));
 
             Assert.Multiple(() =>
             {
                 Assert.That(addedMovie.Title, Is.EqualTo("Pinnochio"));
                 Assert.That(addedMovie.Poster, Is.EqualTo("fakelink"));
                 Assert.That(addedMovie.DateAdded.ToShortDateString(), Is.EqualTo(DateTime.Now.ToShortDateString()));
+                Assert.That(_dbContext.Movies.Any(m => m.Name == addedMovie.Title), Is.True);
             });
         }
 
@@ -27,7 +28,7 @@ namespace MovieCrew_core.Test.Movies
         {
             MovieService service = new(_movieRepository);
 
-            Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fith element", "")));
+            Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fith element", "", null)));
         }
 
         protected override void SeedInMemoryDatas()

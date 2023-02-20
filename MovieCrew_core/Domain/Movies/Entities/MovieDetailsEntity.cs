@@ -32,7 +32,8 @@ namespace MovieCrew_core.Domain.Movies.Entities
             return base.Equals(obj)
                 && RatesAreEquals(toCompare.MovieRates)
                 && Equals(BestRate, toCompare.BestRate)
-                && Equals(WorstRate, toCompare.WorstRate);
+                && Equals(WorstRate, toCompare.WorstRate)
+                && Equals(ProposedBy, toCompare.ProposedBy);
         }
 
         private bool RatesAreEquals(List<MovieRateEntity>? rates)
@@ -45,17 +46,18 @@ namespace MovieCrew_core.Domain.Movies.Entities
         public override int GetHashCode()
         {
             int hash = base.GetHashCode();
-            if (MovieRates is null)
+            if (MovieRates is not null)
             {
-                return HashCode.Combine(hash, 0);
+                foreach (MovieRateEntity rate in MovieRates)
+                {
+                    hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate), BestRate!.GetHashCode(), WorstRate!.GetHashCode());
+                }
             }
 
-            foreach (MovieRateEntity rate in MovieRates)
+            if (ProposedBy is not null)
             {
-                hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate));
+                hash = HashCode.Combine(hash, ProposedBy.GetHashCode());
             }
-
-            hash = HashCode.Combine(hash, BestRate!.GetHashCode(), WorstRate!.GetHashCode());
 
             return hash;
         }

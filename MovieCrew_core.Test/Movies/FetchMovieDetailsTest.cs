@@ -57,7 +57,7 @@ namespace MovieCrew_core.Test.Movies
                 new(new(2, "Dudley", UserRoles.User), 2.0M),
                 new(new(3, "T-Rex", UserRoles.User), 5.25M),
             };
-            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates, null);
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates, new UserEntity(1, "Jabba", UserRoles.User));
 
 
             MovieDetailsEntity actual = await movieService.GetById(1);
