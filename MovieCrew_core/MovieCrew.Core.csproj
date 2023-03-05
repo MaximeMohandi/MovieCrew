@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>5a57ce3a-5c43-4206-bb7e-369dac6acb1c</UserSecretsId>
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeCoverage" Version="17.4.1" />

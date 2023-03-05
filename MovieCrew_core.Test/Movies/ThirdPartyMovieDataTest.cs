@@ -1,23 +1,16 @@
-﻿using MovieCrew.Core.Domain.Movies.Entities;
-using MovieCrew.Core.Domain.Movies.Services;
+﻿using MovieCrew.Core.Domain.Movies.Services;
 
-namespace MovieCrew_core.Test.Movies
+namespace BillB0ard_API.Test.Movies
 {
     public class ThirdPartyMovieDataTest
     {
         [Test]
-        public void AllRequiredMetaData()
+        public async Task ICanConnectToThirdParty()
         {
-            IThirdPartyMovieData thirdPartyData = new TmdbMovieData();
-            MovieMetadataEntity actual = thirdPartyData.SearchMovieData("a movie");
+            var thirdPartyProvider = new ThirdPartyMovieDataProvider();
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(Uri.IsWellFormedUriString(actual.PosterLink, UriKind.Absolute), Is.True);
-                Assert.That(actual.Description, Is.Not.Null);
-                Assert.That(actual.Revenue, Is.GreaterThanOrEqualTo(0));
-                Assert.That(actual.Ratings, Is.GreaterThanOrEqualTo(0));
-            });
+            bool actual = await thirdPartyProvider.GetDetails();
+            Assert.That(actual, Is.True);
         }
     }
 }
