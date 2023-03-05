@@ -4,15 +4,12 @@ namespace MovieCrew.Core.Domain.Movies.Services
 {
     public class ThirdPartyMovieDataProvider
     {
-        private string _apiKey;
-        private readonly string _baseUrl = "https://api.themoviedb.org/3/";
-        private HttpClient _client;
-        public ThirdPartyMovieDataProvider()
+        private readonly HttpClient _client;
+        public ThirdPartyMovieDataProvider(string baseUrl, string apiKey)
         {
-            _apiKey = ""
             _client = new HttpClient();
-            _client.BaseAddress = new Uri(_baseUrl);
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", _apiKey);
+            _client.BaseAddress = new Uri(baseUrl);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", apiKey);
         }
 
         public async Task<bool> GetDetails()
