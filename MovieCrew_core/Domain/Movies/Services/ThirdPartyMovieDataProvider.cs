@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using MovieCrew.Core.Domain.Movies.Entities;
+using System.Net.Http.Headers;
 
 namespace MovieCrew.Core.Domain.Movies.Services
 {
@@ -12,14 +13,10 @@ namespace MovieCrew.Core.Domain.Movies.Services
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", apiKey);
         }
 
-        public async Task<bool> GetDetails()
+        public async Task<MovieMetadataEntity> GetDetails()
         {
             HttpResponseMessage response = await _client.GetAsync("account");
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            return false;
+            return new("http://tes.", "2", 0, 2);
         }
     }
 }

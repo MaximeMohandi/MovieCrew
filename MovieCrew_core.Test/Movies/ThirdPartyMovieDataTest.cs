@@ -30,12 +30,13 @@ namespace BillB0ard_API.Test.Movies
 
             Assert.Multiple(() =>
             {
-                Assert.That(Uri.IsWellFormedUriString(actual.PosterLink, UriKind.RelativeOrAbsolute), Is.True);
+                Uri uriResult;
+                Assert.That(Uri.TryCreate(actual.PosterLink, UriKind.Absolute, out uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps), Is.True);
                 Assert.That(actual.Description, Has.Length.GreaterThan(0));
                 Assert.That(actual.Ratings, Is.GreaterThanOrEqualTo(0).And.LessThanOrEqualTo(10));
                 Assert.That(actual.Revenue, Is.GreaterThanOrEqualTo(0));
             });
-            Assert.That(actual, Is.True);
         }
     }
 }
