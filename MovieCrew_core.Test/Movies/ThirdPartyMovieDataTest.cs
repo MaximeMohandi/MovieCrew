@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Services;
 
 namespace BillB0ard_API.Test.Movies
@@ -25,8 +26,15 @@ namespace BillB0ard_API.Test.Movies
         {
             var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, _apiKey);
 
-            bool actual = await thirdPartyProvider.GetDetails();
+            MovieMetadataEntity actual = await thirdPartyProvider.GetDetails();
 
+            Assert.Multiple(() =>
+            {
+                Assert.That(Uri.IsWellFormedUriString(actual.PosterLink, UriKind.RelativeOrAbsolute), Is.True);
+                Assert.That(actual.Description, Has.Length.GreaterThan(0));
+                Assert.That(actual.Ratings, Is.GreaterThanOrEqualTo(0).And.LessThanOrEqualTo(10));
+                Assert.That(actual.Revenue, Is.GreaterThanOrEqualTo(0));
+            });
             Assert.That(actual, Is.True);
         }
     }
