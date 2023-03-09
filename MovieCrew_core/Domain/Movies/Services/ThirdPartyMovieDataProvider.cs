@@ -15,7 +15,7 @@ namespace MovieCrew.Core.Domain.Movies.Services
 
         public async Task<MovieMetadataEntity> GetDetails()
         {
-            HttpResponseMessage response = await _client.GetAsync("account");
+            HttpResponseMessage response = await _client.GetAsync("movie/100");
             return new("http://tes.", "2", 0, 2);
         }
     }

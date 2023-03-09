@@ -22,7 +22,7 @@ namespace BillB0ard_API.Test.Movies
         }
 
         [Test]
-        public async Task ICanConnectToThirdParty()
+        public async Task FetchDetailsFromThirdParty()
         {
             var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, _apiKey);
 
