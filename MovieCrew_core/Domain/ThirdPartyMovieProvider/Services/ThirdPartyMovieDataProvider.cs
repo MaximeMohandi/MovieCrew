@@ -20,11 +20,13 @@ namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services
         {
             HttpResponseMessage response = await _client.GetAsync(_searchQuery + title);
             var content = await response.Content.ReadAsStringAsync();
-            JsonNode data = JsonNode.Parse(content);
+            JsonNode results = JsonNode.Parse(content)["results"];
 
-
-
-            return JsonSerializer.Deserialize<MovieMetadataEntity>(data["results"][0]);
+            if (results.AsArray().Count == 0)
+            {
+                throw new Exception("movie not existing");
+            }
+            return JsonSerializer.Deserialize<MovieMetadataEntity>(results[0]);
         }
     }
 }

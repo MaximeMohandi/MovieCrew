@@ -39,5 +39,16 @@ namespace BillB0ard_API.Test.ThirdPartyMovieProvider
                 Assert.That(actual.Revenue, Is.GreaterThanOrEqualTo(0));
             });
         }
+
+        [Test]
+        public async Task FetchMovieThatDoNotExist()
+        {
+            var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, _apiKey);
+
+            //use random hash to be sure a movie will not have this title
+            MovieMetadataEntity actual = await thirdPartyProvider.GetDetails("hJjK9pLm3tRq");
+
+            Assert.Throws<Exception>(() => { });
+        }
     }
 }
