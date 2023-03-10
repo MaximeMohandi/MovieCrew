@@ -26,7 +26,8 @@ namespace BillB0ard_API.Test.ThirdPartyMovieProvider
         {
             var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, _apiKey);
 
-            MovieMetadataEntity actual = await thirdPartyProvider.GetDetails();
+            //use well known movie (top 10 box office) to be sure to get some data from third party
+            MovieMetadataEntity actual = await thirdPartyProvider.GetDetails("Titanic");
 
             Assert.Multiple(() =>
             {
