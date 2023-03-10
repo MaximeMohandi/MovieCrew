@@ -1,8 +1,8 @@
-﻿using MovieCrew.Core.Domain.Movies.Entities;
+﻿using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace MovieCrew.Core.Domain.Movies.Services
+namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services
 {
     public class ThirdPartyMovieDataProvider
     {

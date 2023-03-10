@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MovieCrew.Core.Domain.Movies.Entities;
-using MovieCrew.Core.Domain.Movies.Services;
+using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
+using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services;
 
-namespace MovieCrew_core.Test.Movies
+namespace BillB0ard_API.Test.ThirdPartyMovieProvider
 {
     public class ThirdPartyMovieDataTest
     {

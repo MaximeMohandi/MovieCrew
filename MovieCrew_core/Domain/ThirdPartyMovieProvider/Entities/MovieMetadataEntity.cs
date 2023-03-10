@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MovieCrew.Core.Domain.Movies.Entities
+namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities
 {
     public class MovieMetadataEntity
     {
