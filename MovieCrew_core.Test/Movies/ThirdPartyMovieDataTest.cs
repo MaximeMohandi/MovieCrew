@@ -2,7 +2,7 @@
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Services;
 
-namespace BillB0ard_API.Test.Movies
+namespace MovieCrew_core.Test.Movies
 {
     public class ThirdPartyMovieDataTest
     {

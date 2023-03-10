@@ -1,5 +1,6 @@
 ﻿using MovieCrew.Core.Domain.Movies.Entities;
 using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace MovieCrew.Core.Domain.Movies.Services
 {
@@ -16,7 +17,9 @@ namespace MovieCrew.Core.Domain.Movies.Services
         public async Task<MovieMetadataEntity> GetDetails()
         {
             HttpResponseMessage response = await _client.GetAsync("movie/100");
-            return new("http://tes.", "2", 0, 2);
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<MovieMetadataEntity>(content);
         }
     }
 }
