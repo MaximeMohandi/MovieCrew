@@ -54,16 +54,16 @@ namespace MovieCrew_core.Domain.Movies.Services
             return unseenMovies[randomIndex];
         }
 
-        public async Task<MovieEntity> AddMovie(MovieCreationDto movie)
+        public async Task<MovieEntity> AddMovie(string title, long? proposedById)
         {
             try
             {
-                var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title);
-                return await _movieRepository.Add(new(movie.Title, metadata.PosterLink, movie.proposedById));
+                var metadata = await _thirdPartyMovieProvider.GetDetails(title);
+                return await _movieRepository.Add(new(title, metadata.PosterLink, proposedById));
             }
             catch (NoMetaDataFound)
             {
-                throw new MovieNotFoundException(movie.Title);
+                throw new MovieNotFoundException(title);
             }
         }
 

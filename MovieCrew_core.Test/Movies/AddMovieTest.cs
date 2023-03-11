@@ -28,7 +28,7 @@ namespace MovieCrew_core.Test.Movies
         {
             MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiUrl, _apiKey));
 
-            MovieEntity addedMovie = await service.AddMovie(new("Pinnochio", "fakelink", 1));
+            MovieEntity addedMovie = await service.AddMovie("Pinnochio", 1);
 
             Assert.Multiple(() =>
             {
@@ -45,7 +45,7 @@ namespace MovieCrew_core.Test.Movies
         {
             MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiUrl, _apiKey));
 
-            Assert.ThrowsAsync<MovieNotFoundException>(() => service.AddMovie(new("dsfsdfsdaaa", "", 1)));
+            Assert.ThrowsAsync<MovieNotFoundException>(() => service.AddMovie("dsfsdfsdaaa", 1));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace MovieCrew_core.Test.Movies
         {
             MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiUrl, _apiKey));
 
-            Assert.ThrowsAsync<UserNotFoundException>(() => service.AddMovie(new("The Asada Family", "", 2)));
+            Assert.ThrowsAsync<UserNotFoundException>(() => service.AddMovie("The Asada Family", 2));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace MovieCrew_core.Test.Movies
         {
             MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiUrl, _apiKey));
 
-            Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie(new("The Fifth element", "", null)));
+            Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie("The Fifth element", null));
         }
 
         protected override void SeedInMemoryDatas()
