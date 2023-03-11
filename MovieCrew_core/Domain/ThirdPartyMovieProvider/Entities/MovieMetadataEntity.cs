@@ -13,7 +13,7 @@ namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities
             Revenue = revenue;
         }
         [JsonPropertyName("poster_path")]
-        public string PosterLink { get => _posterLink; set => _posterLink = "https://image.tmdb.org/t/p/original" + value; }
+        public string PosterLink { get; set; }
 
         [JsonPropertyName("overview")]
         public string Description { get; }

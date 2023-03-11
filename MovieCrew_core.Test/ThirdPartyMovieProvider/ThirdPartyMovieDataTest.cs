@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
 using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception;
 using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services;
@@ -25,7 +26,7 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public async Task FetchDetailsFromThirdParty()
         {
-            var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, _apiKey);
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiUrl, _apiKey);
 
             //use well known movie (top 10 box office) to be sure to get some data from third party
             MovieMetadataEntity actual = await thirdPartyProvider.GetDetails("Titanic");
@@ -44,7 +45,7 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public void FetchMovieThatDoNotExist()
         {
-            var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, _apiKey);
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiUrl, _apiKey);
 
             Assert.ThrowsAsync<NoMetaDataFound>(async () =>
             {
@@ -56,7 +57,7 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public void DidNotConnectToThirdParty()
         {
-            var thirdPartyProvider = new ThirdPartyMovieDataProvider("http://test/", "");
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider("http://test/", "");
 
             Assert.ThrowsAsync<HttpRequestException>(async () =>
             {
@@ -67,7 +68,7 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public void UnauthorizedAccessToThirdParty()
         {
-            var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, "");
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiUrl, "");
 
             Assert.ThrowsAsync<HttpRequestException>(async () =>
             {

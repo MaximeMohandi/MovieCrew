@@ -1,4 +1,5 @@
-﻿using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
+﻿using MovieCrew.Core.Domain.Movies.Interfaces;
+using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
 using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -6,11 +7,12 @@ using System.Text.Json.Nodes;
 
 namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services
 {
-    public class ThirdPartyMovieDataProvider
+    public class TmbdMovieDataProvider : IThirdPartyMovieDataProvider
     {
         private readonly HttpClient _client;
         private readonly string _searchQuery = "search/movie?query=";
-        public ThirdPartyMovieDataProvider(string baseUrl, string apiKey)
+
+        public TmbdMovieDataProvider(string baseUrl, string apiKey)
         {
             _client = new HttpClient
             {
@@ -32,7 +34,11 @@ namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services
             {
                 throw new NoMetaDataFound(title);
             }
-            return JsonSerializer.Deserialize<MovieMetadataEntity>(results[0]);
+
+            var metadata = JsonSerializer.Deserialize<MovieMetadataEntity>(results[0]);
+            metadata.PosterLink = "https://image.tmdb.org/t/p/original" + metadata.PosterLink;
+
+            return metadata;
         }
     }
 }
