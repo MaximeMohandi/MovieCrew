@@ -1,12 +1,12 @@
-﻿using MovieCrew_core.Data;
-using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Users.Dtos;
-using MovieCrew_core.Domain.Users.Entities;
-using MovieCrew_core.Domain.Users.Enums;
-using MovieCrew_core.Domain.Users.Exception;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCrew.Core.Data;
+using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Users.Dtos;
+using MovieCrew.Core.Domain.Users.Entities;
+using MovieCrew.Core.Domain.Users.Enums;
+using MovieCrew.Core.Domain.Users.Exception;
 
-namespace MovieCrew_core.Domain.Users.Repository
+namespace MovieCrew.Core.Domain.Users.Repository
 {
     public class UserRepository
     {

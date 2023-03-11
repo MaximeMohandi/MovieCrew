@@ -1,4 +1,6 @@
-﻿namespace MovieCrew_core.Domain.Movies.Entities
+﻿using MovieCrew.Core.Domain.Users.Entities;
+
+namespace MovieCrew.Core.Domain.Movies.Entities
 {
     public class MovieDetailsEntity : MovieEntity
     {
@@ -8,15 +10,18 @@
                                   DateTime addedDate,
                                   DateTime? seenDate,
                                   decimal? averageRate,
-                                  List<MovieRateEntity>? movieRates) :
+                                  List<MovieRateEntity>? movieRates,
+                                  UserEntity? proposedBy) :
             base(id, title, poster, addedDate, seenDate, averageRate)
         {
             MovieRates = movieRates;
+            ProposedBy = proposedBy;
         }
 
         public List<MovieRateEntity>? MovieRates { get; }
         public MovieRateEntity? BestRate => MovieRates?.MaxBy(r => r.Rate);
         public MovieRateEntity? WorstRate => MovieRates?.MinBy(r => r.Rate);
+        public UserEntity? ProposedBy { get; }
 
         public override bool Equals(object? obj)
         {
@@ -27,7 +32,8 @@
             return base.Equals(obj)
                 && RatesAreEquals(toCompare.MovieRates)
                 && Equals(BestRate, toCompare.BestRate)
-                && Equals(WorstRate, toCompare.WorstRate);
+                && Equals(WorstRate, toCompare.WorstRate)
+                && Equals(ProposedBy, toCompare.ProposedBy);
         }
 
         private bool RatesAreEquals(List<MovieRateEntity>? rates)
@@ -40,17 +46,18 @@
         public override int GetHashCode()
         {
             int hash = base.GetHashCode();
-            if (MovieRates is null)
+            if (MovieRates is not null)
             {
-                return HashCode.Combine(hash, 0);
+                foreach (MovieRateEntity rate in MovieRates)
+                {
+                    hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate), BestRate!.GetHashCode(), WorstRate!.GetHashCode());
+                }
             }
 
-            foreach (MovieRateEntity rate in MovieRates)
+            if (ProposedBy is not null)
             {
-                hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate));
+                hash = HashCode.Combine(hash, ProposedBy.GetHashCode());
             }
-
-            hash = HashCode.Combine(hash, BestRate!.GetHashCode(), WorstRate!.GetHashCode());
 
             return hash;
         }

@@ -1,6 +1,6 @@
-﻿using MovieCrew_core.Domain.Users.Entities;
+﻿using MovieCrew.Core.Domain.Users.Entities;
 
-namespace MovieCrew_core.Domain.Ratings.Entities
+namespace MovieCrew.Core.Domain.Ratings.Entities
 {
     public class RateEntity
     {

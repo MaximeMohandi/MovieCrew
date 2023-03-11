@@ -1,8 +1,8 @@
-﻿using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Ratings.Entities;
-using MovieCrew_core.Domain.Users.Enums;
+﻿using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Ratings.Entities;
+using MovieCrew.Core.Domain.Users.Enums;
 
-namespace MovieCrew_core.Test.Ratings
+namespace MovieCrew.Core.Test.Ratings
 {
     public class RateEqualityTest
     {

@@ -1,4 +1,4 @@
-﻿namespace MovieCrew_core.Domain.Users.Exception
+﻿namespace MovieCrew.Core.Domain.Users.Exception
 {
     public class UserException : System.Exception
     {

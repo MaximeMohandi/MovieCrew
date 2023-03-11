@@ -1,11 +1,12 @@
-﻿using MovieCrew_core.Data;
-using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Movies.Dtos;
-using MovieCrew_core.Domain.Movies.Entities;
-using MovieCrew_core.Domain.Movies.Exception;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCrew.Core.Data;
+using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Movies.Dtos;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Users.Exception;
 
-namespace MovieCrew_core.Domain.Movies.Repository
+namespace MovieCrew.Core.Domain.Movies.Repository
 {
     public class MovieRepository
     {
@@ -29,7 +30,8 @@ namespace MovieCrew_core.Domain.Movies.Repository
                        movie.Rates?.Average(r => r.Note),
                        movie.Rates?
                        .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
-                       .ToList()
+                       .ToList(),
+                       movie.ProposedBy == null ? null : new(movie.ProposedBy.Id, movie.ProposedBy.Name, movie.ProposedBy.Role)
                     );
         }
 
@@ -46,7 +48,8 @@ namespace MovieCrew_core.Domain.Movies.Repository
                        movie.Rates?.Average(r => r.Note),
                        movie.Rates?
                        .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
-                       .ToList()
+                       .ToList(),
+                       movie.ProposedBy == null ? null : new(movie.ProposedBy.Id, movie.ProposedBy.Name, movie.ProposedBy.Role)
                     );
         }
 
@@ -78,11 +81,18 @@ namespace MovieCrew_core.Domain.Movies.Repository
             if (TitleExist(creationMovie.Title))
                 throw new MovieAlreadyExistException(creationMovie.Title);
 
+            if (creationMovie.proposedById != null && !_dbContext.Users.Any(u => u.Id == creationMovie.proposedById))
+            {
+                throw new UserNotFoundException(creationMovie.proposedById.Value);
+            }
+
             var movie = new Movie()
             {
                 Name = creationMovie.Title,
                 Poster = creationMovie.Poster,
+                Description = creationMovie.Description,
                 DateAdded = DateTime.Now,
+                ProposedById = creationMovie.proposedById
             };
 
             _dbContext.Movies.Add(movie);
@@ -147,7 +157,5 @@ namespace MovieCrew_core.Domain.Movies.Repository
                 .Select(m => MappedMovie(m))
                 .ToListAsync();
         }
-
-
     }
 }

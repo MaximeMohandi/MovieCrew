@@ -1,4 +1,4 @@
-﻿namespace MovieCrew_core.Domain.Movies.Exception
+﻿namespace MovieCrew.Core.Domain.Movies.Exception
 {
     public class MovieException : System.Exception
     {

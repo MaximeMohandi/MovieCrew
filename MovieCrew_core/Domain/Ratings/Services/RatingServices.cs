@@ -1,8 +1,8 @@
-﻿using MovieCrew_core.Domain.Ratings.Dtos;
-using MovieCrew_core.Domain.Ratings.Exception;
-using MovieCrew_core.Domain.Ratings.Repository;
+﻿using MovieCrew.Core.Domain.Ratings.Dtos;
+using MovieCrew.Core.Domain.Ratings.Exception;
+using MovieCrew.Core.Domain.Ratings.Repository;
 
-namespace MovieCrew_core.Domain.Ratings.Services
+namespace MovieCrew.Core.Domain.Ratings.Services
 {
     public class RatingServices
     {

@@ -1,7 +1,7 @@
-﻿using MovieCrew_core.Domain.Users.Entities;
-using MovieCrew_core.Domain.Users.Repository;
+﻿using MovieCrew.Core.Domain.Users.Entities;
+using MovieCrew.Core.Domain.Users.Repository;
 
-namespace MovieCrew_core.Domain.Users.Services
+namespace MovieCrew.Core.Domain.Users.Services
 {
     public class SpectatorService
     {

@@ -1,12 +1,12 @@
-﻿using MovieCrew_core.Data;
-using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Users.Enums;
-using MovieCrew_core.Domain.Users.Exception;
-using MovieCrew_core.Domain.Users.Repository;
-using MovieCrew_core.Domain.Users.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCrew.Core.Data;
+using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Users.Enums;
+using MovieCrew.Core.Domain.Users.Exception;
+using MovieCrew.Core.Domain.Users.Repository;
+using MovieCrew.Core.Domain.Users.Services;
 
-namespace MovieCrew_core.Test.Users
+namespace MovieCrew.Core.Test.Users
 {
     public class AddUserTest
     {

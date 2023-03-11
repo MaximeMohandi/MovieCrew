@@ -1,10 +1,10 @@
-﻿using MovieCrew_core.Data;
-using MovieCrew_core.Domain.Movies.Repository;
-using MovieCrew_core.Domain.Ratings.Repository;
-using MovieCrew_core.Domain.Users.Repository;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCrew.Core.Data;
+using MovieCrew.Core.Domain.Movies.Repository;
+using MovieCrew.Core.Domain.Ratings.Repository;
+using MovieCrew.Core.Domain.Users.Repository;
 
-namespace MovieCrew_core.Test
+namespace MovieCrew.Core.Test
 {
     public abstract class InMemoryMovieTestBase
     {
@@ -18,7 +18,7 @@ namespace MovieCrew_core.Test
         protected UserRepository _userRepository;
 
         [OneTimeSetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             _dbContext = new AppDbContext(_dbContextOptions);
             _dbContext.Database.EnsureCreated();

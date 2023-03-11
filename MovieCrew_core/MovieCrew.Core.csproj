@@ -1,10 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Domain\ThirdPartyMovieProvider\**" />
+    <EmbeddedResource Remove="Domain\ThirdPartyMovieProvider\**" />
+    <None Remove="Domain\ThirdPartyMovieProvider\**" />
+  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeCoverage" Version="17.4.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />

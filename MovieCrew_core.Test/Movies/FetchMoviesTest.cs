@@ -1,11 +1,11 @@
-using MovieCrew_core.Data;
-using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Movies.Entities;
-using MovieCrew_core.Domain.Movies.Exception;
-using MovieCrew_core.Domain.Movies.Services;
 using Microsoft.EntityFrameworkCore;
+using MovieCrew.Core.Data;
+using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Movies.Services;
 
-namespace MovieCrew_core.Test.Movies
+namespace MovieCrew.Core.Test.Movies
 {
     public class FetchMovieTest : InMemoryMovieTestBase
     {

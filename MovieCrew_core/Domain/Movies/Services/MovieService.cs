@@ -1,17 +1,25 @@
-﻿using MovieCrew_core.Domain.Movies.Dtos;
-using MovieCrew_core.Domain.Movies.Entities;
-using MovieCrew_core.Domain.Movies.Exception;
-using MovieCrew_core.Domain.Movies.Repository;
+﻿using MovieCrew.Core.Domain.Movies.Dtos;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Movies.Interfaces;
+using MovieCrew.Core.Domain.Movies.Repository;
 
-namespace MovieCrew_core.Domain.Movies.Services
+namespace MovieCrew.Core.Domain.Movies.Services
 {
     public class MovieService
     {
         private readonly MovieRepository _movieRepository;
+        private readonly IThirdPartyMovieDataProvider? _thirdPartyMovieProvider;
 
         public MovieService(MovieRepository movieRepository)
         {
             _movieRepository = movieRepository;
+        }
+
+        public MovieService(MovieRepository movieRepository, IThirdPartyMovieDataProvider thirdPartyMovieProvider)
+        {
+            _movieRepository = movieRepository;
+            _thirdPartyMovieProvider = thirdPartyMovieProvider;
         }
 
         public async Task<List<MovieEntity>> FetchAllMovies()
@@ -45,28 +53,22 @@ namespace MovieCrew_core.Domain.Movies.Services
             return unseenMovies[randomIndex];
         }
 
-        public async Task<MovieEntity> AddMovie(MovieCreationDto movie)
+        public async Task<MovieEntity> AddMovie(string title, long? proposedById)
         {
-            return await _movieRepository.Add(movie);
+            try
+            {
+                var metadata = await _thirdPartyMovieProvider.GetDetails(title);
+                return await _movieRepository.Add(new(title, metadata.PosterLink, metadata.Description, proposedById));
+            }
+            catch (NoMetaDataFound)
+            {
+                throw new MovieNotFoundException(title);
+            }
         }
 
         public async Task ChangeTitle(MovieRenameDto renameDto)
         {
             await _movieRepository.Update(renameDto);
-        }
-
-        public async Task AddPoster(MovieChangePosterDto changePoster)
-        {
-            if (!IsValidUrl(changePoster))
-            {
-                throw new MoviePosterFormatException();
-            }
-            await _movieRepository.Update(changePoster);
-        }
-
-        private static bool IsValidUrl(MovieChangePosterDto changePoster)
-        {
-            return Uri.IsWellFormedUriString(changePoster.NewPosterLink, UriKind.Absolute) && changePoster.NewPosterLink.StartsWith("http");
         }
 
         public async Task SetSeenDate(MovieSetSeenDateDto movieSetSeenDateDTO)

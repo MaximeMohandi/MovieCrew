@@ -1,8 +1,8 @@
-﻿using MovieCrew_core.Data;
-using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Ratings.Dtos;
+﻿using MovieCrew.Core.Data;
+using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Ratings.Dtos;
 
-namespace MovieCrew_core.Domain.Ratings.Repository
+namespace MovieCrew.Core.Domain.Ratings.Repository
 {
     public class RateRepository
     {

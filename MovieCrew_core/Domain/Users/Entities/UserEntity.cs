@@ -1,6 +1,6 @@
-﻿using MovieCrew_core.Domain.Users.Enums;
+﻿using MovieCrew.Core.Domain.Users.Enums;
 
-namespace MovieCrew_core.Domain.Users.Entities
+namespace MovieCrew.Core.Domain.Users.Entities
 {
     public class UserEntity
     {

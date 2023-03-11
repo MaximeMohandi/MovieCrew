@@ -1,9 +1,9 @@
-﻿using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Ratings.Dtos;
-using MovieCrew_core.Domain.Ratings.Exception;
-using MovieCrew_core.Domain.Ratings.Services;
+﻿using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Ratings.Dtos;
+using MovieCrew.Core.Domain.Ratings.Exception;
+using MovieCrew.Core.Domain.Ratings.Services;
 
-namespace MovieCrew_core.Test.Ratings
+namespace MovieCrew.Core.Test.Ratings
 {
     public class RateMovieTest : InMemoryMovieTestBase
     {
