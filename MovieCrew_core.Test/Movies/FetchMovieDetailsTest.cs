@@ -77,7 +77,7 @@ namespace MovieCrew.Core.Test.Movies
         [Test]
         public void IdNotFound()
         {
-            MovieService movieServices = new(_movieRepository);
+            MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
 
             MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetById(-1));
 

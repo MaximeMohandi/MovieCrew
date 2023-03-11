@@ -34,23 +34,10 @@ namespace MovieCrew.Core.Domain.Movies.Repository
                 : movie.ToDetailledEntity();
         }
 
-        private static MovieEntity MappedMovie(Movie movie)
-        {
-            return new(
-                movie.Id,
-                movie.Name,
-                movie.Poster,
-                movie.Description,
-                movie.DateAdded,
-                movie.SeenDate,
-                movie.Rates?.Average(r => r.Note)
-            );
-        }
-
         public async Task<List<MovieEntity>> GetAll()
         {
             var movies = await _dbContext.Movies
-                .Select(m => MappedMovie(m))
+                .Select(m => m.ToEntity())
                 .ToListAsync();
 
             if (movies.Count == 0) throw new NoMoviesFoundException();
@@ -81,7 +68,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
 
             await _dbContext.SaveChangesAsync();
 
-            return MappedMovie(movie);
+            return movie.ToEntity();
         }
 
         private bool TitleExist(string title)
@@ -122,7 +109,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
         {
             return await _dbContext.Movies
                 .Where(m => !m.SeenDate.HasValue)
-                .Select(m => MappedMovie(m))
+                .Select(m => m.ToEntity())
                 .ToListAsync();
         }
     }

@@ -5,6 +5,19 @@ namespace MovieCrew.Core.Domain.Movies.Extension
 {
     public static class MovieMapExtension
     {
+        public static MovieEntity ToEntity(this Movie movie)
+        {
+            return new(
+                movie.Id,
+                movie.Name,
+                movie.Poster,
+                movie.Description,
+                movie.DateAdded,
+                movie.SeenDate,
+                movie.Rates?.Average(r => r.Note)
+            );
+        }
+
         public static MovieDetailsEntity ToDetailledEntity(this Movie movie)
         {
             return new(movie.Id,

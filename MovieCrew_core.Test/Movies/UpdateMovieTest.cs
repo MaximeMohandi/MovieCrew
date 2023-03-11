@@ -10,7 +10,7 @@ namespace MovieCrew.Core.Test.Movies
         [Test]
         public async Task Rename()
         {
-            MovieService movieService = new(_movieRepository);
+            MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
             await movieService.ChangeTitle(new(1, "Asterix & Obelix : Mission Cléopatre", "nouveau nom"));
 
@@ -20,7 +20,7 @@ namespace MovieCrew.Core.Test.Movies
         [Test]
         public void CantRenameAMovieWithAlreadyUsedTitle()
         {
-            MovieService movieService = new(_movieRepository);
+            MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
             MovieRenameDto renameMovieData = new(1, "Asterix & Obelix : Mission Cléopatre", "Asterix & Obelix : Mission Cléopatre");
 
             MovieAlreadyExistException ex = Assert.ThrowsAsync<MovieAlreadyExistException>(async () => await movieService.ChangeTitle(renameMovieData));
@@ -32,7 +32,7 @@ namespace MovieCrew.Core.Test.Movies
         [Test]
         public async Task SetSeenDate()
         {
-            MovieService movieService = new(_movieRepository);
+            MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
             var updatedMovie = _dbContext.Movies.Single(m => m.Id == 1);
 
             await movieService.SetSeenDate(new MovieSetSeenDateDto(1, DateTime.Now));
