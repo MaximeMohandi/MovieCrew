@@ -28,29 +28,6 @@ namespace MovieCrew_core.Test.Movies
             Assert.That(ex.Message, Is.EqualTo($"Asterix & Obelix : Mission Cléopatre is already in the list."));
         }
 
-        [Test]
-        public async Task AddPoster()
-        {
-            MovieService movieService = new(_movieRepository);
-
-            await movieService.AddPoster(new(1, "http://newPoster.com"));
-
-            var moviePoster = _dbContext.Movies.First(m => m.Id == 1);
-
-            Assert.That(moviePoster.Poster, Is.EqualTo("http://newPoster.com"));
-        }
-
-        [TestCase("htt://www.test.com")]
-        [TestCase("alink")]
-        [TestCase("www.test.fr")]
-        [TestCase("www.test.")]
-        [TestCase("poster.com")]
-        public void CantAddPosterWithIncorrectFormat(string url)
-        {
-            MovieService movieService = new(_movieRepository);
-
-            Assert.ThrowsAsync<MoviePosterFormatException>(async () => await movieService.AddPoster(new(1, url)));
-        }
 
         [Test]
         public async Task SetSeenDate()

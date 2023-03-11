@@ -72,21 +72,6 @@ namespace MovieCrew_core.Domain.Movies.Services
             await _movieRepository.Update(renameDto);
         }
 
-        public async Task AddPoster(MovieChangePosterDto changePoster)
-        {
-            if (!IsValidUrl(changePoster))
-            {
-                throw new MoviePosterFormatException();
-            }
-            await _movieRepository.Update(changePoster);
-        }
-
-        private static bool IsValidUrl(MovieChangePosterDto changePoster)
-        {
-            return Uri.TryCreate(changePoster.NewPosterLink, UriKind.Absolute, out Uri uriResult)
-                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-        }
-
         public async Task SetSeenDate(MovieSetSeenDateDto movieSetSeenDateDTO)
         {
             await _movieRepository.Update(movieSetSeenDateDTO);
