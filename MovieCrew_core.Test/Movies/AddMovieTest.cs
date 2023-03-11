@@ -36,7 +36,7 @@ namespace MovieCrew.Core.Test.Movies
         public void CantAddMovieThatDoNotExist()
         {
             _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
-               .ThrowsAsync(new NoMetaDataFound("dsfsdfsdaaa"));
+               .ThrowsAsync(new NoMetaDataFoundException("dsfsdfsdaaa"));
             IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
 
             MovieService service = new(_movieRepository, thirdPartyProvider);

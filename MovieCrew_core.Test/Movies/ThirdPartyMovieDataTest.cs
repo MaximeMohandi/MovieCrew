@@ -40,10 +40,10 @@ namespace MovieCrew.Core.Test.Movies
         public void FetchMovieThatDoNotExist()
         {
             _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
-                .ThrowsAsync(new NoMetaDataFound("hJjK9pLm3tRq"));
+                .ThrowsAsync(new NoMetaDataFoundException("hJjK9pLm3tRq"));
             IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
 
-            Assert.ThrowsAsync<NoMetaDataFound>(async () =>
+            Assert.ThrowsAsync<NoMetaDataFoundException>(async () =>
             {
                 //use random hash to be sure a movie will not have this title
                 await thirdPartyProvider.GetDetails("hJjK9pLm3tRq");

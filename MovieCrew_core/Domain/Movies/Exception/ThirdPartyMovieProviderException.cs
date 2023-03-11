@@ -5,8 +5,8 @@
         public ThirdPartyMovieProviderException(string message) : base(message) { }
     }
 
-    public class NoMetaDataFound : ThirdPartyMovieProviderException
+    public class NoMetaDataFoundException : ThirdPartyMovieProviderException
     {
-        public NoMetaDataFound(string title) : base($"No metadata found for the movie {title}.") { }
+        public NoMetaDataFoundException(string title) : base($"No metadata found for the movie {title}.") { }
     }
 }
