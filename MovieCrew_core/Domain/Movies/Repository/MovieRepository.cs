@@ -4,6 +4,7 @@ using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Movies.Dtos;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Movies.Extension;
 using MovieCrew.Core.Domain.Users.Exception;
 
 namespace MovieCrew.Core.Domain.Movies.Repository
@@ -22,20 +23,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
             var movie = await _dbContext.Movies.Where(m => m.Name.ToLower() == title.ToLower()).FirstOrDefaultAsync();
             return movie is null
                 ? throw new MovieNotFoundException(title)
-                : new(movie.Id,
-                       movie.Name,
-                       movie.Poster,
-                       movie.Description,
-                       movie.DateAdded,
-                       movie.SeenDate,
-                       movie.Rates?.Average(r => r.Note),
-                       null,
-                       null,
-                       movie.Rates?
-                       .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
-                       .ToList(),
-                       movie.ProposedBy == null ? null : new(movie.ProposedBy.Id, movie.ProposedBy.Name, movie.ProposedBy.Role)
-                    );
+                : movie.ToDetailledEntity();
         }
 
         public async Task<MovieDetailsEntity> GetMovie(int id)
@@ -43,20 +31,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
             var movie = await _dbContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
             return movie is null
                 ? throw new MovieNotFoundException(id)
-                : new(movie.Id,
-                       movie.Name,
-                       movie.Poster,
-                       movie.Description,
-                       movie.DateAdded,
-                       movie.SeenDate,
-                       movie.Rates?.Average(r => r.Note),
-                       null,
-                       null,
-                       movie.Rates?
-                       .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
-                       .ToList(),
-                       movie.ProposedBy == null ? null : new(movie.ProposedBy.Id, movie.ProposedBy.Name, movie.ProposedBy.Role)
-                    );
+                : movie.ToDetailledEntity();
         }
 
         private static MovieEntity MappedMovie(Movie movie)
