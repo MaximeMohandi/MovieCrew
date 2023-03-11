@@ -1,5 +1,5 @@
-﻿using MovieCrew.Core.Domain.Movies.Interfaces;
-using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception;
+﻿using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew_core.Domain.Movies.Dtos;
 using MovieCrew_core.Domain.Movies.Entities;
 using MovieCrew_core.Domain.Movies.Exception;

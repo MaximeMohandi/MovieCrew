@@ -1,32 +1,31 @@
-﻿using Microsoft.Extensions.Configuration;
-using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services;
+﻿using Moq;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew_core.Domain.Movies.Entities;
 using MovieCrew_core.Domain.Movies.Exception;
 using MovieCrew_core.Domain.Movies.Services;
 using MovieCrew_core.Domain.Users.Exception;
-using MovieCrew_Core.Test.ThirdPartyMovieProvider;
 
 namespace MovieCrew_core.Test.Movies
 {
     public class AddMovieTest : InMemoryMovieTestBase
     {
-        private string _apiKey;
-        private string _apiUrl;
+        private Mock<IThirdPartyMovieDataProvider> _fakeDataProvider;
         public override void SetUp()
         {
             base.SetUp();
-            var configuration = new ConfigurationBuilder()
-                .AddUserSecrets<ThirdPartyMovieDataTest>()
-                .Build();
-
-            _apiKey = configuration["ThirdPartyMovieData:apiKey"];
-            _apiUrl = configuration["ThirdPartyMovieData:url"];
+            _fakeDataProvider = new Mock<IThirdPartyMovieDataProvider>();
         }
 
         [Test]
         public async Task AddMovie()
         {
-            MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiKey));
+            _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+                .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+            IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
+
+            MovieService service = new(_movieRepository, thirdPartyProvider);
 
             MovieEntity addedMovie = await service.AddMovie("Pinnochio", 1);
 
@@ -43,7 +42,11 @@ namespace MovieCrew_core.Test.Movies
         [Test]
         public void CantAddMovieThatDoNotExist()
         {
-            MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiKey));
+            _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+               .ThrowsAsync(new NoMetaDataFound("dsfsdfsdaaa"));
+            IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
+
+            MovieService service = new(_movieRepository, thirdPartyProvider);
 
             Assert.ThrowsAsync<MovieNotFoundException>(() => service.AddMovie("dsfsdfsdaaa", 1));
         }
@@ -51,7 +54,8 @@ namespace MovieCrew_core.Test.Movies
         [Test]
         public void CantAddMovieProposedByUnknownUser()
         {
-            MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiKey));
+            IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
+            MovieService service = new(_movieRepository, thirdPartyProvider);
 
             Assert.ThrowsAsync<UserNotFoundException>(() => service.AddMovie("The Asada Family", 2));
         }
@@ -59,7 +63,8 @@ namespace MovieCrew_core.Test.Movies
         [Test]
         public void CantAddExistMovie()
         {
-            MovieService service = new(_movieRepository, new TmbdMovieDataProvider(_apiKey));
+            IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
+            MovieService service = new(_movieRepository, thirdPartyProvider);
 
             Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie("The Fifth element", null));
         }

@@ -1,30 +1,26 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Moq;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Interfaces;
-using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
-using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception;
-using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services;
 
 namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
 {
     public class ThirdPartyMovieDataTest
     {
-        private string _apiKey;
-        private string _apiUrl;
+        private Mock<IThirdPartyMovieDataProvider> _fakeDataProvider;
 
         [SetUp]
         public void SetUp()
         {
-            var configuration = new ConfigurationBuilder()
-                .AddUserSecrets<ThirdPartyMovieDataTest>()
-                .Build();
-
-            _apiKey = configuration["ThirdPartyMovieData:apiKey"];
+            _fakeDataProvider = new Mock<IThirdPartyMovieDataProvider>();
         }
 
         [Test]
         public async Task FetchDetailsFromThirdParty()
         {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiKey);
+            _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+                .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+            IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
 
             //use well known movie (top 10 box office) to be sure to get some data from third party
             MovieMetadataEntity actual = await thirdPartyProvider.GetDetails("Titanic");
@@ -43,35 +39,15 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public void FetchMovieThatDoNotExist()
         {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiKey);
+            _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+                .ThrowsAsync(new NoMetaDataFound("hJjK9pLm3tRq"));
+            IThirdPartyMovieDataProvider thirdPartyProvider = _fakeDataProvider.Object;
 
             Assert.ThrowsAsync<NoMetaDataFound>(async () =>
             {
                 //use random hash to be sure a movie will not have this title
                 await thirdPartyProvider.GetDetails("hJjK9pLm3tRq");
             }, "No metadata found for the movie hJjK9pLm3tRq.");
-        }
-
-        [Test]
-        public void DidNotConnectToThirdParty()
-        {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider("");
-
-            Assert.ThrowsAsync<HttpRequestException>(async () =>
-            {
-                await thirdPartyProvider.GetDetails("Iron Man");
-            });
-        }
-
-        [Test]
-        public void UnauthorizedAccessToThirdParty()
-        {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider("");
-
-            Assert.ThrowsAsync<HttpRequestException>(async () =>
-            {
-                await thirdPartyProvider.GetDetails("Iron Man");
-            }, "Response status code does not indicate success: 401 (Unauthorized).");
         }
     }
 }

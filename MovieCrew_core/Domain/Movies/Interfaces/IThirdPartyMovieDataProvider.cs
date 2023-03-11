@@ -1,4 +1,4 @@
-﻿using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
+﻿using MovieCrew.Core.Domain.Movies.Entities;
 
 namespace MovieCrew.Core.Domain.Movies.Interfaces
 {

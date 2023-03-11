@@ -1,4 +1,4 @@
-﻿namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception
+﻿namespace MovieCrew.Core.Domain.Movies.Exception
 {
     public class ThirdPartyMovieProviderException : System.Exception
     {
