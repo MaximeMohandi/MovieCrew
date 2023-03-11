@@ -90,6 +90,7 @@ namespace MovieCrew_core.Domain.Movies.Repository
             {
                 Name = creationMovie.Title,
                 Poster = creationMovie.Poster,
+                Description = creationMovie.Description,
                 DateAdded = DateTime.Now,
                 ProposedById = creationMovie.proposedById
             };

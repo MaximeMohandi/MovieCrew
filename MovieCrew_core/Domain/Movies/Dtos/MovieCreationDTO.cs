@@ -1,4 +1,4 @@
 ﻿namespace MovieCrew_core.Domain.Movies.Dtos
 {
-    public record MovieCreationDto(string Title, string Poster, long? proposedById);
+    public record MovieCreationDto(string Title, string Poster, string Description, long? proposedById);
 }

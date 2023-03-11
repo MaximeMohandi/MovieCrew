@@ -59,7 +59,7 @@ namespace MovieCrew_core.Domain.Movies.Services
             try
             {
                 var metadata = await _thirdPartyMovieProvider.GetDetails(title);
-                return await _movieRepository.Add(new(title, metadata.PosterLink, proposedById));
+                return await _movieRepository.Add(new(title, metadata.PosterLink, metadata.Description, proposedById));
             }
             catch (NoMetaDataFound)
             {
