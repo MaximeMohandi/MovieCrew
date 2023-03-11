@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MovieCrew_core.Data;
-using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Movies.Dtos;
-using MovieCrew_core.Domain.Movies.Entities;
-using MovieCrew_core.Domain.Movies.Exception;
-using MovieCrew_core.Domain.Users.Exception;
+using MovieCrew.Core.Data;
+using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Movies.Dtos;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Users.Exception;
 
-namespace MovieCrew_core.Domain.Movies.Repository
+namespace MovieCrew.Core.Domain.Movies.Repository
 {
     public class MovieRepository
     {

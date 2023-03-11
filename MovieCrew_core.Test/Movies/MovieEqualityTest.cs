@@ -1,7 +1,7 @@
-﻿using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Movies.Entities;
+﻿using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Movies.Entities;
 
-namespace MovieCrew_core.Test.Movies
+namespace MovieCrew.Core.Test.Movies
 {
     public class MovieEqualityTest
     {

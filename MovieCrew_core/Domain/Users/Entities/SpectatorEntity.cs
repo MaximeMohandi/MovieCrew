@@ -1,4 +1,4 @@
-﻿namespace MovieCrew_core.Domain.Users.Entities
+﻿namespace MovieCrew.Core.Domain.Users.Entities
 {
     public class SpectatorDetailsEntity
     {

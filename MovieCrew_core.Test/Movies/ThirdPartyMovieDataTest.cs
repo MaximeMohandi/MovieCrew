@@ -3,7 +3,7 @@ using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Interfaces;
 
-namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
+namespace MovieCrew.Core.Test.Movies
 {
     public class ThirdPartyMovieDataTest
     {

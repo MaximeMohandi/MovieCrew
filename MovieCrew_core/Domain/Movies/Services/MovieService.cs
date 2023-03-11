@@ -1,11 +1,10 @@
-﻿using MovieCrew.Core.Domain.Movies.Exception;
+﻿using MovieCrew.Core.Domain.Movies.Dtos;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Interfaces;
-using MovieCrew_core.Domain.Movies.Dtos;
-using MovieCrew_core.Domain.Movies.Entities;
-using MovieCrew_core.Domain.Movies.Exception;
-using MovieCrew_core.Domain.Movies.Repository;
+using MovieCrew.Core.Domain.Movies.Repository;
 
-namespace MovieCrew_core.Domain.Movies.Services
+namespace MovieCrew.Core.Domain.Movies.Services
 {
     public class MovieService
     {

@@ -1,4 +1,4 @@
-﻿namespace MovieCrew_core.Domain.Movies.Entities
+﻿namespace MovieCrew.Core.Domain.Movies.Entities
 {
     public class MovieEntity
     {

@@ -2,12 +2,10 @@
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Interfaces;
-using MovieCrew_core.Domain.Movies.Entities;
-using MovieCrew_core.Domain.Movies.Exception;
-using MovieCrew_core.Domain.Movies.Services;
-using MovieCrew_core.Domain.Users.Exception;
+using MovieCrew.Core.Domain.Movies.Services;
+using MovieCrew.Core.Domain.Users.Exception;
 
-namespace MovieCrew_core.Test.Movies
+namespace MovieCrew.Core.Test.Movies
 {
     public class AddMovieTest : InMemoryMovieTestBase
     {

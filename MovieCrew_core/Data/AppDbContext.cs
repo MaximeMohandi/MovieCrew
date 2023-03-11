@@ -1,7 +1,7 @@
-﻿using MovieCrew_core.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCrew.Core.Data.Models;
 
-namespace MovieCrew_core.Data
+namespace MovieCrew.Core.Data
 {
     public class AppDbContext : DbContext
     {

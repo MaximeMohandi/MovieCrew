@@ -1,4 +1,4 @@
-﻿namespace MovieCrew_core.Data.Models
+﻿namespace MovieCrew.Core.Data.Models
 {
     public class Rate
     {

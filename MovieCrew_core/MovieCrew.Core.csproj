@@ -3,16 +3,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UserSecretsId>5a57ce3a-5c43-4206-bb7e-369dac6acb1c</UserSecretsId>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Domain\ThirdPartyMovieProvider\**" />
+    <EmbeddedResource Remove="Domain\ThirdPartyMovieProvider\**" />
+    <None Remove="Domain\ThirdPartyMovieProvider\**" />
+  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeCoverage" Version="17.4.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.0" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Domain\ThirdPartyMovieProvider\Entities\" />
-	  <Folder Include="Domain\ThirdPartyMovieProvider\Exception\" />
-	  <Folder Include="Domain\ThirdPartyMovieProvider\Services\" />
 	</ItemGroup>
 </Project>

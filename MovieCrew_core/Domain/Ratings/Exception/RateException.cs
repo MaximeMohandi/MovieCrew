@@ -1,4 +1,4 @@
-﻿namespace MovieCrew_core.Domain.Ratings.Exception
+﻿namespace MovieCrew.Core.Domain.Ratings.Exception
 {
     public class RateException : System.Exception
     {

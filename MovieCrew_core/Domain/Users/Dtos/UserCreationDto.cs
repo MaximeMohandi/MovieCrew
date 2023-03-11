@@ -1,6 +1,6 @@
-﻿using MovieCrew_core.Domain.Users.Enums;
+﻿using MovieCrew.Core.Domain.Users.Enums;
 
-namespace MovieCrew_core.Domain.Users.Dtos
+namespace MovieCrew.Core.Domain.Users.Dtos
 {
     public record UserCreationDto(string Name, UserRoles Role = UserRoles.None);
 }

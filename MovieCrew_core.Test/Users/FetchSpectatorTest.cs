@@ -1,10 +1,10 @@
-﻿using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Movies.Entities;
-using MovieCrew_core.Domain.Users.Entities;
-using MovieCrew_core.Domain.Users.Exception;
-using MovieCrew_core.Domain.Users.Services;
+﻿using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Users.Entities;
+using MovieCrew.Core.Domain.Users.Exception;
+using MovieCrew.Core.Domain.Users.Services;
 
-namespace MovieCrew_core.Test.Users
+namespace MovieCrew.Core.Test.Users
 {
     public class FetchSpectatorTest : InMemoryMovieTestBase
     {

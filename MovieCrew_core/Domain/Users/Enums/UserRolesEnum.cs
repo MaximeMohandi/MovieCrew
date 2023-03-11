@@ -1,4 +1,4 @@
-﻿namespace MovieCrew_core.Domain.Users.Enums
+﻿namespace MovieCrew.Core.Domain.Users.Enums
 {
     public enum UserRoles
     {

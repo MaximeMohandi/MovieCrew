@@ -1,9 +1,9 @@
-﻿using MovieCrew_core.Data.Models;
-using MovieCrew_core.Domain.Movies.Dtos;
-using MovieCrew_core.Domain.Movies.Exception;
-using MovieCrew_core.Domain.Movies.Services;
+﻿using MovieCrew.Core.Data.Models;
+using MovieCrew.Core.Domain.Movies.Dtos;
+using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Movies.Services;
 
-namespace MovieCrew_core.Test.Movies
+namespace MovieCrew.Core.Test.Movies
 {
     public class UpdateMovie : InMemoryMovieTestBase
     {
