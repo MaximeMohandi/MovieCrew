@@ -1,4 +1,6 @@
-﻿using MovieCrew_core.Domain.Movies.Dtos;
+﻿using MovieCrew.Core.Domain.Movies.Interfaces;
+using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception;
+using MovieCrew_core.Domain.Movies.Dtos;
 using MovieCrew_core.Domain.Movies.Entities;
 using MovieCrew_core.Domain.Movies.Exception;
 using MovieCrew_core.Domain.Movies.Repository;
@@ -8,10 +10,17 @@ namespace MovieCrew_core.Domain.Movies.Services
     public class MovieService
     {
         private readonly MovieRepository _movieRepository;
+        private readonly IThirdPartyMovieDataProvider? _thirdPartyMovieProvider;
 
         public MovieService(MovieRepository movieRepository)
         {
             _movieRepository = movieRepository;
+        }
+
+        public MovieService(MovieRepository movieRepository, IThirdPartyMovieDataProvider thirdPartyMovieProvider)
+        {
+            _movieRepository = movieRepository;
+            _thirdPartyMovieProvider = thirdPartyMovieProvider;
         }
 
         public async Task<List<MovieEntity>> FetchAllMovies()
@@ -47,7 +56,15 @@ namespace MovieCrew_core.Domain.Movies.Services
 
         public async Task<MovieEntity> AddMovie(MovieCreationDto movie)
         {
-            return await _movieRepository.Add(movie);
+            try
+            {
+                var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title);
+                return await _movieRepository.Add(new(movie.Title, metadata.PosterLink, movie.proposedById));
+            }
+            catch (NoMetaDataFound)
+            {
+                throw new MovieNotFoundException(movie.Title);
+            }
         }
 
         public async Task ChangeTitle(MovieRenameDto renameDto)
