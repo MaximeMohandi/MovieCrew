@@ -1,4 +1,5 @@
 ﻿using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
+using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -19,12 +20,15 @@ namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services
         public async Task<MovieMetadataEntity> GetDetails(string title)
         {
             HttpResponseMessage response = await _client.GetAsync(_searchQuery + title);
+
+            response.EnsureSuccessStatusCode();
+
             var content = await response.Content.ReadAsStringAsync();
             JsonNode results = JsonNode.Parse(content)["results"];
 
             if (results.AsArray().Count == 0)
             {
-                throw new Exception("movie not existing");
+                throw new NoMetaDataFound(title);
             }
             return JsonSerializer.Deserialize<MovieMetadataEntity>(results[0]);
         }

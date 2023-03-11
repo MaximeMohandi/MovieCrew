@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Entities;
+using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Exception;
 using MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services;
 
-namespace BillB0ard_API.Test.ThirdPartyMovieProvider
+namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
 {
     public class ThirdPartyMovieDataTest
     {
@@ -41,14 +42,38 @@ namespace BillB0ard_API.Test.ThirdPartyMovieProvider
         }
 
         [Test]
-        public async Task FetchMovieThatDoNotExist()
+        public void FetchMovieThatDoNotExist()
         {
             var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, _apiKey);
 
-            //use random hash to be sure a movie will not have this title
-            MovieMetadataEntity actual = await thirdPartyProvider.GetDetails("hJjK9pLm3tRq");
+            Assert.ThrowsAsync<NoMetaDataFound>(async () =>
+            {
+                //use random hash to be sure a movie will not have this title
+                await thirdPartyProvider.GetDetails("hJjK9pLm3tRq");
+            }, "No metadata found for the movie hJjK9pLm3tRq.");
+        }
 
-            Assert.Throws<Exception>(() => { });
+        [Test]
+        public void DidNotConnectToThirdParty()
+        {
+            var thirdPartyProvider = new ThirdPartyMovieDataProvider("http://test/", "");
+
+            Assert.ThrowsAsync<HttpRequestException>(async () =>
+            {
+                await thirdPartyProvider.GetDetails("Iron Man");
+            });
+        }
+
+
+        [Test]
+        public void UnauthorizedAccessToThirdParty()
+        {
+            var thirdPartyProvider = new ThirdPartyMovieDataProvider(_apiUrl, "");
+
+            Assert.ThrowsAsync<HttpRequestException>(async () =>
+            {
+                await thirdPartyProvider.GetDetails("Iron Man");
+            }, "Response status code does not indicate success: 401 (Unauthorized).");
         }
     }
 }
