@@ -11,14 +11,20 @@ namespace MovieCrew.Core.Domain.Movies.Entities
                                   DateTime addedDate,
                                   DateTime? seenDate,
                                   decimal? averageRate,
+                                  decimal? peopleAverageRate,
+                                  decimal? revenue,
                                   List<MovieRateEntity>? movieRates,
                                   UserEntity? proposedBy) :
             base(id, title, poster, descsription, addedDate, seenDate, averageRate)
         {
+            PeopleAverageRate = peopleAverageRate;
+            Revenue = revenue;
             MovieRates = movieRates;
             ProposedBy = proposedBy;
         }
 
+        public decimal? PeopleAverageRate { get; set; }
+        public decimal? Revenue { get; set; }
         public List<MovieRateEntity>? MovieRates { get; }
         public MovieRateEntity? BestRate => MovieRates?.MaxBy(r => r.Rate);
         public MovieRateEntity? WorstRate => MovieRates?.MinBy(r => r.Rate);
@@ -34,6 +40,8 @@ namespace MovieCrew.Core.Domain.Movies.Entities
                 && RatesAreEquals(toCompare.MovieRates)
                 && Equals(BestRate, toCompare.BestRate)
                 && Equals(WorstRate, toCompare.WorstRate)
+                && Equals(PeopleAverageRate, toCompare.PeopleAverageRate)
+                && Equals(Revenue, toCompare.Revenue)
                 && Equals(ProposedBy, toCompare.ProposedBy);
         }
 
@@ -54,13 +62,11 @@ namespace MovieCrew.Core.Domain.Movies.Entities
                     hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate), BestRate!.GetHashCode(), WorstRate!.GetHashCode());
                 }
             }
-
-            if (ProposedBy is not null)
-            {
-                hash = HashCode.Combine(hash, ProposedBy.GetHashCode());
-            }
-
+            hash = HashCode.Combine(hash, ProposedBy is null ? 0 : ProposedBy.GetHashCode());
+            hash = HashCode.Combine(hash, PeopleAverageRate is null ? 0 : PeopleAverageRate.GetHashCode());
+            hash = HashCode.Combine(hash, Revenue is null ? 0 : Revenue.GetHashCode());
             return hash;
         }
+
     }
 }

@@ -9,12 +9,6 @@ namespace MovieCrew.Core.Test.Movies
 {
     public class AddMovieTest : InMemoryMovieTestBase
     {
-        private Mock<IThirdPartyMovieDataProvider> _fakeDataProvider;
-        public override void SetUp()
-        {
-            base.SetUp();
-            _fakeDataProvider = new Mock<IThirdPartyMovieDataProvider>();
-        }
 
         [Test]
         public async Task AddMovie()

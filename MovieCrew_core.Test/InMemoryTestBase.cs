@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using MovieCrew.Core.Data;
+using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Ratings.Repository;
 using MovieCrew.Core.Domain.Users.Repository;
@@ -16,10 +18,12 @@ namespace MovieCrew.Core.Test
         protected MovieRepository _movieRepository;
         protected RateRepository _rateRepository;
         protected UserRepository _userRepository;
+        protected Mock<IThirdPartyMovieDataProvider> _fakeDataProvider;
 
         [OneTimeSetUp]
         public virtual void SetUp()
         {
+            _fakeDataProvider = new Mock<IThirdPartyMovieDataProvider>();
             _dbContext = new AppDbContext(_dbContextOptions);
             _dbContext.Database.EnsureCreated();
 

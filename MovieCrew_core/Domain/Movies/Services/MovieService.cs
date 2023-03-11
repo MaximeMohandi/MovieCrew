@@ -29,12 +29,20 @@ namespace MovieCrew.Core.Domain.Movies.Services
 
         public async Task<MovieDetailsEntity> GetByTitle(string title)
         {
-            return await _movieRepository.GetMovie(title);
+            var metadata = await _thirdPartyMovieProvider.GetDetails(title.ToLower());
+            var moviedetails = await _movieRepository.GetMovie(title);
+            moviedetails.PeopleAverageRate = metadata.Ratings;
+            moviedetails.Revenue = metadata.Revenue;
+            return moviedetails;
         }
 
         public async Task<MovieDetailsEntity> GetById(int movieId)
         {
-            return await _movieRepository.GetMovie(movieId);
+            var movie = await _movieRepository.GetMovie(movieId);
+            var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
+            movie.PeopleAverageRate = metadata.Ratings;
+            movie.Revenue = metadata.Revenue;
+            return movie;
         }
 
         public async Task<MovieEntity> RandomMovie()

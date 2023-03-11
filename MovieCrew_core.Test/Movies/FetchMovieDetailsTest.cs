@@ -1,4 +1,5 @@
-﻿using MovieCrew.Core.Data.Models;
+﻿using Moq;
+using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Services;
@@ -16,7 +17,9 @@ namespace MovieCrew.Core.Test.Movies
         [TestCase("loRd of tHe rIng")]
         public async Task MovieDetailByTitle(string title)
         {
-            MovieService movieService = new(_movieRepository);
+            _fakeDataProvider.Setup(x => x.GetDetails("lord of the ring"))
+                .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550));
+            MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
             List<MovieRateEntity> expectedRates = new()
             {
@@ -24,7 +27,7 @@ namespace MovieCrew.Core.Test.Movies
                 new(new(2, "Dudley", UserRoles.User), 2.0M),
                 new(new(3, "T-Rex", UserRoles.User), 5.25M),
             };
-            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", "Greatest movie on earth", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates, new UserEntity(1, "Jabba", UserRoles.User));
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", "Greatest movie on earth", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, 10M, 2555550, expectedRates, new UserEntity(1, "Jabba", UserRoles.User));
 
 
             MovieDetailsEntity actual = await movieService.GetByTitle(title);
@@ -39,7 +42,7 @@ namespace MovieCrew.Core.Test.Movies
         [Test]
         public void TitleNotFound()
         {
-            MovieService movieServices = new(_movieRepository);
+            MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
 
             MovieNotFoundException ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetByTitle("star wars VIII"));
 
@@ -49,7 +52,9 @@ namespace MovieCrew.Core.Test.Movies
         [Test]
         public async Task MovieDetailById()
         {
-            MovieService movieService = new(_movieRepository);
+            _fakeDataProvider.Setup(x => x.GetDetails("lord of the ring"))
+                .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550));
+            MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
             List<MovieRateEntity> expectedRates = new()
             {
@@ -57,7 +62,7 @@ namespace MovieCrew.Core.Test.Movies
                 new(new(2, "Dudley", UserRoles.User), 2.0M),
                 new(new(3, "T-Rex", UserRoles.User), 5.25M),
             };
-            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", "Greatest movie on earth", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, expectedRates, new UserEntity(1, "Jabba", UserRoles.User));
+            MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", "Greatest movie on earth", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, 10M, 2555550, expectedRates, new UserEntity(1, "Jabba", UserRoles.User));
 
 
             MovieDetailsEntity actual = await movieService.GetById(1);
@@ -82,9 +87,11 @@ namespace MovieCrew.Core.Test.Movies
         [Test]
         public async Task MovieDetailButWithNoRates()
         {
-            MovieService movieService = new(_movieRepository);
+            _fakeDataProvider.Setup(x => x.GetDetails("harry potter"))
+                .ReturnsAsync(new MovieMetadataEntity("", "", 5M, 2555555M));
+            MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
-            MovieDetailsEntity expected = new(2, "Harry Potter", "", "", new DateTime(2015, 8, 3), null, null, null, null);
+            MovieDetailsEntity expected = new(2, "Harry Potter", "", "", new DateTime(2015, 8, 3), null, null, 5M, 2555555M, null, null);
 
             MovieDetailsEntity actual = await movieService.GetById(2);
 

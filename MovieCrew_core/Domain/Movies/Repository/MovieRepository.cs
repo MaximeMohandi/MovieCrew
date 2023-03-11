@@ -29,6 +29,8 @@ namespace MovieCrew.Core.Domain.Movies.Repository
                        movie.DateAdded,
                        movie.SeenDate,
                        movie.Rates?.Average(r => r.Note),
+                       null,
+                       null,
                        movie.Rates?
                        .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
                        .ToList(),
@@ -48,6 +50,8 @@ namespace MovieCrew.Core.Domain.Movies.Repository
                        movie.DateAdded,
                        movie.SeenDate,
                        movie.Rates?.Average(r => r.Note),
+                       null,
+                       null,
                        movie.Rates?
                        .Select(r => new MovieRateEntity(new(r.User.Id, r.User.Name, r.User.Role), r.Note))
                        .ToList(),
@@ -125,17 +129,6 @@ namespace MovieCrew.Core.Domain.Movies.Repository
             _dbContext.Movies.Update(movieToRename);
 
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task Update(MovieChangePosterDto changePoster)
-        {
-            var movieToChange = ExistingMovie(changePoster.MovieId) ?? throw new MovieNotFoundException(changePoster.MovieId);
-            movieToChange.Poster = changePoster.NewPosterLink;
-            _dbContext.Movies.Update(movieToChange);
-
-
-            await _dbContext.SaveChangesAsync();
-
         }
 
         public async Task Update(MovieSetSeenDateDto movieSetSeenDateDTO)
