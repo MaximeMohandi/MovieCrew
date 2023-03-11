@@ -19,14 +19,12 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
                 .Build();
 
             _apiKey = configuration["ThirdPartyMovieData:apiKey"];
-            _apiUrl = configuration["ThirdPartyMovieData:url"];
-
         }
 
         [Test]
         public async Task FetchDetailsFromThirdParty()
         {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiUrl, _apiKey);
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiKey);
 
             //use well known movie (top 10 box office) to be sure to get some data from third party
             MovieMetadataEntity actual = await thirdPartyProvider.GetDetails("Titanic");
@@ -45,7 +43,7 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public void FetchMovieThatDoNotExist()
         {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiUrl, _apiKey);
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiKey);
 
             Assert.ThrowsAsync<NoMetaDataFound>(async () =>
             {
@@ -57,7 +55,7 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public void DidNotConnectToThirdParty()
         {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider("http://test/", "");
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider("");
 
             Assert.ThrowsAsync<HttpRequestException>(async () =>
             {
@@ -68,7 +66,7 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
         [Test]
         public void UnauthorizedAccessToThirdParty()
         {
-            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider(_apiUrl, "");
+            IThirdPartyMovieDataProvider thirdPartyProvider = new TmbdMovieDataProvider("");
 
             Assert.ThrowsAsync<HttpRequestException>(async () =>
             {
