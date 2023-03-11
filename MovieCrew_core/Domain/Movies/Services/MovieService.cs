@@ -83,7 +83,8 @@ namespace MovieCrew_core.Domain.Movies.Services
 
         private static bool IsValidUrl(MovieChangePosterDto changePoster)
         {
-            return Uri.IsWellFormedUriString(changePoster.NewPosterLink, UriKind.Absolute) && changePoster.NewPosterLink.StartsWith("http");
+            return Uri.TryCreate(changePoster.NewPosterLink, UriKind.Absolute, out Uri uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
         }
 
         public async Task SetSeenDate(MovieSetSeenDateDto movieSetSeenDateDTO)
