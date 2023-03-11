@@ -16,7 +16,6 @@ namespace MovieCrew.Core.Test.Movies
             List<MovieEntity> expected = new()
             {
                 new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M),
-                new MovieEntity(2,"Harry Potter", null,new DateTime(2015, 8, 3),null, null),
                 new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23),4.25M),
                 new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null, null)
             };
@@ -79,14 +78,6 @@ namespace MovieCrew.Core.Test.Movies
                     Name = "Lord of the ring",
                     Poster = "fakeLink",
                     SeenDate = new DateTime(2022, 5, 12)
-                },
-                new Movie()
-                {
-                    Id = 2,
-                    DateAdded = new DateTime(2015, 8, 3),
-                    Name = "Harry Potter",
-                    Poster = null,
-                    SeenDate = null
                 },
                 new Movie()
                 {
