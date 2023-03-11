@@ -51,7 +51,7 @@ namespace MovieCrew.Core.Domain.Users.Repository
             List<SpectatorRateEntity> spectatorRates = user.Rates
                 .Select(r =>
                     new SpectatorRateEntity(
-                        new(r.MovieId, r.Movie.Name, r.Movie.Poster, r.Movie.DateAdded, r.Movie.SeenDate, r.Movie.Rates?.Average(r => r.Note)),
+                        new(r.MovieId, r.Movie.Name, r.Movie.Poster, r.Movie.Description, r.Movie.DateAdded, r.Movie.SeenDate, r.Movie.Rates?.Average(r => r.Note)),
                         r.Note)
                 ).ToList();
             return new SpectatorDetailsEntity(new(user.Id, user.Name, user.Role), spectatorRates);

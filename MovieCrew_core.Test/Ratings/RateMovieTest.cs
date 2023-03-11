@@ -66,6 +66,7 @@ namespace MovieCrew.Core.Test.Ratings
                     DateAdded = new DateTime(2022, 5, 10),
                     Name = "Lord of the ring",
                     Poster = "fakeLink",
+                    Description = "Best movie ever",
                     SeenDate = new DateTime(2022, 5, 12)
                 },
                 new Movie()
@@ -73,7 +74,8 @@ namespace MovieCrew.Core.Test.Ratings
                     Id = 2,
                     DateAdded = new DateTime(2015, 8, 3),
                     Name = "Harry Potter",
-                    Poster = null,
+                    Description = "good movie",
+                    Poster = "alink",
                     SeenDate = null
                 }
 

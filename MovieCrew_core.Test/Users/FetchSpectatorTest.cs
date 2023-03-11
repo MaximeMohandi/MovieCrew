@@ -17,7 +17,7 @@ namespace MovieCrew.Core.Test.Users
 
             var expected = new SpectatorDetailsEntity(new(1, "Alyssa"), new()
             {
-                new(new MovieEntity(1, "Babylon", null, new(2023, 2, 8), new(2023, 2, 9), 3M), 3M)
+                new(new MovieEntity(1, "Babylon","", "didn't saw it yet",  new(2023, 2, 8), new(2023, 2, 9), 3M), 3M)
             });
 
             Assert.Multiple(() =>
@@ -55,7 +55,8 @@ namespace MovieCrew.Core.Test.Users
                 {
                     Id = 1,
                     Name = "Babylon",
-                    Poster = null,
+                    Poster = "",
+                    Description = "didn't saw it yet",
                     DateAdded = new(2023, 2, 8),
                     SeenDate = new(2023, 2, 9),
                 }

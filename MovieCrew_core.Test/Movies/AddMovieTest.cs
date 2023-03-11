@@ -33,6 +33,7 @@ namespace MovieCrew.Core.Test.Movies
                 Assert.That(Uri.TryCreate(addedMovie.Poster, UriKind.Absolute, out Uri uriResult)
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps), Is.True);
                 Assert.That(addedMovie.DateAdded.ToShortDateString(), Is.EqualTo(DateTime.Now.ToShortDateString()));
+                Assert.That(addedMovie.Description, Is.EqualTo("loremp ipsum"));
                 Assert.That(_dbContext.Movies.Any(m => m.Name == addedMovie.Title), Is.True);
             });
         }
@@ -74,7 +75,8 @@ namespace MovieCrew.Core.Test.Movies
                 Id = 1,
                 DateAdded = DateTime.Now,
                 Name = "The Fifth element",
-                Poster = ""
+                Description = "Description",
+                Poster = "loremp ipsum"
             });
 
             _dbContext.Users.Add(new()

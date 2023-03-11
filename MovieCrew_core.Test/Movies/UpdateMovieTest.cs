@@ -48,7 +48,8 @@ namespace MovieCrew.Core.Test.Movies
                     Id = 1,
                     DateAdded = new DateTime(2022, 12, 12),
                     Name = "Asterix & Obelix : Mission Cléopatre",
-                    Poster = null,
+                    Poster = "",
+                    Description = "Description",
                     Rates = null,
                     SeenDate = null
                 });

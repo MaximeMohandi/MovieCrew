@@ -25,6 +25,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
             return new(movie.Id,
                        movie.Name,
                        movie.Poster,
+                       movie.Description,
                        movie.DateAdded,
                        movie.SeenDate,
                        movie.Rates?.Average(r => r.Note),
@@ -43,6 +44,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
             return new(movie.Id,
                        movie.Name,
                        movie.Poster,
+                       movie.Description,
                        movie.DateAdded,
                        movie.SeenDate,
                        movie.Rates?.Average(r => r.Note),
@@ -59,6 +61,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
                 movie.Id,
                 movie.Name,
                 movie.Poster,
+                movie.Description,
                 movie.DateAdded,
                 movie.SeenDate,
                 movie.Rates?.Average(r => r.Note)

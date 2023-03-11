@@ -15,9 +15,9 @@ namespace MovieCrew.Core.Test.Movies
             MovieService movieServices = new(_movieRepository);
             List<MovieEntity> expected = new()
             {
-                new MovieEntity(1,"Lord of the ring", "fakeLink",new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M),
-                new MovieEntity(3,"Jurassic Park", "fakeLink",new DateTime(1996, 9, 21), new DateTime(1996, 9, 23),4.25M),
-                new MovieEntity(4,"Lord of the ring II", "fakeLink",new DateTime(2022, 10, 15), null, null)
+                new MovieEntity(1,"Lord of the ring", "fakeLink","the best movie ever", new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M),
+                new MovieEntity(3,"Jurassic Park", "fakeLink","not the best movie ever", new DateTime(1996, 9, 21), new DateTime(1996, 9, 23),4.25M),
+                new MovieEntity(4,"Lord of the ring II", "fakeLink", "the second best movie ever", new DateTime(2022, 10, 15), null, null)
             };
 
             var actual = await movieServices.FetchAllMovies();
@@ -77,6 +77,7 @@ namespace MovieCrew.Core.Test.Movies
                     DateAdded = new DateTime(2022, 5, 10),
                     Name = "Lord of the ring",
                     Poster = "fakeLink",
+                    Description = "the best movie ever",
                     SeenDate = new DateTime(2022, 5, 12)
                 },
                 new Movie()
@@ -85,6 +86,7 @@ namespace MovieCrew.Core.Test.Movies
                     DateAdded = new DateTime(1996, 9, 21),
                     Name = "Jurassic Park",
                     Poster = "fakeLink",
+                    Description = "not the best movie ever",
                     SeenDate = new DateTime(1996, 9, 23),
                 },
                 new Movie()
@@ -93,6 +95,7 @@ namespace MovieCrew.Core.Test.Movies
                     DateAdded = new DateTime(2022, 10, 15),
                     Name = "Lord of the ring II",
                     Poster = "fakeLink",
+                    Description ="the second best movie ever",
                     SeenDate = null
                 },
 

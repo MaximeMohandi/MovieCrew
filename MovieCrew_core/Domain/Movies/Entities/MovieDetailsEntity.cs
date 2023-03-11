@@ -6,13 +6,14 @@ namespace MovieCrew.Core.Domain.Movies.Entities
     {
         public MovieDetailsEntity(int id,
                                   string title,
-                                  string? poster,
+                                  string poster,
+                                  string descsription,
                                   DateTime addedDate,
                                   DateTime? seenDate,
                                   decimal? averageRate,
                                   List<MovieRateEntity>? movieRates,
                                   UserEntity? proposedBy) :
-            base(id, title, poster, addedDate, seenDate, averageRate)
+            base(id, title, poster, descsription, addedDate, seenDate, averageRate)
         {
             MovieRates = movieRates;
             ProposedBy = proposedBy;

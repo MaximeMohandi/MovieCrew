@@ -4,8 +4,8 @@
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public string? Poster { get; set; }
-        public string? Description { get; set; }
+        public string Poster { get; set; }
+        public string Description { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime? SeenDate { get; set; } = null;
         public long? ProposedById { get; set; } = null;
