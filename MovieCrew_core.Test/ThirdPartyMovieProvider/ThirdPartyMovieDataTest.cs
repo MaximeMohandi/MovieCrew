@@ -30,10 +30,10 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
             //use well known movie (top 10 box office) to be sure to get some data from third party
             MovieMetadataEntity actual = await thirdPartyProvider.GetDetails("Titanic");
 
+            //chack that data are in correct format rather than what they are
             Assert.Multiple(() =>
             {
-                Uri uriResult;
-                Assert.That(Uri.TryCreate(actual.PosterLink, UriKind.Absolute, out uriResult)
+                Assert.That(Uri.TryCreate(actual.PosterLink, UriKind.Absolute, out Uri uriResult)
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps), Is.True);
                 Assert.That(actual.Description, Has.Length.GreaterThan(0));
                 Assert.That(actual.Ratings, Is.GreaterThanOrEqualTo(0).And.LessThanOrEqualTo(10));

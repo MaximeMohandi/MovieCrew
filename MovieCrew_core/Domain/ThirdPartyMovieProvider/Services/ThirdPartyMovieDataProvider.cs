@@ -12,8 +12,10 @@ namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services
         private readonly string _searchQuery = "search/movie?query=";
         public ThirdPartyMovieDataProvider(string baseUrl, string apiKey)
         {
-            _client = new HttpClient();
-            _client.BaseAddress = new Uri(baseUrl);
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri(baseUrl)
+            };
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", apiKey);
         }
 
@@ -24,9 +26,9 @@ namespace MovieCrew.Core.Domain.ThirdPartyMovieProvider.Services
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            JsonNode results = JsonNode.Parse(content)["results"];
+            JsonNode? results = JsonNode.Parse(content)?["results"];
 
-            if (results.AsArray().Count == 0)
+            if (results is null || results.AsArray().Count == 0)
             {
                 throw new NoMetaDataFound(title);
             }
