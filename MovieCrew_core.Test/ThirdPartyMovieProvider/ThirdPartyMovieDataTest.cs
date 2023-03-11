@@ -64,7 +64,6 @@ namespace MovieCrew_Core.Test.ThirdPartyMovieProvider
             });
         }
 
-
         [Test]
         public void UnauthorizedAccessToThirdParty()
         {
