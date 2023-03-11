@@ -20,9 +20,9 @@ namespace MovieCrew.Core.Domain.Movies.Repository
         {
 
             var movie = await _dbContext.Movies.Where(m => m.Name.ToLower() == title.ToLower()).FirstOrDefaultAsync();
-            if (movie is null) throw new MovieNotFoundException(title);
-
-            return new(movie.Id,
+            return movie is null
+                ? throw new MovieNotFoundException(title)
+                : new(movie.Id,
                        movie.Name,
                        movie.Poster,
                        movie.Description,
@@ -39,9 +39,9 @@ namespace MovieCrew.Core.Domain.Movies.Repository
         public async Task<MovieDetailsEntity> GetMovie(int id)
         {
             var movie = await _dbContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
-            if (movie is null) throw new MovieNotFoundException(id);
-
-            return new(movie.Id,
+            return movie is null
+                ? throw new MovieNotFoundException(id)
+                : new(movie.Id,
                        movie.Name,
                        movie.Poster,
                        movie.Description,
@@ -129,10 +129,7 @@ namespace MovieCrew.Core.Domain.Movies.Repository
 
         public async Task Update(MovieChangePosterDto changePoster)
         {
-            var movieToChange = ExistingMovie(changePoster.MovieId);
-
-            if (movieToChange is null) throw new MovieNotFoundException(changePoster.MovieId);
-
+            var movieToChange = ExistingMovie(changePoster.MovieId) ?? throw new MovieNotFoundException(changePoster.MovieId);
             movieToChange.Poster = changePoster.NewPosterLink;
             _dbContext.Movies.Update(movieToChange);
 

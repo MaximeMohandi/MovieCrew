@@ -36,9 +36,7 @@ namespace MovieCrew.Core.Domain.Users.Repository
         {
             var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
-            if (dbUser is null) throw new UserNotFoundException(id);
-
-            return new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
+            return dbUser is null ? throw new UserNotFoundException(id) : new(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
         }
 
         public async Task<SpectatorDetailsEntity> GetSpectatorDetails(long idSpectator)
