@@ -30,7 +30,7 @@ namespace MovieCrew.Core.Test.Movies
             Assert.Multiple(() =>
             {
                 Assert.That(addedMovie.Title, Is.EqualTo("Pinnochio"));
-                Assert.That(Uri.TryCreate(addedMovie.Poster, UriKind.Absolute, out Uri uriResult)
+                Assert.That(Uri.TryCreate(addedMovie.Poster, UriKind.Absolute, out Uri? uriResult)
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps), Is.True);
                 Assert.That(addedMovie.DateAdded.ToShortDateString(), Is.EqualTo(DateTime.Now.ToShortDateString()));
                 Assert.That(addedMovie.Description, Is.EqualTo("loremp ipsum"));

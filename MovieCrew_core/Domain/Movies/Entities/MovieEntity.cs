@@ -2,7 +2,7 @@
 {
     public class MovieEntity
     {
-        public MovieEntity(int id, string title, string? poster, string description, DateTime addedDate, DateTime? seenDate, decimal? averageRate)
+        public MovieEntity(int id, string title, string poster, string description, DateTime addedDate, DateTime? seenDate, decimal? averageRate)
         {
             Id = id;
             Title = title;

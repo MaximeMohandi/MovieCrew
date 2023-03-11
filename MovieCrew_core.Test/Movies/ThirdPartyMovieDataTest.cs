@@ -28,7 +28,7 @@ namespace MovieCrew.Core.Test.Movies
             //chack that data are in correct format rather than what they are
             Assert.Multiple(() =>
             {
-                Assert.That(Uri.TryCreate(actual.PosterLink, UriKind.Absolute, out Uri uriResult)
+                Assert.That(Uri.TryCreate(actual.PosterLink, UriKind.Absolute, out Uri? uriResult)
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps), Is.True);
                 Assert.That(actual.Description, Has.Length.GreaterThan(0));
                 Assert.That(actual.Ratings, Is.GreaterThanOrEqualTo(0).And.LessThanOrEqualTo(10));
