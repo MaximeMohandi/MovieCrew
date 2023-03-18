@@ -9,7 +9,7 @@ using MovieCrew.Core.Domain.Users.Exception;
 
 namespace MovieCrew.Core.Domain.Movies.Repository
 {
-    public class MovieRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly AppDbContext _dbContext;
         public MovieRepository(AppDbContext databaseContext)

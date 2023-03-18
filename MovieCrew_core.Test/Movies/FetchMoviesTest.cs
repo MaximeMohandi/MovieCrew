@@ -3,6 +3,7 @@ using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
+using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
 
 namespace MovieCrew.Core.Test.Movies
@@ -33,7 +34,7 @@ namespace MovieCrew.Core.Test.Movies
             .Options;
 
             using AppDbContext db = new(_options);
-            MovieService movieServices = new(new(db), _fakeDataProvider.Object);
+            MovieService movieServices = new(new MovieRepository(db), _fakeDataProvider.Object);
 
             Assert.ThrowsAsync<NoMoviesFoundException>(
                 async () => await movieServices.FetchAllMovies(),
@@ -59,7 +60,7 @@ namespace MovieCrew.Core.Test.Movies
             .Options;
 
             using AppDbContext db = new(_options);
-            MovieService movieServices = new(new(db), _fakeDataProvider.Object);
+            MovieService movieServices = new(new MovieRepository(db), _fakeDataProvider.Object);
 
             AllMoviesHaveBeenSeenException ex = Assert.ThrowsAsync<AllMoviesHaveBeenSeenException>(async () => await movieServices.RandomMovie());
 

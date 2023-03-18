@@ -8,10 +8,10 @@ namespace MovieCrew.Core.Domain.Movies.Services
 {
     public class MovieService
     {
-        private readonly MovieRepository _movieRepository;
+        private readonly IMovieRepository _movieRepository;
         private readonly IThirdPartyMovieDataProvider _thirdPartyMovieProvider;
 
-        public MovieService(MovieRepository movieRepository, IThirdPartyMovieDataProvider thirdPartyMovieProvider)
+        public MovieService(IMovieRepository movieRepository, IThirdPartyMovieDataProvider thirdPartyMovieProvider)
         {
             _movieRepository = movieRepository;
             _thirdPartyMovieProvider = thirdPartyMovieProvider;

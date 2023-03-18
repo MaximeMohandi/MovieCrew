@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+	  <InternalsVisibleTo Include="MovieCrew.API.Test" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MovieCrew_core\MovieCrew.Core.csproj" />
   </ItemGroup>
 
 </Project>
