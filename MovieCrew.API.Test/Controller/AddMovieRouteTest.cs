@@ -12,7 +12,7 @@ using MovieCrew.Core.Domain.Users.Exception;
 
 namespace MovieCrew.API.Test.Controller
 {
-    public class MovieControllerTest
+    public class AddMovieRouteTest
     {
         private Mock<IMovieRepository> _movieRepositoryMock;
         private Mock<IThirdPartyMovieDataProvider> _movieDataProviderMock;
