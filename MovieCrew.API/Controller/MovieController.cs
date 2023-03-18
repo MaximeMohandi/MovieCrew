@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieCrew.API.Dtos;
+using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Users.Exception;
@@ -34,6 +35,14 @@ namespace MovieCrew.API.Controller
             {
                 return NotFound(exception);
             }
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<List<MovieEntity>>> GetAll()
+        {
+            var list = await _movieService.FetchAllMovies();
+
+            return Ok(list);
         }
     }
 }
