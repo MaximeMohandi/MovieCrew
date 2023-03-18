@@ -56,16 +56,9 @@ namespace MovieCrew.API.Test.Controller
             MovieService service = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
             MovieController controller = new MovieController(service);
 
-            var expected = new List<MovieEntity>()
-            {
-                new(1, "Tempête","http://url" ,"lorem Ipsum", new(2023,3,11), new(2023,3,18),2),
-                new(1, "John Wick","http://url" ,"lorem Ipsum", new(2023,3,11), new(2023,3,18),5.25M),
-            };
-
             var actual = (await controller.GetAll()).Result as ObjectResult;
 
-            Assert.That(actual.Value, Is.EqualTo(expected));
-            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
+            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
         }
     }
 }

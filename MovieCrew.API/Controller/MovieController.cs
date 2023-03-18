@@ -40,9 +40,16 @@ namespace MovieCrew.API.Controller
         [HttpGet("all")]
         public async Task<ActionResult<List<MovieEntity>>> GetAll()
         {
-            var list = await _movieService.FetchAllMovies();
+            try
+            {
 
-            return Ok(list);
+                var list = await _movieService.FetchAllMovies();
+                return Ok(list);
+            }
+            catch (NoMoviesFoundException exception)
+            {
+                return NotFound(exception);
+            }
         }
     }
 }
