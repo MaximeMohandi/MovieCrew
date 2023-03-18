@@ -51,5 +51,12 @@ namespace MovieCrew.API.Controller
                 return NotFound(exception);
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MovieDetailsEntity>> GetDetails([FromRoute] int id)
+        {
+            var result = await _movieService.GetById(id);
+            return Ok(result);
+        }
     }
 }

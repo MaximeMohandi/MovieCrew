@@ -42,13 +42,15 @@ namespace MovieCrew.API.Test.Controller
             };
 
             var actual = (await controller.GetAll()).Result as ObjectResult;
-
-            Assert.That(actual.Value, Is.EqualTo(expected));
-            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual.Value, Is.EqualTo(expected));
+                Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
+            });
         }
 
         [Test]
-        public async Task GetAllMoviesButNoMovieFount()
+        public async Task TryGettingMoviesReturn404()
         {
             _movieRepositoryMock.Setup(x => x.GetAll())
                 .ThrowsAsync(new NoMoviesFoundException());
