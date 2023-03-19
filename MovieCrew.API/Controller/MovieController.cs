@@ -52,11 +52,39 @@ namespace MovieCrew.API.Controller
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MovieDetailsEntity>> GetDetails([FromRoute] int id)
+        [HttpGet("details")]
+        public async Task<ActionResult<MovieDetailsEntity>> GetDetails([FromQuery] int? id = null, [FromQuery] string? title = null)
         {
-            var result = await _movieService.GetById(id);
-            return Ok(result);
+            try
+            {
+                MovieDetailsEntity result = null;
+
+                if (id is null && string.IsNullOrEmpty(title))
+                {
+                    return BadRequest("Either id or title parameter is required.");
+                }
+
+                if (id is not null && !string.IsNullOrEmpty(title))
+                {
+                    return BadRequest("Only one of id or title parameters should be provided.");
+                }
+
+                if (id != null)
+                {
+                    result = await _movieService.GetById(id.Value);
+                }
+
+                if (!string.IsNullOrEmpty(title))
+                {
+                    result = await _movieService.GetByTitle(title);
+                }
+
+                return Ok(result);
+            }
+            catch (MovieNotFoundException exception)
+            {
+                return NotFound(exception);
+            }
         }
     }
 }
