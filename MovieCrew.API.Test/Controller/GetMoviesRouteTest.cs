@@ -14,12 +14,14 @@ namespace MovieCrew.API.Test.Controller
     {
         private Mock<IMovieRepository> _movieRepositoryMock;
         private Mock<IThirdPartyMovieDataProvider> _movieDataProviderMock;
+        private MovieService _service;
 
         [SetUp]
         public void Setup()
         {
             _movieRepositoryMock = new Mock<IMovieRepository>();
             _movieDataProviderMock = new Mock<IThirdPartyMovieDataProvider>();
+            _service = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
         }
 
         [Test]
@@ -31,9 +33,7 @@ namespace MovieCrew.API.Test.Controller
                 new(1, "Tempête","http://url" ,"lorem Ipsum", new(2023,3,11), new(2023,3,18),2),
                 new(1, "John Wick","http://url" ,"lorem Ipsum", new(2023,3,11), new(2023,3,18),5.25M),
             });
-
-            MovieService service = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
-            MovieController controller = new MovieController(service);
+            MovieController controller = new(_service);
 
             var expected = new List<MovieEntity>()
             {
@@ -54,13 +54,47 @@ namespace MovieCrew.API.Test.Controller
         {
             _movieRepositoryMock.Setup(x => x.GetAll())
                 .ThrowsAsync(new NoMoviesFoundException());
-
-            MovieService service = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
-            MovieController controller = new MovieController(service);
+            MovieController controller = new(_service);
 
             var actual = (await controller.GetAll()).Result as ObjectResult;
 
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
+        }
+
+        [Test]
+        public async Task GetRandomUnseenMovie()
+        {
+            var unseenMovie = new List<MovieEntity>
+            {
+                new(1, "movie1", "http:Link", "description", new(2012, 12, 12),null, null),
+                new(2, "movie2", "http:Lin2k", "lorem description", new(2023, 12, 12),null, null),
+                new(3, "movie3", "http:Lin2k", "lorem description", new(2023, 12, 12),null, null),
+                new(4, "movie4", "http:Lin2k", "lorem description", new(2023, 12, 12),null, null),
+            };
+            _movieRepositoryMock.Setup(x => x.GetAllUnSeen())
+                .ReturnsAsync(unseenMovie);
+            MovieController movieController = new(_service);
+
+
+            var actual = (await movieController.GetRandomUnseenMovie()).Result as ObjectResult;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
+                Assert.That(unseenMovie, Has.Member(actual.Value));
+            });
+        }
+
+        [Test]
+        public async Task GetRandomMovieWhenNoMoreMoviesReturn204()
+        {
+            _movieRepositoryMock.Setup(x => x.GetAllUnSeen())
+                .ThrowsAsync(new AllMoviesHaveBeenSeenException());
+            MovieController movieController = new(_service);
+
+            var actual = (await movieController.GetRandomUnseenMovie()).Result as StatusCodeResult;
+
+            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status204NoContent));
         }
     }
 }

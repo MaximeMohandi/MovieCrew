@@ -86,5 +86,19 @@ namespace MovieCrew.API.Controller
                 return NotFound(exception);
             }
         }
+
+        [HttpGet("random")]
+        public async Task<ActionResult<MovieEntity>> GetRandomUnseenMovie()
+        {
+            try
+            {
+                var movie = await _movieService.RandomMovie();
+                return Ok(movie);
+            }
+            catch (AllMoviesHaveBeenSeenException)
+            {
+                return NoContent();
+            }
+        }
     }
 }
