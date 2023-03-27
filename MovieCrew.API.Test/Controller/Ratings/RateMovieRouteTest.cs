@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using MovieCrew.API.Controller;
 using MovieCrew.Core.Domain.Ratings.Repository;
 using MovieCrew.Core.Domain.Ratings.Services;
 
@@ -22,7 +23,7 @@ namespace MovieCrew.API.Test.Controller.Ratings
         public async Task RateMovie()
         {
             RateController controller = new RateController(_service);
-            var actual = (await controller.RateMovie(new(1, 2, 3.0M))).Result as ObjectResult;
+            var actual = (await controller.Post(new(1, 2, 3.0M))).Result as ObjectResult;
 
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
         }
