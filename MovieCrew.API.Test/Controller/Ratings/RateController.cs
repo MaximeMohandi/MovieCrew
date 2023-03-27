@@ -1,15 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieCrew.Core.Domain.Ratings.Services;
 
 namespace MovieCrew.API.Test.Controller.Ratings
 {
     [Route("api/rate")]
     [ApiController]
-    public class RateController
+    public class RateController : ControllerBase
     {
-        [HttpPost("add")]
-        public async Task<ActionResult<string>> RateMovie(int v1, int v2, decimal v3)
+        private RatingServices _ratingService;
+
+        public RateController(RatingServices ratingServices)
         {
-            return Ok("");
+            _ratingService = ratingServices;
+        }
+
+        [HttpPost("add")]
+        public async Task<ActionResult<string>> RateMovie([FromBody] CreateRateDto createRate)
+        {
+            await _ratingService.RateMovie(createRate.IdMovie, createRate.UserId, createRate.Rate);
+            return CreatedAtAction("add", createRate.IdMovie);
         }
     }
 }

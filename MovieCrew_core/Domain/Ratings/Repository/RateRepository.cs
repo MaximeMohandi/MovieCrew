@@ -4,7 +4,7 @@ using MovieCrew.Core.Domain.Ratings.Dtos;
 
 namespace MovieCrew.Core.Domain.Ratings.Repository
 {
-    public class RateRepository
+    public class RateRepository : IRateRepository
     {
         private readonly AppDbContext _dbContext;
         public RateRepository(AppDbContext dbContext)

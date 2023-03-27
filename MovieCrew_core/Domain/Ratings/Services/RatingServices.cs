@@ -6,9 +6,9 @@ namespace MovieCrew.Core.Domain.Ratings.Services
 {
     public class RatingServices
     {
-        private readonly RateRepository _rateRepository;
+        private readonly IRateRepository _rateRepository;
 
-        public RatingServices(RateRepository rateRepository)
+        public RatingServices(IRateRepository rateRepository)
         {
             _rateRepository = rateRepository;
         }
@@ -20,6 +20,15 @@ namespace MovieCrew.Core.Domain.Ratings.Services
                 throw new RateLimitException(rateCreation.Rate);
             }
             await _rateRepository.Add(rateCreation);
+        }
+
+        public async Task RateMovie(int idMovie, long userId, decimal rate)
+        {
+            if (rate > 10 || rate < 0)
+            {
+                throw new RateLimitException(rate);
+            }
+            await _rateRepository.Add(new(idMovie, userId, rate));
         }
     }
 }
