@@ -1,5 +1,4 @@
 ﻿using MovieCrew.Core.Data.Models;
-using MovieCrew.Core.Domain.Ratings.Dtos;
 using MovieCrew.Core.Domain.Ratings.Exception;
 using MovieCrew.Core.Domain.Ratings.Services;
 
@@ -12,7 +11,6 @@ namespace MovieCrew.Core.Test.Ratings
         public async Task MovieWithoutRate()
         {
             RatingServices rateService = new(_rateRepository);
-            var rateCreation = new RateCreationDto(2, 1, 2.0M);
             var expectedRate = new Rate()
             {
                 MovieId = 2,
@@ -20,7 +18,7 @@ namespace MovieCrew.Core.Test.Ratings
                 Note = 2.0M,
             };
 
-            await rateService.RateMovie(rateCreation);
+            await rateService.RateMovie(2, 1, 2.0M);
             Assert.Multiple(() =>
             {
                 Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
@@ -33,12 +31,11 @@ namespace MovieCrew.Core.Test.Ratings
         public async Task ExistingRate()
         {
             RatingServices rateService = new(_rateRepository);
-            RateCreationDto rateCreation = new(1, 1, 0.0M);
 
-            await rateService.RateMovie(rateCreation);
+            await rateService.RateMovie(1, 1, 0.0M);
 
             var updatedRate = _dbContext.Rates
-                .First(r => r.UserId == rateCreation.UserId && r.MovieId == rateCreation.MovieID);
+                .First(r => r.UserId == 1 && r.MovieId == 1);
 
             Assert.That(updatedRate.Note, Is.EqualTo(0.0M));
         }
@@ -49,9 +46,8 @@ namespace MovieCrew.Core.Test.Ratings
         public void RateMustBeBetween0To10(decimal rate)
         {
             RatingServices rateService = new(_rateRepository);
-            RateCreationDto rateCreation = new(1, 1, rate);
 
-            var ex = Assert.ThrowsAsync<RateLimitException>(async () => await rateService.RateMovie(rateCreation));
+            var ex = Assert.ThrowsAsync<RateLimitException>(async () => await rateService.RateMovie(1, 1, rate));
 
             Assert.That(ex.Message, Is.EqualTo($"The rate must be between 0 and 10. Actual : {rate}"));
         }
