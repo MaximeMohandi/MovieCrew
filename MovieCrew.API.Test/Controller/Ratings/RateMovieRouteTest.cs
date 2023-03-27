@@ -27,5 +27,19 @@ namespace MovieCrew.API.Test.Controller.Ratings
 
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
         }
+
+        [TestCase(-2)]
+        [TestCase(200)]
+        public async Task ErrorWhenRateOutOfBound(decimal rate)
+        {
+            var controller = new RateController(_service);
+
+            var actual = (await controller.Post(new(1, 1, rate))).Result as ObjectResult;
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
+                Assert.That(actual.Value, Is.EqualTo($"The rate must be between 0 and 10. Actual : {rate}"));
+            });
+        }
     }
 }

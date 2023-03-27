@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieCrew.API.Dtos;
+using MovieCrew.Core.Domain.Ratings.Exception;
 using MovieCrew.Core.Domain.Ratings.Services;
 
 namespace MovieCrew.API.Controller
@@ -18,8 +19,15 @@ namespace MovieCrew.API.Controller
         [HttpPost("add")]
         public async Task<ActionResult<string>> Post([FromBody] CreateRateDto createRate)
         {
-            await _ratingService.RateMovie(createRate.IdMovie, createRate.UserId, createRate.Rate);
-            return CreatedAtAction("add", createRate.IdMovie);
+            try
+            {
+                await _ratingService.RateMovie(createRate.IdMovie, createRate.UserId, createRate.Rate);
+                return CreatedAtAction("add", createRate.IdMovie);
+            }
+            catch (RateLimitException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
