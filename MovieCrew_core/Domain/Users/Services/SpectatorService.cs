@@ -5,9 +5,9 @@ namespace MovieCrew.Core.Domain.Users.Services
 {
     public class SpectatorService
     {
-        private readonly UserRepository _movieRepository;
+        private readonly IUserRepository _movieRepository;
 
-        public SpectatorService(UserRepository movieRepository)
+        public SpectatorService(IUserRepository movieRepository)
         {
             _movieRepository = movieRepository;
         }

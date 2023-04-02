@@ -8,7 +8,7 @@ using MovieCrew.Core.Domain.Users.Exception;
 
 namespace MovieCrew.Core.Domain.Users.Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _dbContext;
 
