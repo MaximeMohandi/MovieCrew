@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieCrew.Core.Domain.Users.Entities;
+using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Services;
 
 namespace MovieCrew.API.Controller
@@ -18,8 +19,21 @@ namespace MovieCrew.API.Controller
         [HttpGet("/{userId}/details")]
         public async Task<ActionResult<SpectatorDetailsEntity>> Get()
         {
-            var spectatorDetails = await _spectatorService.FetchSpectator(1);
-            return Ok(spectatorDetails);
+            try
+            {
+
+                var spectatorDetails = await _spectatorService.FetchSpectator(1);
+                return Ok(spectatorDetails);
+            }
+            catch (UserException ex)
+            {
+                if (ex.GetType() == typeof(UserNotFoundException))
+                {
+                    return NotFound(ex);
+                }
+
+                return BadRequest(ex);
+            }
         }
     }
 }

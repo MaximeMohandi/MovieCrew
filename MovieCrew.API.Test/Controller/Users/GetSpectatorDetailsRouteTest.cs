@@ -4,6 +4,7 @@ using Moq;
 using MovieCrew.API.Controller;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Users.Entities;
+using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Repository;
 using MovieCrew.Core.Domain.Users.Services;
 
@@ -44,6 +45,38 @@ namespace MovieCrew.API.Test.Controller.Users
             {
                 Assert.That(actual.Value, Is.EqualTo(expected));
                 Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
+            });
+        }
+
+        [Test]
+        public async Task Error404WhenNoSpectatorFound()
+        {
+            SpectatorController controller = new SpectatorController(_service);
+            _userRepositoryMock.Setup(x => x.GetSpectatorDetails(It.IsAny<long>()))
+                .ThrowsAsync(new UserNotFoundException(1));
+
+            var actual = (await controller.Get()).Result as ObjectResult;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual.Value, Is.TypeOf<UserNotFoundException>());
+                Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
+            });
+        }
+
+        [Test]
+        public async Task Error400WhenNoSpectatorFound()
+        {
+            SpectatorController controller = new SpectatorController(_service);
+            _userRepositoryMock.Setup(x => x.GetSpectatorDetails(It.IsAny<long>()))
+                .ThrowsAsync(new UserIsNotSpectatorException(1));
+
+            var actual = (await controller.Get()).Result as ObjectResult;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actual.Value, Is.TypeOf<UserIsNotSpectatorException>());
+                Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
             });
         }
     }
