@@ -1,9 +1,9 @@
-﻿using MovieCrew.Core.Domain.Authentication.Model;
+﻿using Microsoft.IdentityModel.Tokens;
+using MovieCrew.Core.Domain.Authentication.Model;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 namespace MovieCrew.Core.Domain.Authentication.Services;
 
@@ -18,25 +18,25 @@ public class AuthenticationService
         _jwtConfiguration = jwtConfiguration;
         _repository = repository;
     }
-    
+
     public async Task<AuthenticatedUser> Authenticate(long userId, string userName)
     {
         var userExist = await _repository.IsUserExist(userId, userName);
         if (!userExist) throw new AuthenticationException("Invalid user.");
-        
-        var token = CreateToken(_jwtConfiguration.Passphrase, _jwtConfiguration.Issuer, _jwtConfiguration.Audience);
+
+        var token = CreateToken();
         return new AuthenticatedUser(userId, userName, new JwtSecurityTokenHandler().WriteToken(token),
             token.ValidTo);
     }
 
 
-    private static JwtSecurityToken CreateToken(string secretKey, string issuer, string audience)
+    private JwtSecurityToken CreateToken()
     {
-        SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.Passphrase));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         return new JwtSecurityToken(
-            issuer: issuer,
-            audience: audience,
+            issuer: _jwtConfiguration.Issuer,
+            audience: _jwtConfiguration.Audience,
             claims: new List<Claim>(),
             expires: DateTime.UtcNow.AddDays(TokenNbValidationsDays),
             signingCredentials: signingCredentials

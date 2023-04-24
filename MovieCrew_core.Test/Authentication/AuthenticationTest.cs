@@ -1,10 +1,9 @@
-﻿using System.Security.Authentication;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Authentication.Model;
 using MovieCrew.Core.Domain.Authentication.Services;
+using System.Security.Authentication;
 namespace MovieCrew.Core.Test.Authentication;
 
 public class AuthenticationTest
@@ -37,7 +36,7 @@ public class AuthenticationTest
         _dbContext.Users.AddRange(users);
         _dbContext.SaveChanges();
     }
- 
+
     [Test]
     public async Task SuccessfulLogin()
     {
@@ -45,15 +44,14 @@ public class AuthenticationTest
             new JwtConfiguration("A passphrase with to be secure @123", "https://test.com", "https://test.com");
         var repository = new AuthenticationRepository(_dbContext);
         var service = new AuthenticationService(repository, jwtConfiguration);
-        var expected = new AuthenticatedUser(1, "test", "a.a.a", DateTime.UtcNow.AddDays(1));
 
         var actual = await service.Authenticate(1, "test");
 
         Assert.Multiple(() =>
         {
-            Assert.That(actual.UserId, Is.EqualTo(expected.UserId));
-            Assert.That(actual.UserName, Is.EqualTo(expected.UserName));
-            Assert.That(actual.TokenExpirationDate.ToShortTimeString(), Is.EqualTo(expected.TokenExpirationDate.ToShortTimeString()));
+            Assert.That(actual.UserId, Is.EqualTo(1));
+            Assert.That(actual.UserName, Is.EqualTo("test"));
+            Assert.That(actual.TokenExpirationDate.ToShortTimeString(), Is.EqualTo(DateTime.UtcNow.AddDays(1).ToShortTimeString()));
             Assert.That(actual.Token, Does.Match(IsCorrectToken));
         });
     }
@@ -63,10 +61,16 @@ public class AuthenticationTest
     {
         var repository = new AuthenticationRepository(_dbContext);
         var service = new AuthenticationService(repository, new JwtConfiguration());
-        
-        Assert.Throws<AuthenticationException>(() =>
+
+        Assert.ThrowsAsync<AuthenticationException>(async () =>
         {
-            service.Authenticate(1, "test2");
+            await service.Authenticate(1, "test2");
         }, message: "Invalid user.");
+    }
+
+    [OneTimeTearDown]
+    public void CleanUp()
+    {
+        _dbContext.Database.EnsureDeleted();
     }
 }
