@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Authentication;
+using Microsoft.EntityFrameworkCore;
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Authentication.Model;
 using MovieCrew.Core.Domain.Authentication.Services;
-using System.Security.Authentication;
+
 namespace MovieCrew.Core.Test.Authentication;
 
 public class AuthenticationTest
@@ -12,7 +13,7 @@ public class AuthenticationTest
     private const string IsCorrectToken = @"^([a-zA-Z0-9_-]+\.){2}[a-zA-Z0-9_-]+$";
 
     private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-        .UseInMemoryDatabase(databaseName: "UserDbTest")
+        .UseInMemoryDatabase("UserDbTest")
         .Options;
 
     private AppDbContext _dbContext;
@@ -23,13 +24,13 @@ public class AuthenticationTest
         _dbContext = new AppDbContext(_dbContextOptions);
         _dbContext.Database.EnsureCreated();
 
-        User[] users = new[]
+        User[] users =
         {
-            new User()
+            new User
             {
                 Id = 1,
                 Name = "test",
-                Role = 1,
+                Role = 1
             }
         };
 
@@ -51,7 +52,8 @@ public class AuthenticationTest
         {
             Assert.That(actual.UserId, Is.EqualTo(1));
             Assert.That(actual.UserName, Is.EqualTo("test"));
-            Assert.That(actual.TokenExpirationDate.ToShortTimeString(), Is.EqualTo(DateTime.UtcNow.AddDays(1).ToShortTimeString()));
+            Assert.That(actual.TokenExpirationDate.ToShortTimeString(),
+                Is.EqualTo(DateTime.UtcNow.AddDays(1).ToShortTimeString()));
             Assert.That(actual.Token, Does.Match(IsCorrectToken));
         });
     }
@@ -62,10 +64,8 @@ public class AuthenticationTest
         var repository = new AuthenticationRepository(_dbContext);
         var service = new AuthenticationService(repository, new JwtConfiguration());
 
-        Assert.ThrowsAsync<AuthenticationException>(async () =>
-        {
-            await service.Authenticate(1, "test2");
-        }, message: "Invalid user.");
+        Assert.ThrowsAsync<AuthenticationException>(async () => { await service.Authenticate(1, "test2"); },
+            "Invalid user.");
     }
 
     [OneTimeTearDown]

@@ -1,17 +1,17 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using MovieCrew.Core.Domain.Authentication.Model;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using MovieCrew.Core.Domain.Authentication.Model;
 
 namespace MovieCrew.Core.Domain.Authentication.Services;
 
 public class AuthenticationService
 {
+    private const int TokenNbValidationsDays = 1;
     private readonly JwtConfiguration _jwtConfiguration;
     private readonly IAuthenticationRepository _repository;
-    private const int TokenNbValidationsDays = 1;
 
     public AuthenticationService(IAuthenticationRepository repository, JwtConfiguration jwtConfiguration)
     {
@@ -29,15 +29,14 @@ public class AuthenticationService
             token.ValidTo);
     }
 
-
     private JwtSecurityToken CreateToken()
     {
         SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.Passphrase));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         return new JwtSecurityToken(
-            issuer: _jwtConfiguration.Issuer,
-            audience: _jwtConfiguration.Audience,
-            claims: new List<Claim>(),
+            _jwtConfiguration.Issuer,
+            _jwtConfiguration.Audience,
+            new List<Claim>(),
             expires: DateTime.UtcNow.AddDays(TokenNbValidationsDays),
             signingCredentials: signingCredentials
         );

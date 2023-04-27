@@ -3,31 +3,30 @@ using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Ratings.Exception;
 using MovieCrew.Core.Domain.Ratings.Services;
 
-namespace MovieCrew.API.Controller
+namespace MovieCrew.API.Controller;
+
+[Route("api/rate")]
+[ApiController]
+public class RateController : ControllerBase
 {
-    [Route("api/rate")]
-    [ApiController]
-    public class RateController : ControllerBase
+    private readonly RatingServices _ratingService;
+
+    public RateController(RatingServices ratingServices)
     {
-        private RatingServices _ratingService;
+        _ratingService = ratingServices;
+    }
 
-        public RateController(RatingServices ratingServices)
+    [HttpPost("add")]
+    public async Task<ActionResult<string>> Post([FromBody] CreateRateDto createRate)
+    {
+        try
         {
-            _ratingService = ratingServices;
+            await _ratingService.RateMovie(createRate.IdMovie, createRate.UserId, createRate.Rate);
+            return CreatedAtAction("Post", createRate.IdMovie);
         }
-
-        [HttpPost("add")]
-        public async Task<ActionResult<string>> Post([FromBody] CreateRateDto createRate)
+        catch (RateLimitException ex)
         {
-            try
-            {
-                await _ratingService.RateMovie(createRate.IdMovie, createRate.UserId, createRate.Rate);
-                return CreatedAtAction("add", createRate.IdMovie);
-            }
-            catch (RateLimitException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest(ex.Message);
         }
     }
 }
