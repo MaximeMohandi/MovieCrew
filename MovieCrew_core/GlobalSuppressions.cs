@@ -5,4 +5,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<I do not use serialization in this project>", Scope = "namespaceanddescendants", Target = "~N:MovieCrew_core.Domain.Exception")]
+[assembly:
+    SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly",
+        Justification = "<I do not use serialization in this project>", Scope = "namespaceanddescendants",
+        Target = "~N:MovieCrew_core.Domain.Exception")]

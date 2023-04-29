@@ -24,4 +24,6 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { } // For test purpose
+public partial class Program
+{
+} // For test purpose

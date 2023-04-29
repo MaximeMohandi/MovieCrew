@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using MovieCrew.API.Controller;
+using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Movies.Dtos;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
@@ -10,75 +11,75 @@ using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Users.Exception;
 
-namespace MovieCrew.API.Test.Controller.Movies
+namespace MovieCrew.API.Test.Controller.Movies;
+
+public class AddMovieRouteTest
 {
-    public class AddMovieRouteTest
+    private Mock<IThirdPartyMovieDataProvider> _movieDataProviderMock;
+    private Mock<IMovieRepository> _movieRepositoryMock;
+
+    [SetUp]
+    public void Setup()
     {
-        private Mock<IMovieRepository> _movieRepositoryMock;
-        private Mock<IThirdPartyMovieDataProvider> _movieDataProviderMock;
+        _movieRepositoryMock = new Mock<IMovieRepository>();
+        _movieDataProviderMock = new Mock<IThirdPartyMovieDataProvider>();
+    }
 
-        [SetUp]
-        public void Setup()
+
+    [Test]
+    public async Task AddMovie()
+    {
+        _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+
+        _movieRepositoryMock.Setup(x => x.Add(It.IsAny<MovieCreationDto>()))
+            .ReturnsAsync(new MovieEntity(1, "test", "https://maximemohandi.fr/", "loremp ipsum", DateTime.Now, null,
+                null));
+
+        var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
+
+        var controller = new MovieController(movieService);
+
+        var actual = (await controller.Post(new NewMovieDto("test", 3))).Result as ObjectResult;
+
+        Assert.Multiple(() =>
         {
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _movieDataProviderMock = new Mock<IThirdPartyMovieDataProvider>();
-        }
+            Assert.That(actual.Value, Is.EqualTo(1));
+            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
+        });
+    }
 
+    [Test]
+    public async Task AddExistingMovie()
+    {
+        _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
+            .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0));
+        _movieRepositoryMock.Setup(x => x.Add(It.IsAny<MovieCreationDto>()))
+            .ThrowsAsync(new MovieAlreadyExistException("test"));
 
-        [Test]
-        public async Task AddMovie()
-        {
-            _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
-                .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+        var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
 
-            _movieRepositoryMock.Setup(x => x.Add(It.IsAny<MovieCreationDto>()))
-                .ReturnsAsync(new MovieEntity(1, "test", "https://maximemohandi.fr/", "loremp ipsum", DateTime.Now, null, null));
+        var controller = new MovieController(movieService);
 
-            var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
+        var actual = (await controller.Post(new NewMovieDto("test", 3))).Result as ObjectResult;
 
-            var controller = new MovieController(movieService);
+        Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status409Conflict));
+    }
 
-            var actual = (await controller.Post(new("test", 3))).Result as ObjectResult;
+    [Test]
+    public async Task AddFromUnknowUser()
+    {
+        _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
+            .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0));
+        _movieRepositoryMock.Setup(x => x.Add(It.IsAny<MovieCreationDto>()))
+            .ThrowsAsync(new UserNotFoundException(3));
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(actual.Value, Is.EqualTo(1));
-                Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
-            });
-        }
+        var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
 
-        [Test]
-        public async Task AddExistingMovie()
-        {
-            _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
-                .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0));
-            _movieRepositoryMock.Setup(x => x.Add(It.IsAny<MovieCreationDto>()))
-                .ThrowsAsync(new MovieAlreadyExistException("test"));
+        var controller = new MovieController(movieService);
 
-            var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
+        var actual = (await controller.Post(new NewMovieDto("test", 3))).Result as ObjectResult;
 
-            var controller = new MovieController(movieService);
-
-            var actual = (await controller.Post(new("test", 3))).Result as ObjectResult;
-
-            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status409Conflict));
-        }
-
-        [Test]
-        public async Task AddFromUnknowUser()
-        {
-            _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
-                .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0));
-            _movieRepositoryMock.Setup(x => x.Add(It.IsAny<MovieCreationDto>()))
-                .ThrowsAsync(new UserNotFoundException(3));
-
-            var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
-
-            var controller = new MovieController(movieService);
-
-            var actual = (await controller.Post(new("test", 3))).Result as ObjectResult;
-
-            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
-        }
+        Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
     }
 }

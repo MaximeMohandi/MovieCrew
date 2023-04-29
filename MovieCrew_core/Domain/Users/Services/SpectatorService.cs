@@ -1,20 +1,19 @@
 ﻿using MovieCrew.Core.Domain.Users.Entities;
 using MovieCrew.Core.Domain.Users.Repository;
 
-namespace MovieCrew.Core.Domain.Users.Services
+namespace MovieCrew.Core.Domain.Users.Services;
+
+public class SpectatorService
 {
-    public class SpectatorService
+    private readonly IUserRepository _movieRepository;
+
+    public SpectatorService(IUserRepository movieRepository)
     {
-        private readonly IUserRepository _movieRepository;
+        _movieRepository = movieRepository;
+    }
 
-        public SpectatorService(IUserRepository movieRepository)
-        {
-            _movieRepository = movieRepository;
-        }
-
-        public async Task<SpectatorDetailsEntity> FetchSpectator(long id)
-        {
-            return await _movieRepository.GetSpectatorDetails(id);
-        }
+    public async Task<SpectatorDetailsEntity> FetchSpectator(long id)
+    {
+        return await _movieRepository.GetSpectatorDetails(id);
     }
 }

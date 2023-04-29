@@ -9,7 +9,6 @@ namespace MovieCrew.Core.Test.Authentication;
 
 public class AuthenticationTest
 {
-    //https://code-maze.com/authentication-aspnetcore-jwt-1/
     private const string IsCorrectToken = @"^([a-zA-Z0-9_-]+\.){2}[a-zA-Z0-9_-]+$";
 
     private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
@@ -26,7 +25,7 @@ public class AuthenticationTest
 
         User[] users =
         {
-            new User
+            new()
             {
                 Id = 1,
                 Name = "test",

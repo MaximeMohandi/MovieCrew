@@ -1,10 +1,9 @@
-﻿namespace MovieCrew.Core.Domain.Users.Enums
+﻿namespace MovieCrew.Core.Domain.Users.Enums;
+
+public enum UserRoles
 {
-    public enum UserRoles
-    {
-        None = 0,
-        Admin = 1,
-        User = 2,
-        Bot = 3,
-    }
+    None = 0,
+    Admin = 1,
+    User = 2,
+    Bot = 3
 }

@@ -7,64 +7,64 @@ using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Repository;
 using MovieCrew.Core.Domain.Users.Services;
 
-namespace MovieCrew.Core.Test.Users
+namespace MovieCrew.Core.Test.Users;
+
+public class FetchUserTest
 {
-    public class FetchUserTest
+    private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
+        .UseInMemoryDatabase("UserDbTest")
+        .Options;
+
+    protected AppDbContext _dbContext;
+
+    [OneTimeSetUp]
+    public void SetUp()
     {
-        private readonly DbContextOptions<AppDbContext> _dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-           .UseInMemoryDatabase(databaseName: "UserDbTest")
-           .Options;
+        _dbContext = new AppDbContext(_dbContextOptions);
+        _dbContext.Database.EnsureCreated();
 
-        protected AppDbContext _dbContext;
 
-        [OneTimeSetUp]
-        public void SetUp()
+        User[] users =
         {
-            _dbContext = new AppDbContext(_dbContextOptions);
-            _dbContext.Database.EnsureCreated();
-
-
-            User[] users = new[]
+            new User
             {
-                new User()
-                {
-                    Id = 1,
-                    Name = "Arthur",
-                    Role = 1,
-                }
-            };
+                Id = 1,
+                Name = "Arthur",
+                Role = 1
+            }
+        };
 
-            _dbContext.Users.AddRange(users);
+        _dbContext.Users.AddRange(users);
 
-            _dbContext.SaveChanges();
-        }
+        _dbContext.SaveChanges();
+    }
 
-        [Test]
-        public async Task ById()
-        {
-            UserRepository userRepository = new(_dbContext);
-            UserEntity expectedUser = new(1, "Arthur", UserRoles.Admin);
-            UserService userService = new(userRepository);
+    [Test]
+    public async Task ById()
+    {
+        UserRepository userRepository = new(_dbContext);
+        UserEntity expectedUser = new(1, "Arthur", UserRoles.Admin);
+        UserService userService = new(userRepository);
 
-            UserEntity actualUser = await userService.GetById(1);
+        var actualUser = await userService.GetById(1);
 
-            Assert.That(actualUser, Is.EqualTo(expectedUser));
-        }
+        Assert.That(actualUser, Is.EqualTo(expectedUser));
+    }
 
-        [Test]
-        public void UnknownId()
-        {
-            UserRepository userRepository = new(_dbContext);
-            UserService userService = new(userRepository);
+    [Test]
+    public void UnknownId()
+    {
+        UserRepository userRepository = new(_dbContext);
+        UserService userService = new(userRepository);
 
-            UserNotFoundException exception = Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetById(-1));
-            Assert.That(exception.Message, Is.EqualTo("User with id: -1 not found. Please check the conformity and try again"));
-        }
+        var exception = Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetById(-1));
+        Assert.That(exception.Message,
+            Is.EqualTo("User with id: -1 not found. Please check the conformity and try again"));
+    }
 
-        [OneTimeTearDown]
-        public void CleanUp()
-        {
-            _dbContext.Database.EnsureDeleted();
-        }
+    [OneTimeTearDown]
+    public void CleanUp()
+    {
+        _dbContext.Database.EnsureDeleted();
     }
 }

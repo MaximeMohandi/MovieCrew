@@ -1,49 +1,46 @@
-﻿namespace MovieCrew.Core.Domain.Users.Entities
+﻿namespace MovieCrew.Core.Domain.Users.Entities;
+
+public class SpectatorDetailsEntity
 {
-    public class SpectatorDetailsEntity
+    public SpectatorDetailsEntity(UserEntity spectator, List<SpectatorRateEntity>? rates)
     {
-        public SpectatorDetailsEntity(UserEntity spectator, List<SpectatorRateEntity>? rates)
-        {
-            Spectator = spectator;
-            Rates = rates;
-        }
-        public UserEntity Spectator { get; }
-        public List<SpectatorRateEntity>? Rates { get; }
-        public SpectatorRateEntity? BestRate => Rates?.MaxBy(r => r.Rate);
-        public SpectatorRateEntity? WorstRate => Rates?.MinBy(r => r.Rate);
+        Spectator = spectator;
+        Rates = rates;
+    }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
+    public UserEntity Spectator { get; }
+    public List<SpectatorRateEntity>? Rates { get; }
+    public SpectatorRateEntity? BestRate => Rates?.MaxBy(r => r.Rate);
+    public SpectatorRateEntity? WorstRate => Rates?.MinBy(r => r.Rate);
 
-            var toCompare = (SpectatorDetailsEntity)obj;
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
 
-            return Equals(Spectator, toCompare.Spectator)
-                && RatesAreEquals(toCompare.Rates)
-                && Equals(BestRate, toCompare.BestRate)
-                && Equals(WorstRate, toCompare.WorstRate);
-        }
+        var toCompare = (SpectatorDetailsEntity)obj;
 
-        private bool RatesAreEquals(List<SpectatorRateEntity>? rates)
-        {
-            if (Rates is null || rates is null) return rates is null && Rates is null;
+        return Equals(Spectator, toCompare.Spectator)
+               && RatesAreEquals(toCompare.Rates)
+               && Equals(BestRate, toCompare.BestRate)
+               && Equals(WorstRate, toCompare.WorstRate);
+    }
 
-            return Rates.SequenceEqual(rates!);
-        }
+    private bool RatesAreEquals(List<SpectatorRateEntity>? rates)
+    {
+        if (Rates is null || rates is null) return rates is null && Rates is null;
 
-        public override int GetHashCode()
-        {
-            int hash = 0;
-            if (Rates is null) return hash;
+        return Rates.SequenceEqual(rates!);
+    }
 
-            foreach (SpectatorRateEntity rate in Rates)
-            {
-                hash = HashCode.Combine(hash, rate);
-            }
+    public override int GetHashCode()
+    {
+        var hash = 0;
+        if (Rates is null) return hash;
 
-            hash = HashCode.Combine(hash, BestRate!.GetHashCode(), WorstRate!.GetHashCode());
+        foreach (var rate in Rates) hash = HashCode.Combine(hash, rate);
 
-            return hash;
-        }
+        hash = HashCode.Combine(hash, BestRate!.GetHashCode(), WorstRate!.GetHashCode());
+
+        return hash;
     }
 }

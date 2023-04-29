@@ -11,7 +11,7 @@ public class AuthenticationRepository : IAuthenticationRepository
     {
         _dbContext = databaseContext;
     }
-    
+
     public async Task<bool> IsUserExist(long userId, string userName)
     {
         return await _dbContext.Users.AnyAsync(user => user.Id == userId && user.Name == userName);

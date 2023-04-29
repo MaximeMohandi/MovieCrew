@@ -35,14 +35,17 @@ public class JwtConfigurationTest
     [Test]
     public void IssuerAndAudienceShouldBeCorrectUrl()
     {
-        var configuration = new JwtConfiguration("blaqdfqdf@@2413654Rlsjfsddsdddddd", "https://host.fr", "https://audience.com");
-        
+        var configuration = new JwtConfiguration("blaqdfqdf@@2413654Rlsjfsddsdddddd", "https://host.fr",
+            "https://audience.com");
+
         Assert.Multiple(() =>
         {
-            Assert.That(Uri.TryCreate(configuration.Issuer, UriKind.Absolute, out Uri? issuerUriResult)
-                        && (issuerUriResult.Scheme == Uri.UriSchemeHttp || issuerUriResult.Scheme == Uri.UriSchemeHttps), Is.True);
-            Assert.That(Uri.TryCreate(configuration.Audience, UriKind.Absolute, out Uri? audienceUriResult)
-                        && (audienceUriResult.Scheme == Uri.UriSchemeHttp || audienceUriResult.Scheme == Uri.UriSchemeHttps), Is.True);
+            Assert.That(Uri.TryCreate(configuration.Issuer, UriKind.Absolute, out var issuerUriResult)
+                        && (issuerUriResult.Scheme == Uri.UriSchemeHttp ||
+                            issuerUriResult.Scheme == Uri.UriSchemeHttps), Is.True);
+            Assert.That(Uri.TryCreate(configuration.Audience, UriKind.Absolute, out var audienceUriResult)
+                        && (audienceUriResult.Scheme == Uri.UriSchemeHttp ||
+                            audienceUriResult.Scheme == Uri.UriSchemeHttps), Is.True);
         });
     }
 
@@ -54,6 +57,6 @@ public class JwtConfigurationTest
         Assert.Throws<ArgumentException>(() => new JwtConfiguration
         {
             Issuer = issuer
-        }, message: $"{issuer} is not a valid host");
+        }, $"{issuer} is not a valid host");
     }
 }

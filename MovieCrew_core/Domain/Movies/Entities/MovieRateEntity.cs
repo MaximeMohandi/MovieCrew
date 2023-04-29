@@ -1,30 +1,29 @@
 ﻿using MovieCrew.Core.Domain.Users.Entities;
 
-namespace MovieCrew.Core.Domain.Movies.Entities
+namespace MovieCrew.Core.Domain.Movies.Entities;
+
+public class MovieRateEntity
 {
-    public class MovieRateEntity
+    public MovieRateEntity(UserEntity ratedBy, decimal rate)
     {
-        public MovieRateEntity(UserEntity ratedBy, decimal rate)
-        {
-            RatedBy = ratedBy;
-            Rate = rate;
-        }
+        RatedBy = ratedBy;
+        Rate = rate;
+    }
 
-        public UserEntity RatedBy { get; }
-        public decimal Rate { get; }
+    public UserEntity RatedBy { get; }
+    public decimal Rate { get; }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
 
-            var toCompare = (MovieRateEntity)obj;
+        var toCompare = (MovieRateEntity)obj;
 
-            return Equals(RatedBy, toCompare.RatedBy) && Rate == toCompare.Rate;
-        }
+        return Equals(RatedBy, toCompare.RatedBy) && Rate == toCompare.Rate;
+    }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(RatedBy, Rate);
-        }
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(RatedBy, Rate);
     }
 }

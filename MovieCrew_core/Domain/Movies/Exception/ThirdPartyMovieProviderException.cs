@@ -1,12 +1,15 @@
-﻿namespace MovieCrew.Core.Domain.Movies.Exception
-{
-    public class ThirdPartyMovieProviderException : System.Exception
-    {
-        public ThirdPartyMovieProviderException(string message) : base(message) { }
-    }
+﻿namespace MovieCrew.Core.Domain.Movies.Exception;
 
-    public class NoMetaDataFoundException : ThirdPartyMovieProviderException
+public class ThirdPartyMovieProviderException : System.Exception
+{
+    public ThirdPartyMovieProviderException(string message) : base(message)
     {
-        public NoMetaDataFoundException(string title) : base($"No metadata found for the movie {title}.") { }
+    }
+}
+
+public class NoMetaDataFoundException : ThirdPartyMovieProviderException
+{
+    public NoMetaDataFoundException(string title) : base($"No metadata found for the movie {title}.")
+    {
     }
 }

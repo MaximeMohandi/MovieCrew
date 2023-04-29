@@ -1,72 +1,67 @@
 ﻿using MovieCrew.Core.Domain.Users.Entities;
 
-namespace MovieCrew.Core.Domain.Movies.Entities
+namespace MovieCrew.Core.Domain.Movies.Entities;
+
+public class MovieDetailsEntity : MovieEntity
 {
-    public class MovieDetailsEntity : MovieEntity
+    public MovieDetailsEntity(int id,
+        string title,
+        string poster,
+        string descsription,
+        DateTime addedDate,
+        DateTime? seenDate,
+        decimal? averageRate,
+        decimal? peopleAverageRate,
+        decimal? revenue,
+        List<MovieRateEntity>? movieRates,
+        UserEntity? proposedBy) :
+        base(id, title, poster, descsription, addedDate, seenDate, averageRate)
     {
-        public MovieDetailsEntity(int id,
-                                  string title,
-                                  string poster,
-                                  string descsription,
-                                  DateTime addedDate,
-                                  DateTime? seenDate,
-                                  decimal? averageRate,
-                                  decimal? peopleAverageRate,
-                                  decimal? revenue,
-                                  List<MovieRateEntity>? movieRates,
-                                  UserEntity? proposedBy) :
-            base(id, title, poster, descsription, addedDate, seenDate, averageRate)
-        {
-            PeopleAverageRate = peopleAverageRate;
-            Revenue = revenue;
-            MovieRates = movieRates;
-            ProposedBy = proposedBy;
-        }
+        PeopleAverageRate = peopleAverageRate;
+        Revenue = revenue;
+        MovieRates = movieRates;
+        ProposedBy = proposedBy;
+    }
 
-        public decimal? PeopleAverageRate { get; set; }
-        public decimal? Revenue { get; set; }
-        public List<MovieRateEntity>? MovieRates { get; }
-        public MovieRateEntity? BestRate => MovieRates?.MaxBy(r => r.Rate);
-        public MovieRateEntity? WorstRate => MovieRates?.MinBy(r => r.Rate);
-        public UserEntity? ProposedBy { get; }
+    public decimal? PeopleAverageRate { get; set; }
+    public decimal? Revenue { get; set; }
+    public List<MovieRateEntity>? MovieRates { get; }
+    public MovieRateEntity? BestRate => MovieRates?.MaxBy(r => r.Rate);
+    public MovieRateEntity? WorstRate => MovieRates?.MinBy(r => r.Rate);
+    public UserEntity? ProposedBy { get; }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
 
-            var toCompare = (MovieDetailsEntity)obj;
+        var toCompare = (MovieDetailsEntity)obj;
 
-            return base.Equals(obj)
-                && RatesAreEquals(toCompare.MovieRates)
-                && Equals(BestRate, toCompare.BestRate)
-                && Equals(WorstRate, toCompare.WorstRate)
-                && Equals(PeopleAverageRate, toCompare.PeopleAverageRate)
-                && Equals(Revenue, toCompare.Revenue)
-                && Equals(ProposedBy, toCompare.ProposedBy);
-        }
+        return base.Equals(obj)
+               && RatesAreEquals(toCompare.MovieRates)
+               && Equals(BestRate, toCompare.BestRate)
+               && Equals(WorstRate, toCompare.WorstRate)
+               && Equals(PeopleAverageRate, toCompare.PeopleAverageRate)
+               && Equals(Revenue, toCompare.Revenue)
+               && Equals(ProposedBy, toCompare.ProposedBy);
+    }
 
-        private bool RatesAreEquals(List<MovieRateEntity>? rates)
-        {
-            if (MovieRates is null || rates is null) return rates is null && MovieRates is null;
+    private bool RatesAreEquals(List<MovieRateEntity>? rates)
+    {
+        if (MovieRates is null || rates is null) return rates is null && MovieRates is null;
 
-            return MovieRates.SequenceEqual(rates!);
-        }
+        return MovieRates.SequenceEqual(rates!);
+    }
 
-        public override int GetHashCode()
-        {
-            int hash = base.GetHashCode();
-            if (MovieRates is not null)
-            {
-                foreach (MovieRateEntity rate in MovieRates)
-                {
-                    hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate), BestRate!.GetHashCode(), WorstRate!.GetHashCode());
-                }
-            }
-            hash = HashCode.Combine(hash, ProposedBy is null ? 0 : ProposedBy.GetHashCode());
-            hash = HashCode.Combine(hash, PeopleAverageRate is null ? 0 : PeopleAverageRate.GetHashCode());
-            hash = HashCode.Combine(hash, Revenue is null ? 0 : Revenue.GetHashCode());
-            return hash;
-        }
-
+    public override int GetHashCode()
+    {
+        var hash = base.GetHashCode();
+        if (MovieRates is not null)
+            foreach (var rate in MovieRates)
+                hash = HashCode.Combine(hash, EqualityComparer<MovieRateEntity>.Default.GetHashCode(rate),
+                    BestRate!.GetHashCode(), WorstRate!.GetHashCode());
+        hash = HashCode.Combine(hash, ProposedBy is null ? 0 : ProposedBy.GetHashCode());
+        hash = HashCode.Combine(hash, PeopleAverageRate is null ? 0 : PeopleAverageRate.GetHashCode());
+        hash = HashCode.Combine(hash, Revenue is null ? 0 : Revenue.GetHashCode());
+        return hash;
     }
 }
