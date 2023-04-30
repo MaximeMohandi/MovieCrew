@@ -10,7 +10,7 @@ using MovieCrew.Core.Domain.Movies.Services;
 
 namespace MovieCrew.API.Test.Controller.Movies;
 
-public class GetMoviesRouteTest
+public class GetAllMoviesTest
 {
     private Mock<IThirdPartyMovieDataProvider> _movieDataProviderMock;
     private Mock<IMovieRepository> _movieRepositoryMock;

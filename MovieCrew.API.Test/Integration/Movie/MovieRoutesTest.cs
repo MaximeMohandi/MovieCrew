@@ -6,13 +6,13 @@ using MovieCrew.Core.Domain.Movies.Services;
 
 namespace MovieCrew.API.Test.Integration.Movie;
 
-public class MovieGetAllTest
+public class MovieRoutesTest
 {
     private readonly JsonSerializerOptions _jsonOptions;
     private HttpClient _client;
     private Mock<IMovieService> _movieService;
 
-    public MovieGetAllTest()
+    public MovieRoutesTest()
     {
         _jsonOptions = new JsonSerializerOptions
         {
