@@ -6,7 +6,7 @@ using MovieCrew.Core.Domain.Movies.Repository;
 
 namespace MovieCrew.Core.Domain.Movies.Services;
 
-public class MovieService
+public class MovieService : IMovieService
 {
     private readonly IMovieRepository _movieRepository;
     private readonly IThirdPartyMovieDataProvider _thirdPartyMovieProvider;
@@ -34,13 +34,6 @@ public class MovieService
         var movie = await _movieRepository.GetMovie(movieId);
         await AddRevenueAndPeopleRatingsToMovie(movie);
         return movie;
-    }
-
-    private async Task AddRevenueAndPeopleRatingsToMovie(MovieDetailsEntity movie)
-    {
-        var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
-        movie.PeopleAverageRate = metadata.Ratings;
-        movie.Revenue = metadata.Revenue;
     }
 
     public async Task<MovieEntity> RandomMovie()
@@ -78,5 +71,12 @@ public class MovieService
     public async Task SetSeenDate(MovieSetSeenDateDto movieSetSeenDateDTO)
     {
         await _movieRepository.Update(movieSetSeenDateDTO);
+    }
+
+    private async Task AddRevenueAndPeopleRatingsToMovie(MovieDetailsEntity movie)
+    {
+        var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
+        movie.PeopleAverageRate = metadata.Ratings;
+        movie.Revenue = metadata.Revenue;
     }
 }

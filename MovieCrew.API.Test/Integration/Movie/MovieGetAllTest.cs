@@ -1,56 +1,50 @@
-﻿using System.Net.Http.Json;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Encodings.Web;
+using System.Text.Json;
 using Moq;
-using MovieCrew.Core.Data;
 using MovieCrew.Core.Domain.Movies.Entities;
-using MovieCrew.Core.Domain.Movies.Interfaces;
-using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
 
 namespace MovieCrew.API.Test.Integration.Movie;
 
 public class MovieGetAllTest
 {
-    private readonly HttpClient _client;
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly JsonSerializerOptions _jsonOptions;
+    private HttpClient _client;
+    private Mock<IMovieService> _movieService;
 
     public MovieGetAllTest()
     {
-        var webAppFactory = new CustomWebApplicationFactory();
-        _client = webAppFactory.CreateDefaultClient();
+        _jsonOptions = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+    }
+
+    [SetUp]
+    public void SetUp()
+    {
+        _movieService = new Mock<IMovieService>();
+        _client = new IntegrationTestServer<IMovieService>(_movieService).CreateDefaultClient();
     }
 
     [Test]
     public async Task FetchAllMovie()
     {
-        var expected = new List<MovieEntity>();
-
-        var response = await _client.GetAsync("/api/movie/random");
-        var content = await response.Content.ReadFromJsonAsync<List<MovieEntity>>();
-
-        Assert.That(content, Is.EqualTo(expected));
-    }
-}
-
-public class CustomWebApplicationFactory : WebApplicationFactory<Program>
-{
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        builder.UseEnvironment("IntegrationTesting");
-        base.ConfigureWebHost(builder);
-
-        builder.ConfigureServices(services => { services.AddTransient<AppDbContext>(); });
-
-        builder.ConfigureServices(services =>
+        var expectedList = new List<MovieEntity>
         {
-            services.AddTransient<DbContextOptions>();
-            services.AddTransient<AppDbContext>();
-            services.AddTransient<IMovieRepository, MovieRepository>();
-            var test = new Mock<IThirdPartyMovieDataProvider>();
-            services.AddTransient<IThirdPartyMovieDataProvider>(provider => { return test.Object; });
-            services.AddTransient<MovieService>();
-        });
+            new(1, "Tempête", "http://url", "lorem Ipsum", new DateTime(2023, 3, 11), new DateTime(2023, 3, 18),
+                2),
+            new(1, "John Wick", "http://url", "lorem Ipsum", new DateTime(2023, 3, 11),
+                new DateTime(2023, 3, 18),
+                5.25M)
+        };
+        _movieService.Setup(x => x.FetchAllMovies())
+            .ReturnsAsync(expectedList);
+
+        var expectedJsonResponse = JsonSerializer.Serialize(expectedList, _jsonOptions);
+
+        var response = await (await _client.GetAsync("/api/movie/all")).Content.ReadAsStringAsync();
+
+        Assert.That(response.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
     }
 }

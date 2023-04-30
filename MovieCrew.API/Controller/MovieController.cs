@@ -11,9 +11,9 @@ namespace MovieCrew.API.Controller;
 [ApiController]
 public class MovieController : ControllerBase
 {
-    private readonly MovieService _movieService;
+    private readonly IMovieService _movieService;
 
-    public MovieController(MovieService movieService)
+    public MovieController(IMovieService movieService)
     {
         _movieService = movieService;
     }

@@ -5,14 +5,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Remove="Domain\ThirdPartyMovieProvider\**"/>
-        <EmbeddedResource Remove="Domain\ThirdPartyMovieProvider\**"/>
-        <None Remove="Domain\ThirdPartyMovieProvider\**"/>
+        <Compile Remove="Domain\ThirdPartyMovieProvider\**" />
+        <EmbeddedResource Remove="Domain\ThirdPartyMovieProvider\**" />
+        <None Remove="Domain\ThirdPartyMovieProvider\**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeCoverage" Version="17.4.1"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.0"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.29.0"/>
+        <PackageReference Include="Microsoft.CodeCoverage" Version="17.4.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.29.0" />
     </ItemGroup>
 </Project>
