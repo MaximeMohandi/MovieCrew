@@ -34,13 +34,6 @@ public class AllMoviesHaveBeenSeenException : MovieException
     }
 }
 
-public class MoviePosterFormatException : MovieException
-{
-    public MoviePosterFormatException() : base("Poster must be a valid link. Please check the link and retry.")
-    {
-    }
-}
-
 public class NoMoviesFoundException : MovieException
 {
     public NoMoviesFoundException() : base("It seem that there's no movies in the list. Please try to add new one")

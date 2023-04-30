@@ -1,7 +1,9 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Services;
 
 namespace MovieCrew.API.Test.Integration.Movie;
@@ -46,5 +48,22 @@ public class MovieRoutesTest
         var response = await (await _client.GetAsync("/api/movie/all")).Content.ReadAsStringAsync();
 
         Assert.That(response.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
+    }
+
+    [Test]
+    public async Task NoMoviesFound()
+    {
+        _movieService.Setup(x => x.FetchAllMovies())
+            .ThrowsAsync(new NoMoviesFoundException());
+
+        var response = await _client.GetAsync("/api/movie/all");
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
+            Assert.That(responseContent,
+                Is.EqualTo("It seem that there's no movies in the list. Please try to add new one"));
+        });
     }
 }
