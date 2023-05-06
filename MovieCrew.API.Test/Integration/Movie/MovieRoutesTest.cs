@@ -1,8 +1,10 @@
-﻿using System.Text.Encodings.Web;
-using System.Text.Json;
+﻿using Microsoft.AspNetCore.Http;
 using Moq;
 using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Services;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace MovieCrew.API.Test.Integration.Movie;
 
@@ -43,8 +45,29 @@ public class MovieRoutesTest
 
         var expectedJsonResponse = JsonSerializer.Serialize(expectedList, _jsonOptions);
 
-        var response = await (await _client.GetAsync("/api/movie/all")).Content.ReadAsStringAsync();
+        var response = await _client.GetAsync("/api/movie/all");
+        var responseContent = await response.Content.ReadAsStringAsync();
 
-        Assert.That(response.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
+        Assert.Multiple(() =>
+        {
+            Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
+            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
+        });
+    }
+
+    [Test]
+    public async Task NoMoviesToFetch()
+    {
+        var expected = "it seems that there's no movies in the list. please try to add new one";
+        _movieService.Setup(x => x.FetchAllMovies()).ThrowsAsync(new NoMoviesFoundException());
+
+        var response = await _client.GetAsync("/api/movie/all");
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
+            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expected.ToLower()));
+        });
     }
 }

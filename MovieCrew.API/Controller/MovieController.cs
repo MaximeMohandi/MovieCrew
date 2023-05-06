@@ -47,7 +47,7 @@ public class MovieController : ControllerBase
         }
         catch (NoMoviesFoundException exception)
         {
-            return NotFound(exception);
+            return NotFound(exception.Message);
         }
     }
 
