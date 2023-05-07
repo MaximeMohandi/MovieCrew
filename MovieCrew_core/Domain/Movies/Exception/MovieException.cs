@@ -36,7 +36,7 @@ public class AllMoviesHaveBeenSeenException : MovieException
 
 public class NoMoviesFoundException : MovieException
 {
-    public NoMoviesFoundException() : base("It seem that there's no movies in the list. Please try to add new one")
+    public NoMoviesFoundException() : base("It seems that there's no movies in the list. Please try to add new one")
     {
     }
 }
