@@ -53,7 +53,7 @@ public class MovieRoutesTest
         Assert.Multiple(() =>
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
-            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
+            Assert.That(responseContent.ToLower(), Is.EqualTo(expectedJsonResponse.ToLower()));
         });
     }
 
@@ -69,7 +69,7 @@ public class MovieRoutesTest
         Assert.Multiple(() =>
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
-            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expected.ToLower()));
+            Assert.That(responseContent.ToLower(), Is.EqualTo(expected.ToLower()));
         });
     }
 
@@ -93,7 +93,7 @@ public class MovieRoutesTest
         Assert.Multiple(() =>
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
-            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
+            Assert.That(responseContent.ToLower(), Is.EqualTo(expectedJsonResponse.ToLower()));
         });
     }
 
@@ -117,7 +117,7 @@ public class MovieRoutesTest
         Assert.Multiple(() =>
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
-            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
+            Assert.That(responseContent.ToLower(), Is.EqualTo(expectedJsonResponse.ToLower()));
         });
     }
 
