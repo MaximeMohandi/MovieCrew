@@ -127,7 +127,8 @@ public class GetMovieDetailsTest
         Assert.Multiple(() =>
         {
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
-            Assert.That(actual.Value, Is.TypeOf<MovieNotFoundException>());
+            Assert.That(actual.Value,
+                Is.EqualTo("There's no movie with the id : -100. Please check the given id and retry."));
         });
     }
 
