@@ -29,11 +29,11 @@ public class MovieController : ControllerBase
         }
         catch (MovieAlreadyExistException exception)
         {
-            return Conflict(exception);
+            return Conflict(exception.Message);
         }
         catch (UserNotFoundException exception)
         {
-            return NotFound(exception);
+            return NotFound(exception.Message);
         }
     }
 
