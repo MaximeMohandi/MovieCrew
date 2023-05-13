@@ -6,7 +6,7 @@ using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Ratings.Repository;
 using MovieCrew.Core.Domain.Ratings.Services;
 
-namespace MovieCrew.API.Test.Controller.Ratings;
+namespace MovieCrew.API.Test.UnitTest.Controller.Ratings;
 
 public class RateMovieRouteTest
 {

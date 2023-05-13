@@ -11,7 +11,7 @@ using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Users.Exception;
 
-namespace MovieCrew.API.Test.Controller.Movies;
+namespace MovieCrew.API.Test.UnitTest.Controller.Movies;
 
 public class AddMovieRouteTest
 {

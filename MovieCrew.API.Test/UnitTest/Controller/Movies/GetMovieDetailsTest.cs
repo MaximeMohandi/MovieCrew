@@ -10,7 +10,7 @@ using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Users.Entities;
 using MovieCrew.Core.Domain.Users.Enums;
 
-namespace MovieCrew.API.Test.Controller.Movies;
+namespace MovieCrew.API.Test.UnitTest.Controller.Movies;
 
 public class GetMovieDetailsTest
 {

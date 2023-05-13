@@ -6,7 +6,7 @@ using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Authentication.Model;
 using MovieCrew.Core.Domain.Authentication.Services;
 
-namespace MovieCrew.API.Test.Controller.Authentication;
+namespace MovieCrew.API.Test.UnitTest.Controller.Authentication;
 
 public class AuthenticationRouteTest
 {

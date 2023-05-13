@@ -8,7 +8,7 @@ using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
 
-namespace MovieCrew.API.Test.Controller.Movies;
+namespace MovieCrew.API.Test.UnitTest.Controller.Movies;
 
 public class GetAllMoviesTest
 {

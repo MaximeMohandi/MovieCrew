@@ -8,7 +8,7 @@ using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Repository;
 using MovieCrew.Core.Domain.Users.Services;
 
-namespace MovieCrew.API.Test.Controller.Users;
+namespace MovieCrew.API.Test.UnitTest.Controller.Users;
 
 public class GetSpectatorDetailsRouteTest
 {
