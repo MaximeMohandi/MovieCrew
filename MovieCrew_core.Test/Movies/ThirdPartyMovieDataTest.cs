@@ -16,16 +16,16 @@ public class ThirdPartyMovieDataTest
     }
 
     [Test]
-    public async Task FetchDetailsFromThirdParty()
+    public async Task ThirdPartyProviderShouldReturnValidData()
     {
+        // Arrange
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
             .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
-        var thirdPartyProvider = _fakeDataProvider.Object;
 
-        //use well known movie (top 10 box office) to be sure to get some data from third party
-        var actual = await thirdPartyProvider.GetDetails("Titanic");
+        // Act
+        var actual = await _fakeDataProvider.Object.GetDetails("Titanic");
 
-        //chack that data are in correct format rather than what they are
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(Uri.TryCreate(actual.PosterLink, UriKind.Absolute, out var uriResult)
@@ -37,7 +37,7 @@ public class ThirdPartyMovieDataTest
     }
 
     [Test]
-    public void FetchMovieThatDoNotExist()
+    public void ShouldThrowExceptionWhenNoMetadataFoundForMovieTitle()
     {
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
             .ThrowsAsync(new NoMetaDataFoundException("hJjK9pLm3tRq"));
