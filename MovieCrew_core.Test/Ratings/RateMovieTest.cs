@@ -7,9 +7,9 @@ namespace MovieCrew.Core.Test.Ratings;
 public class RateMovieTest : InMemoryMovieTestBase
 {
     [Test]
-    public async Task MovieWithoutRate()
+    public async Task RateMovieShouldAddRate()
     {
-        RatingServices rateService = new(_rateRepository);
+        // Arrange
         var expectedRate = new Rate
         {
             MovieId = 2,
@@ -17,7 +17,10 @@ public class RateMovieTest : InMemoryMovieTestBase
             Note = 2.0M
         };
 
-        await rateService.RateMovie(2, 1, 2.0M);
+        // Act
+        await new RatingServices(_rateRepository).RateMovie(2, 1, 2.0M);
+
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(_dbContext.Rates.Any(r => r.Equals(expectedRate)), Is.True);
@@ -27,35 +30,35 @@ public class RateMovieTest : InMemoryMovieTestBase
     }
 
     [Test]
-    public async Task ExistingRate()
+    public async Task RateMovieShouldUpdateRateWhenRateAlreadyExist()
     {
-        RatingServices rateService = new(_rateRepository);
-
-        await rateService.RateMovie(1, 1, 0.0M);
-
+        // Act
+        await new RatingServices(_rateRepository).RateMovie(1, 1, 0.0M);
         var updatedRate = _dbContext.Rates
             .First(r => r.UserId == 1 && r.MovieId == 1);
 
+        // Assert
         Assert.That(updatedRate.Note, Is.EqualTo(0.0M));
     }
 
     [TestCase(11.0)]
     [TestCase(-1.0)]
     [TestCase(10.1)]
-    public void RateMustBeBetween0To10(decimal rate)
+    public void RateMovieShouldThrowExceptionWhenRateIsNotBetween0And10(decimal rate)
     {
-        RatingServices rateService = new(_rateRepository);
+        // Arrange
+        var ratingServices = new RatingServices(_rateRepository);
 
-        var ex = Assert.ThrowsAsync<RateLimitException>(async () => await rateService.RateMovie(1, 1, rate));
-
-        Assert.That(ex.Message, Is.EqualTo($"The rate must be between 0 and 10. Actual : {rate}"));
+        // Act & Assert
+        Assert.ThrowsAsync<RateLimitException>(() => ratingServices.RateMovie(1, 1, rate),
+            $"The rate must be between 0 and 10. Actual : {rate}");
     }
 
     protected override void SeedInMemoryDatas()
     {
         Movie[] movies =
         {
-            new Movie
+            new()
             {
                 Id = 1,
                 DateAdded = new DateTime(2022, 5, 10),
@@ -64,7 +67,7 @@ public class RateMovieTest : InMemoryMovieTestBase
                 Description = "Best movie ever",
                 SeenDate = new DateTime(2022, 5, 12)
             },
-            new Movie
+            new()
             {
                 Id = 2,
                 DateAdded = new DateTime(2015, 8, 3),
@@ -78,19 +81,19 @@ public class RateMovieTest : InMemoryMovieTestBase
 
         User[] users =
         {
-            new User
+            new()
             {
                 Id = 1,
                 Name = "Jabba",
                 Role = 0
             },
-            new User
+            new()
             {
                 Id = 2,
                 Name = "Dudley",
                 Role = 0
             },
-            new User
+            new()
             {
                 Id = 3,
                 Name = "T-Rex",
@@ -102,19 +105,19 @@ public class RateMovieTest : InMemoryMovieTestBase
 
         Rate[] rates =
         {
-            new Rate
+            new()
             {
                 MovieId = 1,
                 UserId = 1,
                 Note = 10.0M
             },
-            new Rate
+            new()
             {
                 MovieId = 1,
                 UserId = 2,
                 Note = 2.0M
             },
-            new Rate
+            new()
             {
                 MovieId = 1,
                 UserId = 3,
