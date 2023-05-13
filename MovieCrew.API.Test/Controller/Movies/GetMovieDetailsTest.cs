@@ -140,7 +140,7 @@ public class GetMovieDetailsTest
         var actual = (await controller.GetDetails()).Result as ObjectResult;
 
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
-        Assert.That(actual.Value, Is.EqualTo("Either id or title parameter is required."));
+        Assert.That(actual.Value, Is.EqualTo("Please provide a movie id or title."));
     }
 
     [Test]
@@ -151,6 +151,6 @@ public class GetMovieDetailsTest
         var actual = (await controller.GetDetails(100, "titanic")).Result as ObjectResult;
 
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
-        Assert.That(actual.Value, Is.EqualTo("Only one of id or title parameters should be provided."));
+        Assert.That(actual.Value, Is.EqualTo("Please provide a movie id or title."));
     }
 }

@@ -9,7 +9,7 @@ namespace MovieCrew.API.Test.Integration.Movie;
 public class AllMoviesEndpointTest : MovieEndpointTestBase
 {
     [Test]
-    public async Task FetchAllMovie()
+    public async Task ShouldReturnAllMovies()
     {
         var expectedList = new List<MovieEntity>
         {
@@ -35,7 +35,7 @@ public class AllMoviesEndpointTest : MovieEndpointTestBase
     }
 
     [Test]
-    public async Task NoMoviesToFetch()
+    public async Task ShouldReturnNotFoundWhenNoMoviesFound()
     {
         var expected = "it seems that there's no movies in the list. please try to add new one";
         _movieService.Setup(x => x.FetchAllMovies()).ThrowsAsync(new NoMoviesFoundException());
