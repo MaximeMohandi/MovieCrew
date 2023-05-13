@@ -23,43 +23,39 @@ public class FetchUserTest
         _dbContext = new AppDbContext(_dbContextOptions);
         _dbContext.Database.EnsureCreated();
 
-
-        User[] users =
+        _dbContext.Users.Add(new User
         {
-            new User
-            {
-                Id = 1,
-                Name = "Arthur",
-                Role = 1
-            }
-        };
-
-        _dbContext.Users.AddRange(users);
+            Id = 1,
+            Name = "Arthur",
+            Role = 1
+        });
 
         _dbContext.SaveChanges();
     }
 
     [Test]
-    public async Task ById()
+    public async Task ShouldFetchUser()
     {
+        // Arrange
         UserRepository userRepository = new(_dbContext);
         UserEntity expectedUser = new(1, "Arthur", UserRoles.Admin);
         UserService userService = new(userRepository);
 
+        // Act
         var actualUser = await userService.GetById(1);
 
+        // Assert
         Assert.That(actualUser, Is.EqualTo(expectedUser));
     }
 
     [Test]
-    public void UnknownId()
+    public void ShouldThrowExceptionWhenUserNotFound()
     {
         UserRepository userRepository = new(_dbContext);
         UserService userService = new(userRepository);
 
-        var exception = Assert.ThrowsAsync<UserNotFoundException>(async () => await userService.GetById(-1));
-        Assert.That(exception.Message,
-            Is.EqualTo("User with id: -1 not found. Please check the conformity and try again"));
+        Assert.ThrowsAsync<UserNotFoundException>(() => userService.GetById(-1),
+            "User with id: -1 not found. Please check the conformity and try again");
     }
 
     [OneTimeTearDown]
