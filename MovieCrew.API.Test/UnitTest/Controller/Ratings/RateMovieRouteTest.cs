@@ -21,22 +21,29 @@ public class RateMovieRouteTest
     }
 
     [Test]
-    public async Task RateMovie()
+    public async Task ShouldReturn201WhenRateIsCreated()
     {
+        // Arrange
         var controller = new RateController(_service);
+
+        // Act
         var actual = (await controller.Post(new CreateRateDto(1, 2, 3.0M))).Result as ObjectResult;
 
+        // Assert
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
     }
 
     [TestCase(-2)]
     [TestCase(200)]
-    public async Task ErrorWhenRateOutOfBound(decimal rate)
+    public async Task ShouldReturn400WhenRateIsNotBetween0And10(decimal rate)
     {
+        // Arrange
         var controller = new RateController(_service);
 
+        // Act
         var actual = (await controller.Post(new CreateRateDto(1, 1, rate))).Result as ObjectResult;
 
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
