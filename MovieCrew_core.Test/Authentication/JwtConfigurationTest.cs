@@ -7,7 +7,7 @@ public class JwtConfigurationTest
 {
     [TestCase("blabl²__albalablablbla'@dsf232'^")]
     [TestCase("blaqdfqdf@@2413654Rlsjfsddsdddddd")]
-    public void ConfigurationHasValidPassPhrase(string passphrase)
+    public void PassphraseShouldBeCorrect(string passphrase)
     {
         var configuration = new JwtConfiguration(passphrase, "https://test.com", "https://test.com");
         Assert.That(Encoding.Unicode.GetByteCount(configuration.Passphrase), Is.GreaterThanOrEqualTo(64));
@@ -15,7 +15,7 @@ public class JwtConfigurationTest
 
     [TestCase("1223")]
     [TestCase("")]
-    public void ErrorWhenPassphraseIsNotConform(string passphrase)
+    public void ShouldThrowExceptionWhenPassPhraseIsTooShort(string passphrase)
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new JwtConfiguration
         {
@@ -24,7 +24,7 @@ public class JwtConfigurationTest
     }
 
     [Test]
-    public void ErrorWhenNoPassphrase()
+    public void ShouldThrowExceptionWhenPassPhraseIsNull()
     {
         Assert.Throws<ArgumentNullException>(() => new JwtConfiguration
         {
@@ -52,7 +52,7 @@ public class JwtConfigurationTest
     [TestCase(null)]
     [TestCase("sdlmkfj")]
     [TestCase("http:/dfdf.com")]
-    public void ErrorWhenInvalidHost(string issuer)
+    public void ShouldThrowExceptionWhenIssuerIsNotValid(string issuer)
     {
         Assert.Throws<ArgumentException>(() => new JwtConfiguration
         {
