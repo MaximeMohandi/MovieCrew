@@ -9,11 +9,11 @@ namespace MovieCrew.API.Controller;
 [ApiController]
 public class RateController : ControllerBase
 {
-    private readonly RatingServices _ratingService;
+    private readonly IRatingService _ratingService;
 
-    public RateController(RatingServices ratingServices)
+    public RateController(IRatingService ratingService)
     {
-        _ratingService = ratingServices;
+        _ratingService = ratingService;
     }
 
     [HttpPost("add")]

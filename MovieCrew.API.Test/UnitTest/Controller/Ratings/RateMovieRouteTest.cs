@@ -11,13 +11,13 @@ namespace MovieCrew.API.Test.UnitTest.Controller.Ratings;
 public class RateMovieRouteTest
 {
     private Mock<IRateRepository> _rateRepoMock;
-    private RatingServices _service;
+    private RatingService _service;
 
     [SetUp]
     public void SetUp()
     {
         _rateRepoMock = new Mock<IRateRepository>();
-        _service = new RatingServices(_rateRepoMock.Object);
+        _service = new RatingService(_rateRepoMock.Object);
     }
 
     [Test]

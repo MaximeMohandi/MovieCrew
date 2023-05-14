@@ -18,7 +18,7 @@ public class RateMovieTest : InMemoryMovieTestBase
         };
 
         // Act
-        await new RatingServices(_rateRepository).RateMovie(2, 1, 2.0M);
+        await new RatingService(_rateRepository).RateMovie(2, 1, 2.0M);
 
         // Assert
         Assert.Multiple(() =>
@@ -33,7 +33,7 @@ public class RateMovieTest : InMemoryMovieTestBase
     public async Task RateMovieShouldUpdateRateWhenRateAlreadyExist()
     {
         // Act
-        await new RatingServices(_rateRepository).RateMovie(1, 1, 0.0M);
+        await new RatingService(_rateRepository).RateMovie(1, 1, 0.0M);
         var updatedRate = _dbContext.Rates
             .First(r => r.UserId == 1 && r.MovieId == 1);
 
@@ -47,7 +47,7 @@ public class RateMovieTest : InMemoryMovieTestBase
     public void RateMovieShouldThrowExceptionWhenRateIsNotBetween0And10(decimal rate)
     {
         // Arrange
-        var ratingServices = new RatingServices(_rateRepository);
+        var ratingServices = new RatingService(_rateRepository);
 
         // Act & Assert
         Assert.ThrowsAsync<RateLimitException>(() => ratingServices.RateMovie(1, 1, rate),
