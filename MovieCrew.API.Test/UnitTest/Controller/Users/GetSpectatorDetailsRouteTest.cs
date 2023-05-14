@@ -43,7 +43,7 @@ public class GetSpectatorDetailsRouteTest
             .ReturnsAsync(expected);
 
         // Act
-        var actual = (await new SpectatorController(_service).Get()).Result as ObjectResult;
+        var actual = (await new SpectatorController(_service).Get(1)).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -62,7 +62,7 @@ public class GetSpectatorDetailsRouteTest
             .ThrowsAsync(new UserNotFoundException(1));
 
         // Act
-        var actual = (await controller.Get()).Result as ObjectResult;
+        var actual = (await controller.Get(2)).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -80,7 +80,7 @@ public class GetSpectatorDetailsRouteTest
             .ThrowsAsync(new UserIsNotSpectatorException(1));
 
         // Act
-        var actual = (await new SpectatorController(_service).Get()).Result as ObjectResult;
+        var actual = (await new SpectatorController(_service).Get(1)).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>

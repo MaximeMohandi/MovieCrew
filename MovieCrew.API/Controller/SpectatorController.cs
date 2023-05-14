@@ -17,11 +17,11 @@ public class SpectatorController : ControllerBase
     }
 
     [HttpGet("/{userId}/details")]
-    public async Task<ActionResult<SpectatorDetailsEntity>> Get()
+    public async Task<ActionResult<SpectatorDetailsEntity>> Get([FromRoute] int userId)
     {
         try
         {
-            var spectatorDetails = await _spectatorService.FetchSpectator(1);
+            var spectatorDetails = await _spectatorService.FetchSpectator(userId);
             return Ok(spectatorDetails);
         }
         catch (UserException ex)
