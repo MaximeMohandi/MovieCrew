@@ -9,9 +9,9 @@ namespace MovieCrew.API.Controller;
 [ApiController]
 public class SpectatorController : ControllerBase
 {
-    private readonly SpectatorService _spectatorService;
+    private readonly ISpectatorService _spectatorService;
 
-    public SpectatorController(SpectatorService spectatorService)
+    public SpectatorController(ISpectatorService spectatorService)
     {
         _spectatorService = spectatorService;
     }

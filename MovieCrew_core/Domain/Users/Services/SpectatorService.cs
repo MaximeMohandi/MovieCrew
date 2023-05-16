@@ -3,7 +3,7 @@ using MovieCrew.Core.Domain.Users.Repository;
 
 namespace MovieCrew.Core.Domain.Users.Services;
 
-public class SpectatorService
+public class SpectatorService : ISpectatorService
 {
     private readonly IUserRepository _movieRepository;
 

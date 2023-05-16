@@ -11,8 +11,8 @@ namespace MovieCrew.API.Test.Integration.Ratings;
 
 public class AddEndpointTest
 {
-    protected readonly JsonSerializerOptions _jsonOptions;
-    protected HttpClient _client;
+    private readonly JsonSerializerOptions _jsonOptions;
+    private HttpClient _client;
     private Mock<IRatingService> _ratingService;
 
     public AddEndpointTest()
