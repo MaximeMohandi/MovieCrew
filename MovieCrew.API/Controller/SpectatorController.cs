@@ -16,8 +16,8 @@ public class SpectatorController : ControllerBase
         _spectatorService = spectatorService;
     }
 
-    [HttpGet("/{userId}/details")]
-    public async Task<ActionResult<SpectatorDetailsEntity>> Get([FromRoute] int userId)
+    [HttpGet("{userId}/details")]
+    public async Task<ActionResult<SpectatorDetailsEntity>> Get([FromRoute] long userId)
     {
         try
         {
@@ -26,9 +26,9 @@ public class SpectatorController : ControllerBase
         }
         catch (UserException ex)
         {
-            if (ex.GetType() == typeof(UserNotFoundException)) return NotFound(ex);
+            if (ex.GetType() == typeof(UserNotFoundException)) return NotFound(ex.Message);
 
-            return BadRequest(ex);
+            return BadRequest(ex.Message);
         }
     }
 }

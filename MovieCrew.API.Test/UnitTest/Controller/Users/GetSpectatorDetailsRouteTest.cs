@@ -62,12 +62,12 @@ public class GetSpectatorDetailsRouteTest
             .ThrowsAsync(new UserNotFoundException(1));
 
         // Act
-        var actual = (await controller.Get(2)).Result as ObjectResult;
+        var actual = (await controller.Get(1)).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(actual.Value, Is.TypeOf<UserNotFoundException>());
+            Assert.That(actual.Value, Is.EqualTo("User with id: 1 not found. Please check the conformity and try again"));
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
         });
     }
@@ -85,7 +85,7 @@ public class GetSpectatorDetailsRouteTest
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(actual.Value, Is.TypeOf<UserIsNotSpectatorException>());
+            Assert.That(actual.Value, Is.EqualTo("The user 1 did not rate any movie yet."));
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
         });
     }
