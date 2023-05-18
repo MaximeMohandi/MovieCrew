@@ -49,4 +49,21 @@ public class AllMoviesEndpointTest : MovieEndpointTestBase
             Assert.That(responseContent.ToLower(), Is.EqualTo(expected.ToLower()));
         });
     }
+
+    [Test]
+    public async Task NoMoviesFound()
+    {
+        _movieService.Setup(x => x.FetchAllMovies())
+            .ThrowsAsync(new NoMoviesFoundException());
+
+        var response = await _client.GetAsync("/api/movie/all");
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
+            Assert.That(responseContent,
+                Is.EqualTo("It seem that there's no movies in the list. Please try to add new one"));
+        });
+    }
 }
