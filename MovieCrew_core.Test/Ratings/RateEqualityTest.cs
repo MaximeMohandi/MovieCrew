@@ -8,8 +8,9 @@ namespace MovieCrew.Core.Test.Ratings;
 public class RateEqualityTest
 {
     [Test]
-    public void SameRateModel()
+    public void SameRateModelShouldBeEqual()
     {
+        //Arrange
         Rate expectedRate = new()
         {
             Movie = new Movie(),
@@ -28,6 +29,7 @@ public class RateEqualityTest
             UserId = 1
         };
 
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(actualRate, Is.EqualTo(expectedRate));
@@ -36,8 +38,9 @@ public class RateEqualityTest
     }
 
     [Test]
-    public void RateModelComparedToNull()
+    public void RateModelShouldNotBeEqualToNull()
     {
+        //Arrange
         var actualRate = new Rate
         {
             Movie = new Movie(),
@@ -47,15 +50,18 @@ public class RateEqualityTest
             UserId = 1
         };
 
+        //Assert
         Assert.That(actualRate, Is.Not.EqualTo(null));
     }
 
     [Test]
-    public void RateEntityAreEquals()
+    public void SameRateEntityShouldBeEqual()
     {
+        //Arrange
         RateEntity firstRate = new(new UserEntity(1, "test", UserRoles.Admin), 2M);
         RateEntity secondRate = new(new UserEntity(1, "test", UserRoles.Admin), 2M);
 
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(firstRate, Is.EqualTo(secondRate));
@@ -64,8 +70,9 @@ public class RateEqualityTest
     }
 
     [Test]
-    public void ListOfRateEntityAreEqual()
+    public void ListOfRatesEntityShouldBeEqual()
     {
+        //Arrange
         List<RateEntity> firstList = new()
         {
             new RateEntity(new UserEntity(1, "test", UserRoles.Admin), 2M)
@@ -75,6 +82,7 @@ public class RateEqualityTest
             new RateEntity(new UserEntity(1, "test", UserRoles.Admin), 2M)
         };
 
+        //Assert
         CollectionAssert.AreEqual(firstList, secondList);
     }
 }

@@ -6,13 +6,15 @@ namespace MovieCrew.Core.Test.Movies;
 public class MovieEqualityTest
 {
     [Test]
-    public void SameMovie()
+    public void MovieEntityShouldBeEqual()
     {
+        //Arrange
         var ratedMovies = new MovieEntity(1, "Lord of the ring", "fakeLink", "the best movie",
             new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M);
         var expextedMovie = new MovieEntity(1, "Lord of the ring", "fakeLink", "the best movie",
             new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M);
 
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(ratedMovies, Is.EqualTo(expextedMovie));
@@ -21,8 +23,9 @@ public class MovieEqualityTest
     }
 
     [Test]
-    public void SameMovieModel()
+    public void MovieModelShouldBeEqual()
     {
+        //Arrange
         var ratedMovie = new Movie
         {
             Id = 1,
@@ -41,6 +44,7 @@ public class MovieEqualityTest
             SeenDate = new DateTime(2022, 5, 12)
         };
 
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
@@ -49,8 +53,9 @@ public class MovieEqualityTest
     }
 
     [Test]
-    public void SameMovieModelWithRates()
+    public void MovieModelWithRatesShouldBeEqual()
     {
+        //Arrange
         var ratedMovie = new Movie
         {
             Id = 1,
@@ -106,6 +111,8 @@ public class MovieEqualityTest
                 User = new User()
             }
         };
+
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(ratedMovie, Is.EqualTo(ratedMovie2));
@@ -114,8 +121,9 @@ public class MovieEqualityTest
     }
 
     [Test]
-    public void SameMovieModelWithDifferentRates()
+    public void MovieModelWithDifferentRatesShouldNotBeEqual()
     {
+        //Arrange
         var ratedMovie = new Movie
         {
             Id = 1,
@@ -171,11 +179,13 @@ public class MovieEqualityTest
                 User = new User()
             }
         };
+
+        //Assert
         Assert.That(ratedMovie, Is.Not.EqualTo(ratedMovie2));
     }
 
     [Test]
-    public void MovieModelCompareToNull()
+    public void MovieModelShouldNotBeEqualToNull()
     {
         var actualMovie = new Movie
         {

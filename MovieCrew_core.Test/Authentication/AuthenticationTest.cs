@@ -38,7 +38,7 @@ public class AuthenticationTest
     }
 
     [Test]
-    public async Task SuccessfulLogin()
+    public async Task ShouldAuthenticateUser()
     {
         var jwtConfiguration =
             new JwtConfiguration("A passphrase with to be secure @123", "https://test.com", "https://test.com");
@@ -58,7 +58,7 @@ public class AuthenticationTest
     }
 
     [Test]
-    public void InvalidUserLogin()
+    public void ShouldThrowsExceptionWhenUserIsInvalid()
     {
         var repository = new AuthenticationRepository(_dbContext);
         var service = new AuthenticationService(repository, new JwtConfiguration());
@@ -66,6 +66,7 @@ public class AuthenticationTest
         Assert.ThrowsAsync<AuthenticationException>(async () => { await service.Authenticate(1, "test2"); },
             "Invalid user.");
     }
+
 
     [OneTimeTearDown]
     public void CleanUp()

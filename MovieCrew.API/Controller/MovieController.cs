@@ -29,11 +29,11 @@ public class MovieController : ControllerBase
         }
         catch (MovieAlreadyExistException exception)
         {
-            return Conflict(exception);
+            return Conflict(exception.Message);
         }
         catch (UserNotFoundException exception)
         {
-            return NotFound(exception);
+            return NotFound(exception.Message);
         }
     }
 
@@ -59,11 +59,8 @@ public class MovieController : ControllerBase
         {
             MovieDetailsEntity result = null;
 
-            if (id is null && string.IsNullOrEmpty(title))
-                return BadRequest("Either id or title parameter is required.");
-
-            if (id is not null && !string.IsNullOrEmpty(title))
-                return BadRequest("Only one of id or title parameters should be provided.");
+            if ((id is null && string.IsNullOrEmpty(title)) || (id is not null && !string.IsNullOrEmpty(title)))
+                return BadRequest("Please provide a movie id or title.");
 
             if (id != null) result = await _movieService.GetById(id.Value);
 
@@ -73,7 +70,7 @@ public class MovieController : ControllerBase
         }
         catch (MovieNotFoundException exception)
         {
-            return NotFound(exception);
+            return NotFound(exception.Message);
         }
     }
 

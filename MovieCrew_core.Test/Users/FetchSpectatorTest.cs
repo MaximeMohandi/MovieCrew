@@ -9,19 +9,21 @@ namespace MovieCrew.Core.Test.Users;
 public class FetchSpectatorTest : InMemoryMovieTestBase
 {
     [Test]
-    public async Task OneSpectatorWithAllItsMovies()
+    public async Task ShouldFetchSpectator()
     {
+        // Arrange
         SpectatorService service = new(_userRepository);
-
-        var actual = await service.FetchSpectator(1);
-
         var expected = new SpectatorDetailsEntity(new UserEntity(1, "Alyssa"), new List<SpectatorRateEntity>
         {
-            new SpectatorRateEntity(
+            new(
                 new MovieEntity(1, "Babylon", "", "didn't saw it yet", new DateTime(2023, 2, 8),
                     new DateTime(2023, 2, 9), 3M), 3M)
         });
 
+        // Act
+        var actual = await service.FetchSpectator(1);
+
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual, Is.EqualTo(expected));
@@ -30,18 +32,18 @@ public class FetchSpectatorTest : InMemoryMovieTestBase
     }
 
     [Test]
-    public void IsUserButNotSpectator()
+    public void ShouldThrowExceptionWhenUserIsNotSpectator()
     {
         SpectatorService service = new(_userRepository);
-        Assert.ThrowsAsync<UserIsNotSpectatorException>(async () => { await service.FetchSpectator(2); },
+        Assert.ThrowsAsync<UserIsNotSpectatorException>(() => service.FetchSpectator(2),
             "The user 2 did not rate any movie yet.");
     }
 
     [Test]
-    public void SpectatorDoNotExist()
+    public void ShouldThrowExceptionWhenUserNotFound()
     {
         SpectatorService service = new(_userRepository);
-        Assert.ThrowsAsync<UserNotFoundException>(async () => { await service.FetchSpectator(-1); },
+        Assert.ThrowsAsync<UserNotFoundException>(() => service.FetchSpectator(-1),
             "User with id: -1 not found. Please check the conformity and try again");
     }
 

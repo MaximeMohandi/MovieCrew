@@ -14,25 +14,33 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
     [TestCase("lord of the ring")]
     [TestCase("Lord Of The Ring")]
     [TestCase("loRd of tHe rIng")]
-    public async Task MovieDetailByTitle(string title)
+    public async Task ShouldFetchMovieDetailsByTitle(string title)
     {
+        //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails("lord of the ring"))
             .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550));
-        MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
-
-        List<MovieRateEntity> expectedRates = new()
-        {
-            new MovieRateEntity(new UserEntity(1, "Jabba", UserRoles.User), 10.0M),
-            new MovieRateEntity(new UserEntity(2, "Dudley", UserRoles.User), 2.0M),
-            new MovieRateEntity(new UserEntity(3, "T-Rex", UserRoles.User), 5.25M)
-        };
-        MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", "Greatest movie on earth",
-            new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, 10M, 2555550, expectedRates,
+        MovieDetailsEntity expected = new(
+            1,
+            "Lord of the ring",
+            "fakeLink",
+            "Greatest movie on earth",
+            new DateTime(2022, 5, 10),
+            new DateTime(2022, 5, 12),
+            5.75M,
+            10M,
+            2555550,
+            new List<MovieRateEntity>
+            {
+                new(new UserEntity(1, "Jabba", UserRoles.User), 10.0M),
+                new(new UserEntity(2, "Dudley", UserRoles.User), 2.0M),
+                new(new UserEntity(3, "T-Rex", UserRoles.User), 5.25M)
+            },
             new UserEntity(1, "Jabba", UserRoles.User));
 
+        //Act
+        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetByTitle(title);
 
-        var actual = await movieService.GetByTitle(title);
-
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual, Is.EqualTo(expected));
@@ -41,36 +49,45 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
     }
 
     [Test]
-    public void TitleNotFound()
+    public void ShouldThrowExceptionWhenMovieWithTitleNotFound()
     {
+        //Arrange
         MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
 
-        var ex = Assert.ThrowsAsync<MovieNotFoundException>(
-            async () => await movieServices.GetByTitle("star wars VIII"));
-
-        Assert.That(ex.Message, Is.EqualTo("star wars VIII cannot be found. Please check the title and retry."));
+        //Assert
+        Assert.ThrowsAsync<MovieNotFoundException>(() => movieServices.GetByTitle("star wars VIII"),
+            "star wars VIII cannot be found. Please check the title and retry.");
     }
 
     [Test]
-    public async Task MovieDetailById()
+    public async Task ShouldFetchMovieDetailsById()
     {
+        //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails("lord of the ring"))
             .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550));
-        MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
-        List<MovieRateEntity> expectedRates = new()
-        {
-            new MovieRateEntity(new UserEntity(1, "Jabba", UserRoles.User), 10.0M),
-            new MovieRateEntity(new UserEntity(2, "Dudley", UserRoles.User), 2.0M),
-            new MovieRateEntity(new UserEntity(3, "T-Rex", UserRoles.User), 5.25M)
-        };
-        MovieDetailsEntity expected = new(1, "Lord of the ring", "fakeLink", "Greatest movie on earth",
-            new DateTime(2022, 5, 10), new DateTime(2022, 5, 12), 5.75M, 10M, 2555550, expectedRates,
+        MovieDetailsEntity expected = new(
+            1,
+            "Lord of the ring",
+            "fakeLink",
+            "Greatest movie on earth",
+            new DateTime(2022, 5, 10),
+            new DateTime(2022, 5, 12),
+            5.75M,
+            10M,
+            2555550,
+            new List<MovieRateEntity>
+            {
+                new(new UserEntity(1, "Jabba", UserRoles.User), 10.0M),
+                new(new UserEntity(2, "Dudley", UserRoles.User), 2.0M),
+                new(new UserEntity(3, "T-Rex", UserRoles.User), 5.25M)
+            },
             new UserEntity(1, "Jabba", UserRoles.User));
 
+        //Act
+        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetById(1);
 
-        var actual = await movieService.GetById(1);
-
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual, Is.EqualTo(expected));
@@ -79,27 +96,40 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
     }
 
     [Test]
-    public void IdNotFound()
+    public void ShouldThrowExceptionWhenMovieWithIdNotFound()
     {
+        //Arrange
         MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
 
-        var ex = Assert.ThrowsAsync<MovieNotFoundException>(async () => await movieServices.GetById(-1));
-
-        Assert.That(ex.Message, Is.EqualTo("There's no movie with the id : -1. Please check the given id and retry."));
+        //Act & Assert
+        Assert.ThrowsAsync<MovieNotFoundException>(() => movieServices.GetById(-1),
+            "There's no movie with the id : -1. Please check the given id and retry.");
     }
 
     [Test]
-    public async Task MovieDetailButWithNoRates()
+    public async Task ShouldFetchMovieDetailsEvenIfNoRates()
     {
+        //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails("harry potter"))
             .ReturnsAsync(new MovieMetadataEntity("", "", 5M, 2555555M));
-        MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
-        MovieDetailsEntity expected = new(2, "Harry Potter", "", "", new DateTime(2015, 8, 3), null, null, 5M, 2555555M,
-            null, null);
+        MovieDetailsEntity expected = new(
+            2,
+            "Harry Potter",
+            "",
+            "",
+            new DateTime(2015, 8, 3),
+            null,
+            null,
+            5M,
+            2555555M,
+            null,
+            null);
 
-        var actual = await movieService.GetById(2);
+        //Act
+        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetById(2);
 
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual, Is.EqualTo(expected));

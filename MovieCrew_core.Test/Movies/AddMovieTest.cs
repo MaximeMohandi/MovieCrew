@@ -10,16 +10,16 @@ namespace MovieCrew.Core.Test.Movies;
 public class AddMovieTest : InMemoryMovieTestBase
 {
     [Test]
-    public async Task AddMovie()
+    public async Task ShouldAddMovie()
     {
+        //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
             .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
-        var thirdPartyProvider = _fakeDataProvider.Object;
 
-        MovieService service = new(_movieRepository, thirdPartyProvider);
+        //Act
+        var addedMovie = await new MovieService(_movieRepository, _fakeDataProvider.Object).AddMovie("Pinnochio", 1);
 
-        var addedMovie = await service.AddMovie("Pinnochio", 1);
-
+        //Assert
         Assert.Multiple(() =>
         {
             Assert.That(addedMovie.Title, Is.EqualTo("Pinnochio"));
@@ -32,32 +32,44 @@ public class AddMovieTest : InMemoryMovieTestBase
     }
 
     [Test]
-    public void CantAddMovieThatDoNotExist()
+    public void ShouldThrowExceptionWhenNoMetadataFound()
     {
+        //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
             .ThrowsAsync(new NoMetaDataFoundException("dsfsdfsdaaa"));
-        var thirdPartyProvider = _fakeDataProvider.Object;
 
-        MovieService service = new(_movieRepository, thirdPartyProvider);
+        //Act
+        MovieService service = new(_movieRepository, _fakeDataProvider.Object);
 
+        //Assert
         Assert.ThrowsAsync<MovieNotFoundException>(() => service.AddMovie("dsfsdfsdaaa", 1));
     }
 
     [Test]
-    public void CantAddMovieProposedByUnknownUser()
+    public void ShouldThrowExceptionWhenUserDoesNotExist()
     {
-        var thirdPartyProvider = _fakeDataProvider.Object;
-        MovieService service = new(_movieRepository, thirdPartyProvider);
+        //Arrange
+        _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
 
+        //Act
+        MovieService service = new(_movieRepository, _fakeDataProvider.Object);
+
+        //Assert
         Assert.ThrowsAsync<UserNotFoundException>(() => service.AddMovie("The Asada Family", 2));
     }
 
     [Test]
-    public void CantAddExistMovie()
+    public void ShouldThrowExceptionWhenMovieAlreadyExist()
     {
-        var thirdPartyProvider = _fakeDataProvider.Object;
-        MovieService service = new(_movieRepository, thirdPartyProvider);
+        //Arrange
+        _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
 
+        //Act
+        MovieService service = new(_movieRepository, _fakeDataProvider.Object);
+
+        //Assert
         Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie("The Fifth element", null));
     }
 

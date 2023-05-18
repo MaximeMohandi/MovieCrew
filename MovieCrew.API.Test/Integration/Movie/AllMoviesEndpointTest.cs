@@ -1,36 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
-using MovieCrew.Core.Domain.Movies.Services;
-using System.Text.Encodings.Web;
-using System.Text.Json;
 
 namespace MovieCrew.API.Test.Integration.Movie;
 
-public class MovieRoutesTest
+public class AllMoviesEndpointTest : MovieEndpointTestBase
 {
-    private readonly JsonSerializerOptions _jsonOptions;
-    private HttpClient _client;
-    private Mock<IMovieService> _movieService;
-
-    public MovieRoutesTest()
-    {
-        _jsonOptions = new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        };
-    }
-
-    [SetUp]
-    public void SetUp()
-    {
-        _movieService = new Mock<IMovieService>();
-        _client = new IntegrationTestServer<IMovieService>(_movieService).CreateDefaultClient();
-    }
-
     [Test]
-    public async Task FetchAllMovie()
+    public async Task ShouldReturnAllMovies()
     {
         var expectedList = new List<MovieEntity>
         {
@@ -51,12 +30,12 @@ public class MovieRoutesTest
         Assert.Multiple(() =>
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
-            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expectedJsonResponse.ToLower()));
+            Assert.That(responseContent.ToLower(), Is.EqualTo(expectedJsonResponse.ToLower()));
         });
     }
 
     [Test]
-    public async Task NoMoviesToFetch()
+    public async Task ShouldReturnNotFoundWhenNoMoviesFound()
     {
         var expected = "it seems that there's no movies in the list. please try to add new one";
         _movieService.Setup(x => x.FetchAllMovies()).ThrowsAsync(new NoMoviesFoundException());
@@ -67,7 +46,7 @@ public class MovieRoutesTest
         Assert.Multiple(() =>
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
-            Assert.That(responseContent.ToLower(), Is.EquivalentTo(expected.ToLower()));
+            Assert.That(responseContent.ToLower(), Is.EqualTo(expected.ToLower()));
         });
     }
 
@@ -84,7 +63,7 @@ public class MovieRoutesTest
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
             Assert.That(responseContent,
-                Is.EqualTo("It seem that there's no movies in the list. Please try to add new one"));
+                Is.EqualTo("It seems that there's no movies in the list. Please try to add new one"));
         });
     }
 }

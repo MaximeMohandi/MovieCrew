@@ -22,14 +22,22 @@ public class AddUserTest
     {
         _dbContext = new AppDbContext(_dbContextOptions);
         _dbContext.Database.EnsureCreated();
+        _dbContext.Users.Add(new User
+        {
+            Id = 1,
+            Name = "Arthur",
+            Rates = null,
+            Role = (int)UserRoles.Bot
+        });
         _dbContext.SaveChanges();
     }
 
     [TestCase(1, "Ygerne", UserRoles.User)]
     [TestCase(2, "Tio", UserRoles.Admin)]
     [TestCase(3, "Gloria", UserRoles.Bot)]
-    public async Task WithIdAndName(long id, string name, UserRoles role)
+    public async Task ShouldAddUser(int id, string name, UserRoles role)
     {
+        // Arrange
         User expectedUser = new()
         {
             Id = id,
@@ -37,25 +45,27 @@ public class AddUserTest
             Rates = null,
             Role = (int)role
         };
-
         UserRepository userRepository = new(_dbContext);
         UserService userService = new(userRepository);
 
+        // Act
         await userService.AddUser(new UserCreationDto(name, role));
 
+        // Assert
         Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
     }
 
     [Test]
-    public async Task CantAddUserIfItAlreadyExist()
+    public async Task ShouldThrowExceptionWhenUserAlreadyExist()
     {
+        // Arrange
         UserRepository userRepository = new(_dbContext);
-        UserService userService = new(userRepository);
+        var userService = new UserService(userRepository);
+        var userCreation = new UserCreationDto("Arthur", UserRoles.Bot);
 
-        await userService.AddUser(new UserCreationDto("Arthur", UserRoles.Bot));
-
-        Assert.ThrowsAsync<UserAlreadyExistException>(async () =>
-            await userService.AddUser(new UserCreationDto("Arthur", UserRoles.Bot)));
+        // Act & Assert
+        Assert.ThrowsAsync<UserAlreadyExistException>(() => userService.AddUser(userCreation),
+            "The user Arthur already exist. please verify the name and try again");
     }
 
     [OneTimeTearDown]

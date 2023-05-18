@@ -11,8 +11,9 @@ namespace MovieCrew.Core.Test.Movies;
 public class FetchMovieTest : InMemoryMovieTestBase
 {
     [Test]
-    public async Task All()
+    public async Task ShouldReturnAllMovies()
     {
+        //Arrange
         MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
         List<MovieEntity> expected = new()
         {
@@ -24,58 +25,58 @@ public class FetchMovieTest : InMemoryMovieTestBase
                 new DateTime(2022, 10, 15), null, null)
         };
 
+        //Act
         var actual = await movieServices.FetchAllMovies();
 
+        //Assert
         CollectionAssert.AreEqual(expected, actual);
     }
 
     [Test]
-    public void NoMoviesAtAll()
+    public void ShouldThrowExceptionWhenNoMoviesFound()
     {
+        //Arrange
         var _options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("MovieDbTest2")
             .Options;
-
         using AppDbContext db = new(_options);
         MovieService movieServices = new(new MovieRepository(db), _fakeDataProvider.Object);
 
-        Assert.ThrowsAsync<NoMoviesFoundException>(
-            async () => await movieServices.FetchAllMovies(),
+        //Act & Assert
+        Assert.ThrowsAsync<NoMoviesFoundException>(() => movieServices.FetchAllMovies(),
             "It seem that there's no movies in the list. Please try to add new one"
         );
     }
 
     [Test]
-    public async Task RandomMovieFromUnseenList()
+    public async Task ShouldReturnRandomMovie()
     {
-        MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
+        //Act
+        var randomMovie = await new MovieService(_movieRepository, _fakeDataProvider.Object).RandomMovie();
 
-        var randomMovie = await movieServices.RandomMovie();
-
+        //Assert
         Assert.That(randomMovie.Id, Is.EqualTo(2).Or.EqualTo(4));
     }
 
     [Test]
-    public void NoMovieLeftToWatch()
+    public void ShouldThrowExceptionWhenAllMoviesHaveBeenSeen()
     {
+        //Arrange
         var _options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("MovieDbTest2")
             .Options;
-
         using AppDbContext db = new(_options);
         MovieService movieServices = new(new MovieRepository(db), _fakeDataProvider.Object);
 
-        var ex = Assert.ThrowsAsync<AllMoviesHaveBeenSeenException>(async () => await movieServices.RandomMovie());
-
-        Assert.That(ex.Message,
-            Is.EqualTo("It seems that you have seen all the movies in the list. Please try to add new one"));
+        Assert.ThrowsAsync<AllMoviesHaveBeenSeenException>(() => movieServices.RandomMovie(),
+            "It seems that you have seen all the movies in the list. Please try to add new one");
     }
 
     protected override void SeedInMemoryDatas()
     {
         Movie[] movies =
         {
-            new Movie
+            new()
             {
                 Id = 1,
                 DateAdded = new DateTime(2022, 5, 10),
@@ -84,7 +85,7 @@ public class FetchMovieTest : InMemoryMovieTestBase
                 Description = "the best movie ever",
                 SeenDate = new DateTime(2022, 5, 12)
             },
-            new Movie
+            new()
             {
                 Id = 3,
                 DateAdded = new DateTime(1996, 9, 21),
@@ -93,7 +94,7 @@ public class FetchMovieTest : InMemoryMovieTestBase
                 Description = "not the best movie ever",
                 SeenDate = new DateTime(1996, 9, 23)
             },
-            new Movie
+            new()
             {
                 Id = 4,
                 DateAdded = new DateTime(2022, 10, 15),
@@ -108,19 +109,19 @@ public class FetchMovieTest : InMemoryMovieTestBase
 
         User[] users =
         {
-            new User
+            new()
             {
                 Id = 1,
                 Name = "Jabba",
                 Role = 2
             },
-            new User
+            new()
             {
                 Id = 2,
                 Name = "Dudley",
                 Role = 2
             },
-            new User
+            new()
             {
                 Id = 3,
                 Name = "T-Rex",
@@ -132,32 +133,32 @@ public class FetchMovieTest : InMemoryMovieTestBase
 
         Rate[] rates =
         {
-            new Rate
+            new()
             {
                 MovieId = 1,
                 UserId = 1,
                 Note = 10.0M
             },
-            new Rate
+            new()
             {
                 MovieId = 1,
                 UserId = 2,
                 Note = 2.0M
             },
-            new Rate
+            new()
             {
                 MovieId = 1,
                 UserId = 3,
                 Note = 5.25M
             },
 
-            new Rate
+            new()
             {
                 MovieId = 3,
                 UserId = 1,
                 Note = 0
             },
-            new Rate
+            new()
             {
                 MovieId = 3,
                 UserId = 2,

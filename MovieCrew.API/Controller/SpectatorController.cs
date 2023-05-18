@@ -9,26 +9,26 @@ namespace MovieCrew.API.Controller;
 [ApiController]
 public class SpectatorController : ControllerBase
 {
-    private readonly SpectatorService _spectatorService;
+    private readonly ISpectatorService _spectatorService;
 
-    public SpectatorController(SpectatorService spectatorService)
+    public SpectatorController(ISpectatorService spectatorService)
     {
         _spectatorService = spectatorService;
     }
 
-    [HttpGet("/{userId}/details")]
-    public async Task<ActionResult<SpectatorDetailsEntity>> Get()
+    [HttpGet("{userId}/details")]
+    public async Task<ActionResult<SpectatorDetailsEntity>> Get([FromRoute] long userId)
     {
         try
         {
-            var spectatorDetails = await _spectatorService.FetchSpectator(1);
+            var spectatorDetails = await _spectatorService.FetchSpectator(userId);
             return Ok(spectatorDetails);
         }
         catch (UserException ex)
         {
-            if (ex.GetType() == typeof(UserNotFoundException)) return NotFound(ex);
+            if (ex.GetType() == typeof(UserNotFoundException)) return NotFound(ex.Message);
 
-            return BadRequest(ex);
+            return BadRequest(ex.Message);
         }
     }
 }

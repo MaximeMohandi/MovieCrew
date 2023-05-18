@@ -4,31 +4,17 @@ using Moq;
 using MovieCrew.API.Controller;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
-using MovieCrew.Core.Domain.Movies.Interfaces;
-using MovieCrew.Core.Domain.Movies.Repository;
-using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Users.Entities;
 using MovieCrew.Core.Domain.Users.Enums;
 
-namespace MovieCrew.API.Test.Controller.Movies;
+namespace MovieCrew.API.Test.UnitTest.Controller.Movies;
 
-public class GetMovieDetailsTest
+public class GetMovieDetailsTest : MovieTestBase
 {
-    private Mock<IThirdPartyMovieDataProvider> _movieDataProviderMock;
-    private Mock<IMovieRepository> _movieRepositoryMock;
-    private MovieService _service;
-
-    [SetUp]
-    public void Setup()
-    {
-        _movieRepositoryMock = new Mock<IMovieRepository>();
-        _movieDataProviderMock = new Mock<IThirdPartyMovieDataProvider>();
-        _service = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
-    }
-
     [Test]
-    public async Task GetMovieDetailsById()
+    public async Task GetMovieDetailsByIdShouldReturnMovieDetails()
     {
+        // Arrange
         _movieDataProviderMock
             .Setup(x => x.GetDetails(It.IsAny<string>()))
             .ReturnsAsync(new MovieMetadataEntity("https://titanic", "loremp ipsum", 8M, 340000));
@@ -46,10 +32,10 @@ public class GetMovieDetailsTest
                 null,
                 new UserEntity(1, "Maxime", UserRoles.Admin)));
 
-        MovieController controller = new(_service);
+        // Act
+        var actual = (await new MovieController(_service).GetDetails(1)).Result as ObjectResult;
 
-        var actual = (await controller.GetDetails(1)).Result as ObjectResult;
-
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual.Value, Is.EqualTo(new MovieDetailsEntity(1,
@@ -68,8 +54,9 @@ public class GetMovieDetailsTest
     }
 
     [Test]
-    public async Task GetMovieDetailsByTitle()
+    public async Task GetMovieDetailByTitleShouldReturnMovieDetails()
     {
+        // Arrange
         _movieDataProviderMock
             .Setup(x => x.GetDetails(It.IsAny<string>()))
             .ReturnsAsync(new MovieMetadataEntity("https://titanic", "loremp ipsum", 8M, 340000));
@@ -90,10 +77,10 @@ public class GetMovieDetailsTest
                 },
                 new UserEntity(1, "Maxime", UserRoles.Admin)));
 
-        MovieController controller = new(_service);
+        // Act
+        var actual = (await new MovieController(_service).GetDetails(title: "Titanic")).Result as ObjectResult;
 
-        var actual = (await controller.GetDetails(title: "Titanic")).Result as ObjectResult;
-
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual.Value, Is.EqualTo(new MovieDetailsEntity(1,
@@ -115,41 +102,52 @@ public class GetMovieDetailsTest
     }
 
     [Test]
-    public async Task MovieNotFound()
+    public async Task ShouldReturn404WhenMovieNotFound()
     {
+        // Arrange
         _movieRepositoryMock
             .Setup(x => x.GetMovie(-100))
             .ThrowsAsync(new MovieNotFoundException(-100));
 
         MovieController controller = new(_service);
 
+        // Act
         var actual = (await controller.GetDetails(-100)).Result as ObjectResult;
+
+        // Assert
         Assert.Multiple(() =>
         {
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
-            Assert.That(actual.Value, Is.TypeOf<MovieNotFoundException>());
+            Assert.That(actual.Value,
+                Is.EqualTo("There's no movie with the id : -100. Please check the given id and retry."));
         });
     }
 
     [Test]
-    public async Task CantFetchMovieWithoutDefiningWichOne()
+    public async Task ShouldReturn400WhenMovieIdAndTitleAreNull()
     {
-        MovieController controller = new(_service);
+        // Act
+        var actual = (await new MovieController(_service).GetDetails()).Result as ObjectResult;
 
-        var actual = (await controller.GetDetails()).Result as ObjectResult;
-
-        Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
-        Assert.That(actual.Value, Is.EqualTo("Either id or title parameter is required."));
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
+            Assert.That(actual.Value, Is.EqualTo("Please provide a movie id or title."));
+        });
     }
 
     [Test]
-    public async Task CantFetchMovieByGivingAnIdAndATitle()
+    public async Task ShouldReturn400WhenMovieIdAndTitleAreGiven()
     {
-        MovieController controller = new(_service);
+        // Act
+        var actual = (await new MovieController(_service).GetDetails(100, "titanic")).Result as ObjectResult;
 
-        var actual = (await controller.GetDetails(100, "titanic")).Result as ObjectResult;
-
-        Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
-        Assert.That(actual.Value, Is.EqualTo("Only one of id or title parameters should be provided."));
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
+            Assert.That(actual.Value, Is.EqualTo("Please provide a movie id or title."));
+        });
     }
 }
