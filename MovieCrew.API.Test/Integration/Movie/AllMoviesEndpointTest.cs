@@ -63,7 +63,7 @@ public class AllMoviesEndpointTest : MovieEndpointTestBase
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
             Assert.That(responseContent,
-                Is.EqualTo("It seem that there's no movies in the list. Please try to add new one"));
+                Is.EqualTo("It seems that there's no movies in the list. Please try to add new one"));
         });
     }
 }
