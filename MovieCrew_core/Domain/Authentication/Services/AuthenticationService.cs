@@ -7,7 +7,7 @@ using MovieCrew.Core.Domain.Authentication.Model;
 
 namespace MovieCrew.Core.Domain.Authentication.Services;
 
-public class AuthenticationService
+public class AuthenticationService : IAuthenticationService
 {
     private const int TokenNbValidationsDays = 1;
     private readonly JwtConfiguration _jwtConfiguration;
@@ -22,7 +22,7 @@ public class AuthenticationService
     public async Task<AuthenticatedUser> Authenticate(long userId, string userName)
     {
         var userExist = await _repository.IsUserExist(userId, userName);
-        if (!userExist) throw new AuthenticationException("Invalid user.");
+        if (!userExist) throw new AuthenticationException("Invalid user");
 
         var token = CreateToken();
         return new AuthenticatedUser(userId, userName, new JwtSecurityTokenHandler().WriteToken(token),

@@ -10,9 +10,9 @@ namespace MovieCrew.API.Controller;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly AuthenticationService _authenticationService;
+    private readonly IAuthenticationService _authenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService)
+    public AuthenticationController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }
@@ -27,7 +27,7 @@ public class AuthenticationController : ControllerBase
         }
         catch (AuthenticationException e)
         {
-            return Problem(e.Message, statusCode: StatusCodes.Status403Forbidden);
+            return Problem(statusCode: StatusCodes.Status403Forbidden);
         }
     }
 }
