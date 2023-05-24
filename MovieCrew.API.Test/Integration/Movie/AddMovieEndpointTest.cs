@@ -40,7 +40,7 @@ public class AddMovieEndpointTest : MovieEndpointTestBase
             .ThrowsAsync(new MovieAlreadyExistException(newMovie.Title));
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/movie/add", newMovie);
+        var response = await _client.PostAsJsonAsync("/api/movie/add/", newMovie);
         var responseContent = await response.Content.ReadAsStringAsync();
 
         // Assert
