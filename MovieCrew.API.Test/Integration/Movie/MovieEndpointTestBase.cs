@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using Moq;
 using MovieCrew.Core.Domain.Movies.Services;
@@ -20,17 +19,10 @@ public class MovieEndpointTestBase
         };
     }
 
-    [OneTimeSetUp]
-    public void Init()
-    {
-        _client = new IntegrationTestServer<IMovieService>(_movieService).CreateClient();
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
-            MockJwtTokens.GenerateJwtToken());
-    }
-
     [SetUp]
     public void SetUp()
     {
         _movieService = new Mock<IMovieService>();
+        _client = new IntegrationTestServer<IMovieService>(_movieService).CreateDefaultClient();
     }
 }

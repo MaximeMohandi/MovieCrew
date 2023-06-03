@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
@@ -19,7 +18,6 @@ public class MovieController : ControllerBase
         _movieService = movieService;
     }
 
-    [Authorize]
     [HttpPost("add")]
     public async Task<ActionResult<string>> Post([FromBody] NewMovieDto newMovie)
     {
