@@ -4,6 +4,7 @@ using Moq;
 using MovieCrew.API.Controller;
 using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Authentication.Model;
+using MovieCrew.Core.Domain.Authentication.Repository;
 using MovieCrew.Core.Domain.Authentication.Services;
 
 namespace MovieCrew.API.Test.UnitTest.Controller.Authentication;

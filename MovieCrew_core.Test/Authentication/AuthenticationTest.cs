@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Authentication.Model;
+using MovieCrew.Core.Domain.Authentication.Repository;
 using MovieCrew.Core.Domain.Authentication.Services;
 
 namespace MovieCrew.Core.Test.Authentication;

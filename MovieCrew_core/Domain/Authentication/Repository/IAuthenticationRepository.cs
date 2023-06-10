@@ -1,4 +1,4 @@
-﻿namespace MovieCrew.Core.Domain.Authentication.Services;
+﻿namespace MovieCrew.Core.Domain.Authentication.Repository;
 
 public interface IAuthenticationRepository
 {

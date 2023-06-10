@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieCrew.Core.Data;
 
-namespace MovieCrew.Core.Domain.Authentication.Services;
+namespace MovieCrew.Core.Domain.Authentication.Repository;
 
 public class AuthenticationRepository : IAuthenticationRepository
 {
