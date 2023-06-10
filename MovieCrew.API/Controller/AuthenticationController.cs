@@ -17,7 +17,7 @@ public class AuthenticationController : ControllerBase
         _authenticationService = authenticationService;
     }
 
-    [HttpGet("Login")]
+    [HttpPost("Login")]
     public async Task<ActionResult<AuthenticatedUser>> Get([FromBody] UserLoginDto userLoginDto)
     {
         try

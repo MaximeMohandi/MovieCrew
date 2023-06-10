@@ -44,7 +44,7 @@ public class LoginEndpointsTest
             .ReturnsAsync(expected);
 
         // Act
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Get, "/api/authentication/login")
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "/api/authentication/login")
         {
             Content = new StringContent(JsonSerializer.Serialize(new UserLoginDto(1, "Maxime"), _jsonOptions),
                 Encoding.UTF8, "application/json")
@@ -76,7 +76,7 @@ public class LoginEndpointsTest
             .ThrowsAsync(new AuthenticationException("Invalid User"));
 
         // Act
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Get, "/api/authentication/login")
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "/api/authentication/login")
         {
             Content = new StringContent(JsonSerializer.Serialize(new UserLoginDto(1, "Maxime"), _jsonOptions),
                 Encoding.UTF8, "application/json")
