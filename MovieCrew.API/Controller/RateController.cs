@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Ratings.Exception;
 using MovieCrew.Core.Domain.Ratings.Services;
 
 namespace MovieCrew.API.Controller;
 
+[Authorize]
 [Route("api/rate")]
 [ApiController]
 public class RateController : ControllerBase

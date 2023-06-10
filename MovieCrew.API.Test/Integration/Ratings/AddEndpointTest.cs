@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Dynamic;
+using System.Net;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +30,8 @@ public class AddEndpointTest
     {
         _ratingService = new Mock<IRatingService>();
         _client = new IntegrationTestServer<IRatingService>(_ratingService).CreateDefaultClient();
+        dynamic data = new ExpandoObject();
+        _client.SetFakeBearerToken((object)data);
     }
 
     [Test]
