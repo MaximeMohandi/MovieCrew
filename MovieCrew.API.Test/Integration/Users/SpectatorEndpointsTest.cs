@@ -1,4 +1,6 @@
-﻿using System.Text.Encodings.Web;
+﻿using System.Dynamic;
+using System.Net;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -28,6 +30,8 @@ public class SpectatorEndpointsTest
     {
         _spectatorService = new Mock<ISpectatorService>();
         _client = new IntegrationTestServer<ISpectatorService>(_spectatorService).CreateDefaultClient();
+        dynamic data = new ExpandoObject();
+        _client.SetFakeBearerToken((object)data);
     }
 
     [Test]
@@ -67,7 +71,8 @@ public class SpectatorEndpointsTest
         Assert.Multiple(() =>
         {
             Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
-            Assert.That(responseContent, Is.EqualTo("User with id: 1 not found. Please check the conformity and try again"));
+            Assert.That(responseContent,
+                Is.EqualTo("User with id: 1 not found. Please check the conformity and try again"));
         });
     }
 
