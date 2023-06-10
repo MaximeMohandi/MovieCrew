@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Json;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
@@ -44,11 +45,8 @@ public class LoginEndpointsTest
             .ReturnsAsync(expected);
 
         // Act
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "/api/authentication/login")
-        {
-            Content = new StringContent(JsonSerializer.Serialize(new UserLoginDto(1, "Maxime"), _jsonOptions),
-                Encoding.UTF8, "application/json")
-        });
+        var response = await _client.PostAsJsonAsync("/api/authentication/login",
+            new UserLoginDto(1, "Maxime"));
         var responseContent = await response.Content.ReadAsStringAsync();
 
         // Assert
@@ -76,11 +74,8 @@ public class LoginEndpointsTest
             .ThrowsAsync(new AuthenticationException("Invalid User"));
 
         // Act
-        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "/api/authentication/login")
-        {
-            Content = new StringContent(JsonSerializer.Serialize(new UserLoginDto(1, "Maxime"), _jsonOptions),
-                Encoding.UTF8, "application/json")
-        });
+        var response = await _client.PostAsJsonAsync("/api/authentication/login",
+            new UserLoginDto(1, "Maxime"));
 
         // Assert
         Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
