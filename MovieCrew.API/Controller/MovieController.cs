@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
@@ -7,6 +8,7 @@ using MovieCrew.Core.Domain.Users.Exception;
 
 namespace MovieCrew.API.Controller;
 
+[Authorize]
 [Route("api/movie")]
 [ApiController]
 public class MovieController : ControllerBase

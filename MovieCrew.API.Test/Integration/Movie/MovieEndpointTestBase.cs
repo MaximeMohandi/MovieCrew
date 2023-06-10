@@ -1,4 +1,6 @@
-﻿using System.Text.Encodings.Web;
+﻿using System.Dynamic;
+using System.Net;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Moq;
 using MovieCrew.Core.Domain.Movies.Services;
@@ -24,5 +26,7 @@ public class MovieEndpointTestBase
     {
         _movieService = new Mock<IMovieService>();
         _client = new IntegrationTestServer<IMovieService>(_movieService).CreateDefaultClient();
+        dynamic data = new ExpandoObject();
+        _client.SetFakeBearerToken((object)data);
     }
 }
