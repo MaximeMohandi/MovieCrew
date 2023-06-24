@@ -18,7 +18,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("Login")]
-    public async Task<ActionResult<AuthenticatedUser>> Get([FromBody] UserLoginDto userLoginDto)
+    public async Task<ActionResult<AuthenticatedUser>> Post([FromBody] UserLoginDto userLoginDto)
     {
         try
         {

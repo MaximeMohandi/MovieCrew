@@ -33,7 +33,7 @@ public class AuthenticationRouteTest
             .ReturnsAsync(true);
 
         // Act
-        var actual = (await _authenticationController.Get(new UserLoginDto(1, "test"))).Result as ObjectResult;
+        var actual = (await _authenticationController.Post(new UserLoginDto(1, "test"))).Result as ObjectResult;
         var actualAuthenticatedUser = actual.Value as AuthenticatedUser;
 
         // Assert
@@ -54,7 +54,7 @@ public class AuthenticationRouteTest
         _authRepositoryMock.Setup(x => x.IsUserExist(2, "test"))
             .ReturnsAsync(false);
 
-        var actual = (await _authenticationController.Get(new UserLoginDto(2, "test"))).Result as ObjectResult;
+        var actual = (await _authenticationController.Post(new UserLoginDto(2, "test"))).Result as ObjectResult;
 
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
     }
