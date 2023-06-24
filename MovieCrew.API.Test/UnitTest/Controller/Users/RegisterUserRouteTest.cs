@@ -8,7 +8,7 @@ using MovieCrew.Core.Domain.Users.Services;
 
 namespace MovieCrew.API.Test.UnitTest.Controller.Users;
 
-public class RegisterUserRoute
+public class RegisterUserRouteTest
 {
     [Test]
     public async Task ShouldReturn201WhenUserIsRegistered()
