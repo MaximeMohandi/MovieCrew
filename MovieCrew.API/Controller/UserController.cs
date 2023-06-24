@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieCrew.Core.Domain.Users.Dtos;
+using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Services;
 
 namespace MovieCrew.API.Controller;
@@ -18,7 +19,14 @@ public class UserController : ControllerBase
     [HttpPost("Register")]
     public async Task<ActionResult<string>> Post([FromBody] UserCreationDto userCreationDto)
     {
-        await _userService.AddUser(userCreationDto);
-        return CreatedAtAction("Post", userCreationDto.Name);
+        try
+        {
+            await _userService.AddUser(userCreationDto);
+            return CreatedAtAction("Post", userCreationDto.Name);
+        }
+        catch (UserAlreadyExistException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }
