@@ -30,3 +30,11 @@ public class UserIsNotSpectatorException : UserException
     {
     }
 }
+
+public class UserRoleDoNotExistException : UserException
+{
+    public UserRoleDoNotExistException(string role) : base(
+        $"The user role {role} do not exist. please verify the role and try again")
+    {
+    }
+}

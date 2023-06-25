@@ -28,5 +28,9 @@ public class UserController : ControllerBase
         {
             return BadRequest(e.Message);
         }
+        catch (UserRoleDoNotExistException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }
