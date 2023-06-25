@@ -27,4 +27,12 @@ public class UserService : IUserService
     {
         return await _userRepository.GetBy(id);
     }
+
+    public async Task AddUser(string name, UserRoles role)
+    {
+        if (!Enum.IsDefined(typeof(UserRoles), role))
+            throw new UserRoleDoNotExistException(role.ToString());
+
+        await _userRepository.Add(new UserCreationDto(name, role));
+    }
 }

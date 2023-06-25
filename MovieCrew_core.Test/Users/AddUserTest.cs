@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
-using MovieCrew.Core.Domain.Users.Dtos;
 using MovieCrew.Core.Domain.Users.Enums;
 using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Repository;
@@ -49,7 +48,7 @@ public class AddUserTest
         UserService userService = new(userRepository);
 
         // Act
-        await userService.AddUser(new UserCreationDto(name, role));
+        await userService.AddUser(name, role);
 
         // Assert
         Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
@@ -61,10 +60,9 @@ public class AddUserTest
         // Arrange
         UserRepository userRepository = new(_dbContext);
         var userService = new UserService(userRepository);
-        var userCreation = new UserCreationDto("Arthur", UserRoles.Bot);
 
         // Act & Assert
-        Assert.ThrowsAsync<UserAlreadyExistException>(() => userService.AddUser(userCreation),
+        Assert.ThrowsAsync<UserAlreadyExistException>(() => userService.AddUser("Arthur", UserRoles.Bot),
             "The user Arthur already exist. please verify the name and try again");
     }
 
@@ -74,10 +72,9 @@ public class AddUserTest
         // Arrange
         UserRepository userRepository = new(_dbContext);
         var userService = new UserService(userRepository);
-        var userCreation = new UserCreationDto("Leodagan", (UserRoles)4);
 
         // Act & Assert
-        Assert.ThrowsAsync<UserRoleDoNotExistException>(() => userService.AddUser(userCreation),
+        Assert.ThrowsAsync<UserRoleDoNotExistException>(() => userService.AddUser("Leodagan", (UserRoles)4),
             "The role 4 do not exist. please verify the role and try again");
     }
 
