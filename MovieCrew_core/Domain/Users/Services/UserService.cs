@@ -15,14 +15,6 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task AddUser(UserCreationDto userCreation)
-    {
-        if (!Enum.IsDefined(typeof(UserRoles), userCreation.Role))
-            throw new UserRoleDoNotExistException(userCreation.Role.ToString());
-
-        await _userRepository.Add(userCreation);
-    }
-
     public async Task<UserEntity> GetById(long id)
     {
         return await _userRepository.GetBy(id);

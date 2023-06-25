@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _userService.AddUser(userCreationDto);
+            await _userService.AddUser(userCreationDto.Name, userCreationDto.Role);
             return CreatedAtAction("Post", userCreationDto.Name);
         }
         catch (UserAlreadyExistException e)

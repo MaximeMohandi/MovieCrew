@@ -30,7 +30,7 @@ public class RegisterUserRouteTest
     {
         // Arrange
         var serviceMock = new Mock<IUserService>();
-        serviceMock.Setup(x => x.AddUser(It.IsAny<UserCreationDto>()))
+        serviceMock.Setup(x => x.AddUser(It.IsAny<string>(), It.IsAny<UserRoles>()))
             .ThrowsAsync(new UserAlreadyExistException("John"));
         var controller = new UserController(serviceMock.Object);
 
@@ -50,7 +50,7 @@ public class RegisterUserRouteTest
     {
         // Arrange
         var serviceMock = new Mock<IUserService>();
-        serviceMock.Setup(x => x.AddUser(It.IsAny<UserCreationDto>()))
+        serviceMock.Setup(x => x.AddUser(It.IsAny<string>(), It.IsAny<UserRoles>()))
             .ThrowsAsync(new UserRoleDoNotExistException("John"));
         var controller = new UserController(serviceMock.Object);
 
