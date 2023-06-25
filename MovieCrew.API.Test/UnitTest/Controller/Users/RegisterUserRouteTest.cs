@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using MovieCrew.API.Controller;
-using MovieCrew.Core.Domain.Users.Dtos;
+using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Users.Enums;
 using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Services;

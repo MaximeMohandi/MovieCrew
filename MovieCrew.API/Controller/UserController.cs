@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieCrew.Core.Domain.Users.Dtos;
+using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Services;
 
@@ -16,7 +16,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost("Register")]
+    [HttpPost("register")]
     public async Task<ActionResult<string>> Post([FromBody] UserCreationDto userCreationDto)
     {
         try
