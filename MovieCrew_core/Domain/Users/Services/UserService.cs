@@ -1,5 +1,7 @@
 ﻿using MovieCrew.Core.Domain.Users.Dtos;
 using MovieCrew.Core.Domain.Users.Entities;
+using MovieCrew.Core.Domain.Users.Enums;
+using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Repository;
 
 namespace MovieCrew.Core.Domain.Users.Services;
@@ -15,6 +17,9 @@ public class UserService : IUserService
 
     public async Task AddUser(UserCreationDto userCreation)
     {
+        if (!Enum.IsDefined(typeof(UserRoles), userCreation.Role))
+            throw new UserRoleDoNotExistException(userCreation.Role.ToString());
+
         await _userRepository.Add(userCreation);
     }
 

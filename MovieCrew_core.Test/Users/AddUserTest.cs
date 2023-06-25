@@ -68,6 +68,19 @@ public class AddUserTest
             "The user Arthur already exist. please verify the name and try again");
     }
 
+    [Test]
+    public async Task ShouldThrowExceptionWhenRoleDoNotExist()
+    {
+        // Arrange
+        UserRepository userRepository = new(_dbContext);
+        var userService = new UserService(userRepository);
+        var userCreation = new UserCreationDto("Leodagan", (UserRoles)4);
+
+        // Act & Assert
+        Assert.ThrowsAsync<UserRoleDoNotExistException>(() => userService.AddUser(userCreation),
+            "The role 4 do not exist. please verify the role and try again");
+    }
+
     [OneTimeTearDown]
     public void CleanUp()
     {
