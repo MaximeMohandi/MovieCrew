@@ -26,7 +26,7 @@ public class UserController : ControllerBase
         }
         catch (UserAlreadyExistException e)
         {
-            return BadRequest(e.Message);
+            return Conflict(e.Message);
         }
         catch (UserRoleDoNotExistException e)
         {

@@ -26,7 +26,7 @@ public class RegisterUserRouteTest
     }
 
     [Test]
-    public async Task ShouldReturn400WhenUserAlreadyExist()
+    public async Task ShouldReturn409WhenUserAlreadyExist()
     {
         // Arrange
         var serviceMock = new Mock<IUserService>();
@@ -40,7 +40,7 @@ public class RegisterUserRouteTest
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
+            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status409Conflict));
             Assert.That(actual.Value, Is.EqualTo("The user John already exist. please verify the name and try again"));
         });
     }
