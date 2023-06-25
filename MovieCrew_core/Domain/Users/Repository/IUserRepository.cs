@@ -1,11 +1,10 @@
-﻿using MovieCrew.Core.Domain.Users.Dtos;
-using MovieCrew.Core.Domain.Users.Entities;
+﻿using MovieCrew.Core.Domain.Users.Entities;
 
 namespace MovieCrew.Core.Domain.Users.Repository;
 
 public interface IUserRepository
 {
-    Task Add(UserCreationDto userCreation);
+    Task Add(string name, int role);
     Task<UserEntity> GetBy(long id);
     Task<SpectatorDetailsEntity> GetSpectatorDetails(long idSpectator);
 }

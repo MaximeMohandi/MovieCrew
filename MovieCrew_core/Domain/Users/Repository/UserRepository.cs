@@ -2,7 +2,6 @@
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Movies.Entities;
-using MovieCrew.Core.Domain.Users.Dtos;
 using MovieCrew.Core.Domain.Users.Entities;
 using MovieCrew.Core.Domain.Users.Enums;
 using MovieCrew.Core.Domain.Users.Exception;
@@ -18,20 +17,6 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task Add(UserCreationDto userCreation)
-    {
-        var isUserExist = await _dbContext.Users.SingleOrDefaultAsync(u => u.Name == userCreation.Name);
-        if (isUserExist is not null) throw new UserAlreadyExistException(userCreation.Name);
-        User newUser = new()
-        {
-            Name = userCreation.Name,
-            Role = (int)userCreation.Role
-        };
-
-        _dbContext.Add(newUser);
-
-        await _dbContext.SaveChangesAsync();
-    }
 
     public async Task<UserEntity> GetBy(long id)
     {
@@ -57,5 +42,20 @@ public class UserRepository : IUserRepository
                     r.Note)
             ).ToList();
         return new SpectatorDetailsEntity(new UserEntity(user.Id, user.Name, user.Role), spectatorRates);
+    }
+
+    public async Task Add(string name, int role)
+    {
+        var isUserExist = await _dbContext.Users.SingleOrDefaultAsync(u => u.Name == name);
+        if (isUserExist is not null) throw new UserAlreadyExistException(name);
+        User newUser = new()
+        {
+            Name = name,
+            Role = role
+        };
+
+        _dbContext.Add(newUser);
+
+        await _dbContext.SaveChangesAsync();
     }
 }
