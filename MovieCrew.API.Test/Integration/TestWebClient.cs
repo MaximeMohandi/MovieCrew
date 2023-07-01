@@ -19,8 +19,8 @@ public class IntegrationTestServer<T> : WebApplicationFactory<Program> where T :
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("IntegrationTest");
         base.ConfigureWebHost(builder);
+
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<T>();
