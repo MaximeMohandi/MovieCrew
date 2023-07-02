@@ -16,17 +16,71 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        BuildUserTable(modelBuilder);
+
+        BuildRateTable(modelBuilder);
+
+        BuildMovieTable(modelBuilder);
+    }
+
+    private static void BuildMovieTable(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Movie>()
+            .ToTable("movies")
+            .Property(m => m.Id).HasColumnName("id_movie")
+            .HasConversion<int>()
+            .IsRequired();
+        modelBuilder.Entity<Movie>()
+            .Property(m => m.Name).HasColumnName("name_movie")
+            .IsRequired();
+        modelBuilder.Entity<Movie>()
+            .Property(m => m.Description).HasColumnName("description_movie");
+        modelBuilder.Entity<Movie>()
+            .Property(m => m.Poster).HasColumnName("movie_poster");
+        modelBuilder.Entity<Movie>()
+            .Property(m => m.DateAdded).HasColumnName("date_added_movie")
+            .HasConversion<DateTime>();
+        modelBuilder.Entity<Movie>()
+            .Property(m => m.SeenDate).HasColumnName("seen_date_movie")
+            .HasConversion<DateTime>();
+        modelBuilder.Entity<Movie>()
+            .Property(m => m.ProposedById).HasColumnName("proposed_by_id")
+            .HasConversion<long?>();
+    }
+
+    private static void BuildRateTable(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Rate>()
+            .ToTable("rates")
+            .Property(r => r.MovieId).HasColumnName("fk_movie")
+            .HasConversion<int>()
+            .IsRequired();
+        modelBuilder.Entity<Rate>()
+            .Property(r => r.UserId).HasColumnName("fk_user")
+            .HasConversion<long>()
+            .IsRequired();
+        modelBuilder.Entity<Rate>()
+            .Property(r => r.Note).HasColumnName("rate")
+            .HasConversion<decimal>();
         modelBuilder.Entity<Rate>()
             .HasKey(r => new { r.MovieId, r.UserId });
+    }
 
-        modelBuilder.Entity<Rate>()
-            .HasOne(m => m.Movie)
-            .WithMany(r => r.Rates)
-            .HasForeignKey(r => r.MovieId);
+    private static void BuildUserTable(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>()
+            .ToTable("users")
+            .Property(u => u.Id).HasColumnName("id_user")
+            .HasConversion<long>()
+            .IsRequired();
 
-        modelBuilder.Entity<Rate>()
-            .HasOne(u => u.User)
-            .WithMany(r => r.Rates)
-            .HasForeignKey(r => r.UserId);
+        modelBuilder.Entity<User>()
+            .Property(u => u.Name).HasColumnName("name_user")
+            .HasMaxLength(50)
+            .IsRequired();
+        modelBuilder.Entity<User>()
+            .Property(u => u.Role).HasColumnName("role_user")
+            .HasConversion<int>();
     }
 }
