@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
-using MovieCrew.Core.Domain.Movies.Entities;
+using MovieCrew.Core.Domain.Movies.Extension;
 using MovieCrew.Core.Domain.Users.Entities;
 using MovieCrew.Core.Domain.Users.Enums;
 using MovieCrew.Core.Domain.Users.Exception;
@@ -29,16 +29,19 @@ public class UserRepository : IUserRepository
 
     public async Task<SpectatorDetailsEntity> GetSpectatorDetails(long idSpectator)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == idSpectator)
+        var user = await _dbContext.Users
+                       .Include(u => u.Rates)
+                       .ThenInclude(r => r.Movie)
+                       .ThenInclude(m => m.Rates)
+                       .FirstOrDefaultAsync(u => u.Id == idSpectator)
                    ?? throw new UserNotFoundException(idSpectator);
 
-        if (user.Rates is null) throw new UserIsNotSpectatorException(idSpectator);
+        if (user.Rates is null || user.Rates.Count == 0) throw new UserIsNotSpectatorException(idSpectator);
 
         var spectatorRates = user.Rates
             .Select(r =>
                 new SpectatorRateEntity(
-                    new MovieEntity(r.MovieId, r.Movie.Name, r.Movie.Poster, r.Movie.Description, r.Movie.DateAdded,
-                        r.Movie.SeenDate, r.Movie.Rates?.Average(r => r.Note)),
+                    r.Movie.ToEntity(),
                     r.Note)
             ).ToList();
         return new SpectatorDetailsEntity(new UserEntity(user.Id, user.Name, user.Role), spectatorRates);
