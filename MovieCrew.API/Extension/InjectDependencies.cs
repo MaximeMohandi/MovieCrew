@@ -1,6 +1,7 @@
 ﻿using MovieCrew.Core.Domain.Authentication.Repository;
 using MovieCrew.Core.Domain.Authentication.Services;
 using MovieCrew.Core.Domain.Movies.Repository;
+using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Ratings.Repository;
 using MovieCrew.Core.Domain.Ratings.Services;
 using MovieCrew.Core.Domain.Users.Repository;
@@ -30,5 +31,7 @@ public static class InjectDependencies
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ISpectatorService, SpectatorService>();
         services.AddScoped<IRatingService, RatingService>();
+        services.AddScoped<IThirdPartyMovieDataProvider, TMDbDataProvider>();
+        services.AddScoped<IMovieService, MovieService>();
     }
 }
