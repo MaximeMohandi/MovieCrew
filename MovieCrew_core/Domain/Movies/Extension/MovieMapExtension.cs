@@ -15,7 +15,7 @@ public static class MovieMapExtension
             movie.Description,
             movie.DateAdded,
             movie.SeenDate,
-            movie.Rates?.Average(r => r.Note)
+            movie.Rates?.Count > 0 ? movie.Rates.Average(r => r.Note) : null
         );
     }
 

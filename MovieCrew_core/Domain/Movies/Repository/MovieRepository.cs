@@ -37,6 +37,8 @@ public class MovieRepository : IMovieRepository
     public async Task<List<MovieEntity>> GetAll()
     {
         var movies = await _dbContext.Movies
+            .Include(m => m.Rates)
+            .Include(m => m.ProposedBy)
             .Select(m => m.ToEntity())
             .ToListAsync();
 

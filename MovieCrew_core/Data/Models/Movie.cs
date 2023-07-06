@@ -5,7 +5,7 @@ public class Movie
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Poster { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
     public DateTime DateAdded { get; set; }
     public DateTime? SeenDate { get; set; } = null;
     public long? ProposedById { get; set; } = null;
