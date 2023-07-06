@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using MovieCrew.Core.Data;
-using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew.Core.Domain.Movies.Repository;
+using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Ratings.Repository;
 using MovieCrew.Core.Domain.Users.Repository;
 

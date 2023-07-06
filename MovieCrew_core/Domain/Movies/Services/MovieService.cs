@@ -1,7 +1,6 @@
 ﻿using MovieCrew.Core.Domain.Movies.Dtos;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
-using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew.Core.Domain.Movies.Repository;
 
 namespace MovieCrew.Core.Domain.Movies.Services;

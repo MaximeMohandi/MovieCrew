@@ -1,5 +1,4 @@
 ﻿using Moq;
-using MovieCrew.Core.Domain.Movies.Interfaces;
 using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
 

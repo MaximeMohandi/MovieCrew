@@ -1,6 +1,6 @@
 ﻿using MovieCrew.Core.Domain.Movies.Entities;
 
-namespace MovieCrew.Core.Domain.Movies.Interfaces;
+namespace MovieCrew.Core.Domain.Movies.Services;
 
 public interface IThirdPartyMovieDataProvider
 {

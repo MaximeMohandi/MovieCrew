@@ -1,7 +1,7 @@
 ﻿using Moq;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
-using MovieCrew.Core.Domain.Movies.Interfaces;
+using MovieCrew.Core.Domain.Movies.Services;
 
 namespace MovieCrew.Core.Test.Movies;
 
