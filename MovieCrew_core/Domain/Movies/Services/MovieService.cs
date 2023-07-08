@@ -23,14 +23,14 @@ public class MovieService : IMovieService
         return await _movieRepository.GetAll();
     }
 
-    public async Task<MovieDetailsEntity> GetByTitle(string title)
+    public async Task<MovieDetailsEntity> GetMovieDetails(string title)
     {
         var movie = await _movieRepository.GetMovie(title);
         await AddRevenueAndPeopleRatingsToMovie(movie);
         return movie;
     }
 
-    public async Task<MovieDetailsEntity> GetById(int movieId)
+    public async Task<MovieDetailsEntity> GetMovieDetails(int movieId)
     {
         var movie = await _movieRepository.GetMovie(movieId);
         await AddRevenueAndPeopleRatingsToMovie(movie);

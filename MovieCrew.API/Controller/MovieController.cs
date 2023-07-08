@@ -64,9 +64,9 @@ public class MovieController : ControllerBase
             if ((id is null && string.IsNullOrEmpty(title)) || (id is not null && !string.IsNullOrEmpty(title)))
                 return BadRequest("Please provide a movie id or title.");
 
-            if (id != null) result = await _movieService.GetById(id.Value);
+            if (id != null) result = await _movieService.GetMovieDetails(id.Value);
 
-            if (!string.IsNullOrEmpty(title)) result = await _movieService.GetByTitle(title);
+            if (!string.IsNullOrEmpty(title)) result = await _movieService.GetMovieDetails(title);
 
             return Ok(result);
         }

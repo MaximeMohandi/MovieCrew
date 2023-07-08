@@ -6,8 +6,8 @@ namespace MovieCrew.Core.Domain.Movies.Services;
 public interface IMovieService
 {
     Task<List<MovieEntity>> FetchAllMovies();
-    Task<MovieDetailsEntity> GetByTitle(string title);
-    Task<MovieDetailsEntity> GetById(int movieId);
+    Task<MovieDetailsEntity> GetMovieDetails(string title);
+    Task<MovieDetailsEntity> GetMovieDetails(int movieId);
     Task<MovieEntity> RandomMovie();
     Task<MovieEntity> AddMovie(string title, long? proposedById);
     Task ChangeTitle(MovieRenameDto renameDto);

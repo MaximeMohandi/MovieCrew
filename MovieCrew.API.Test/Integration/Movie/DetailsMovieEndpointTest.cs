@@ -19,7 +19,7 @@ public class DetailsMovieEndpointTest : MovieEndpointTestBase
                 new(new UserEntity(2223, "mant", UserRoles.Admin), 3)
             }, new UserEntity(2222, "cat", UserRoles.User));
 
-        _movieService.Setup(x => x.GetById(1))
+        _movieService.Setup(x => x.GetMovieDetails(1))
             .ReturnsAsync(expectedDetails);
 
         var expectedJsonResponse = JsonSerializer.Serialize(expectedDetails, _jsonOptions);
@@ -43,7 +43,7 @@ public class DetailsMovieEndpointTest : MovieEndpointTestBase
                 new(new UserEntity(2223, "mant", UserRoles.Admin), 3)
             }, new UserEntity(2222, "cat", UserRoles.User));
 
-        _movieService.Setup(x => x.GetByTitle("Suzume"))
+        _movieService.Setup(x => x.GetMovieDetails("Suzume"))
             .ReturnsAsync(expectedDetails);
 
         var expectedJsonResponse = JsonSerializer.Serialize(expectedDetails, _jsonOptions);
@@ -61,7 +61,7 @@ public class DetailsMovieEndpointTest : MovieEndpointTestBase
     [Test]
     public async Task ShouldReturnNotFoundWhenNoMovieFoundWithId()
     {
-        _movieService.Setup(x => x.GetById(1)).ThrowsAsync(new MovieNotFoundException(1));
+        _movieService.Setup(x => x.GetMovieDetails(1)).ThrowsAsync(new MovieNotFoundException(1));
 
         var response = await _client.GetAsync("/api/movie/details?id=1");
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -77,7 +77,7 @@ public class DetailsMovieEndpointTest : MovieEndpointTestBase
     [Test]
     public async Task ShouldReturnNotFoundWhenNoMovieFoundWithTitle()
     {
-        _movieService.Setup(x => x.GetByTitle("Suzume")).ThrowsAsync(new MovieNotFoundException("Suzume"));
+        _movieService.Setup(x => x.GetMovieDetails("Suzume")).ThrowsAsync(new MovieNotFoundException("Suzume"));
 
         var response = await _client.GetAsync("/api/movie/details?title=Suzume");
         var responseContent = await response.Content.ReadAsStringAsync();

@@ -38,7 +38,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
             new UserEntity(1, "Jabba", UserRoles.User));
 
         //Act
-        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetByTitle(title);
+        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetMovieDetails(title);
 
         //Assert
         Assert.Multiple(() =>
@@ -55,7 +55,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
         MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
 
         //Assert
-        Assert.ThrowsAsync<MovieNotFoundException>(() => movieServices.GetByTitle("star wars VIII"),
+        Assert.ThrowsAsync<MovieNotFoundException>(() => movieServices.GetMovieDetails("star wars VIII"),
             "star wars VIII cannot be found. Please check the title and retry.");
     }
 
@@ -85,7 +85,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
             new UserEntity(1, "Jabba", UserRoles.User));
 
         //Act
-        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetById(1);
+        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetMovieDetails(1);
 
         //Assert
         Assert.Multiple(() =>
@@ -102,7 +102,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
         MovieService movieServices = new(_movieRepository, _fakeDataProvider.Object);
 
         //Act & Assert
-        Assert.ThrowsAsync<MovieNotFoundException>(() => movieServices.GetById(-1),
+        Assert.ThrowsAsync<MovieNotFoundException>(() => movieServices.GetMovieDetails(-1),
             "There's no movie with the id : -1. Please check the given id and retry.");
     }
 
@@ -127,7 +127,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
             null);
 
         //Act
-        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetById(2);
+        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetMovieDetails(2);
 
         //Assert
         Assert.Multiple(() =>
