@@ -2,6 +2,8 @@
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Repository;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Exception;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Services;
 
 namespace MovieCrew.Core.Domain.Movies.Services;
 

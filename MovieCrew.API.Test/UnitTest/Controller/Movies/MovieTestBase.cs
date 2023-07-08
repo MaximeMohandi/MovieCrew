@@ -1,6 +1,7 @@
 ﻿using Moq;
 using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Services;
 
 namespace MovieCrew.API.Test.UnitTest.Controller.Movies;
 

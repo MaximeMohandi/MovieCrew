@@ -1,7 +1,7 @@
 ﻿using Moq;
 using MovieCrew.Core.Domain.Movies.Entities;
-using MovieCrew.Core.Domain.Movies.Exception;
-using MovieCrew.Core.Domain.Movies.Services;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Exception;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Services;
 
 namespace MovieCrew.Core.Test.Movies;
 
@@ -48,5 +48,17 @@ public class ThirdPartyMovieDataTest
             //use random hash to be sure a movie will not have this title
             await thirdPartyProvider.GetDetails("hJjK9pLm3tRq");
         }, "No metadata found for the movie hJjK9pLm3tRq.");
+    }
+
+    [Test]
+    public void ShouldThrowExceptionWhenCantFetchThirdPartyApi()
+    {
+        _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+            .ThrowsAsync(new CantFetchThirdPartyApiException());
+        var thirdPartyProvider = _fakeDataProvider.Object;
+
+        Assert.ThrowsAsync<CantFetchThirdPartyApiException>(
+            async () => { await thirdPartyProvider.GetDetails("Titanic"); },
+            "An error occurred while fetching the third party API.");
     }
 }

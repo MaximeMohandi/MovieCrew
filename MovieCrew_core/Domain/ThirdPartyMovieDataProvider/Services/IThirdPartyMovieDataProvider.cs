@@ -1,6 +1,6 @@
 ﻿using MovieCrew.Core.Domain.Movies.Entities;
 
-namespace MovieCrew.Core.Domain.Movies.Services;
+namespace MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Services;
 
 public interface IThirdPartyMovieDataProvider
 {

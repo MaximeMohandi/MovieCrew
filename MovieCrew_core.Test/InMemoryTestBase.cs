@@ -2,8 +2,8 @@
 using Moq;
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Domain.Movies.Repository;
-using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Ratings.Repository;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Services;
 using MovieCrew.Core.Domain.Users.Repository;
 
 namespace MovieCrew.Core.Test;

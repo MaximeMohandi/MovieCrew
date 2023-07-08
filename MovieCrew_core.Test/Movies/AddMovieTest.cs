@@ -3,6 +3,7 @@ using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Services;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Exception;
 using MovieCrew.Core.Domain.Users.Exception;
 
 namespace MovieCrew.Core.Test.Movies;

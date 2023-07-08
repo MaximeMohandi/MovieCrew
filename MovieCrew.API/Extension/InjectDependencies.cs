@@ -4,6 +4,7 @@ using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.Movies.Services;
 using MovieCrew.Core.Domain.Ratings.Repository;
 using MovieCrew.Core.Domain.Ratings.Services;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Services;
 using MovieCrew.Core.Domain.Users.Repository;
 using MovieCrew.Core.Domain.Users.Services;
 
