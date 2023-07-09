@@ -20,7 +20,12 @@ public class MovieRepository : IMovieRepository
 
     public async Task<MovieDetailsEntity> GetMovie(string title)
     {
-        var movie = await _dbContext.Movies.Where(m => m.Name.ToLower() == title.ToLower()).FirstOrDefaultAsync();
+        var movie = await _dbContext.Movies
+            .Include(m => m.Rates)
+            .ThenInclude(r => r.User)
+            .Include(m => m.ProposedBy)
+            .Where(m => m.Name.ToLower() == title.ToLower())
+            .FirstOrDefaultAsync();
         return movie is null
             ? throw new MovieNotFoundException(title)
             : movie.ToDetailledEntity();
