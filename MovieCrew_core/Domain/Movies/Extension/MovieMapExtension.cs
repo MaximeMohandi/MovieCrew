@@ -27,12 +27,14 @@ public static class MovieMapExtension
             movie.Description,
             movie.DateAdded,
             movie.SeenDate,
-            movie.Rates?.Average(r => r.Note),
+            movie.Rates?.Count > 0 ? movie.Rates.Average(r => r.Note) : null,
             null,
             null,
-            movie.Rates?
-                .Select(r => new MovieRateEntity(new UserEntity(r.User.Id, r.User.Name, r.User.Role), r.Note))
-                .ToList(),
+            movie.Rates?.Count > 0
+                ? movie.Rates
+                    .Select(r => new MovieRateEntity(new UserEntity(r.User.Id, r.User.Name, r.User.Role), r.Note))
+                    .ToList()
+                : null,
             movie.ProposedBy == null
                 ? null
                 : new UserEntity(movie.ProposedBy.Id, movie.ProposedBy.Name, movie.ProposedBy.Role));
