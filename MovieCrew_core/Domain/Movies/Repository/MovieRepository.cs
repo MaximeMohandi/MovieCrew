@@ -20,10 +20,7 @@ public class MovieRepository : IMovieRepository
 
     public async Task<MovieDetailsEntity> GetMovie(string title)
     {
-        var movie = await _dbContext.Movies
-            .Include(m => m.Rates)
-            .ThenInclude(r => r.User)
-            .Include(m => m.ProposedBy)
+        var movie = await FetchMoviesWithNavigationProperties()
             .Where(m => m.Name.ToLower() == title.ToLower())
             .FirstOrDefaultAsync();
         return movie is null
@@ -33,7 +30,10 @@ public class MovieRepository : IMovieRepository
 
     public async Task<MovieDetailsEntity> GetMovie(int id)
     {
-        var movie = await _dbContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
+        var movie = await FetchMoviesWithNavigationProperties()
+            .Where(m => m.Id == id)
+            .FirstOrDefaultAsync();
+
         return movie is null
             ? throw new MovieNotFoundException(id)
             : movie.ToDetailledEntity();
@@ -41,9 +41,7 @@ public class MovieRepository : IMovieRepository
 
     public async Task<List<MovieEntity>> GetAll()
     {
-        var movies = await _dbContext.Movies
-            .Include(m => m.Rates)
-            .Include(m => m.ProposedBy)
+        var movies = await FetchMoviesWithNavigationProperties()
             .Select(m => m.ToEntity())
             .ToListAsync();
 
@@ -104,6 +102,14 @@ public class MovieRepository : IMovieRepository
             .Where(m => !m.SeenDate.HasValue)
             .Select(m => m.ToEntity())
             .ToListAsync();
+    }
+
+    private IQueryable<Movie> FetchMoviesWithNavigationProperties()
+    {
+        return _dbContext.Movies
+            .Include(m => m.Rates)
+            .ThenInclude(r => r.User)
+            .Include(m => m.ProposedBy);
     }
 
     private bool TitleExist(string title)
