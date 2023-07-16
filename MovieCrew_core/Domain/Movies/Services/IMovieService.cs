@@ -1,5 +1,4 @@
-﻿using MovieCrew.Core.Domain.Movies.Dtos;
-using MovieCrew.Core.Domain.Movies.Entities;
+﻿using MovieCrew.Core.Domain.Movies.Entities;
 
 namespace MovieCrew.Core.Domain.Movies.Services;
 
@@ -10,6 +9,6 @@ public interface IMovieService
     Task<MovieDetailsEntity> GetMovieDetails(int movieId);
     Task<MovieEntity> RandomMovie();
     Task<MovieEntity> AddMovie(string title, long? proposedById);
-    Task ChangeTitle(MovieRenameDto renameDto);
-    Task SetSeenDate(MovieSetSeenDateDto movieSetSeenDateDTO);
+    Task ChangeTitle(int movieId, string currentTitle, string newTitle);
+    Task SetSeenDate(int movieId, DateTime seenDate);
 }

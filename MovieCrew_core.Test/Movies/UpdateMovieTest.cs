@@ -1,5 +1,4 @@
 ﻿using MovieCrew.Core.Data.Models;
-using MovieCrew.Core.Domain.Movies.Dtos;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Services;
 
@@ -14,7 +13,7 @@ public class UpdateMovie : InMemoryMovieTestBase
         MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
         //Act
-        await movieService.ChangeTitle(new MovieRenameDto(1, "Asterix & Obelix : Mission Cléopatre", "nouveau nom"));
+        await movieService.ChangeTitle(1, "Asterix & Obelix : Mission Cléopatre", "nouveau nom");
 
         //Assert
         Assert.That(_dbContext.Movies.First(m => m.Name == "nouveau nom").Name, Is.EqualTo("nouveau nom"));
@@ -25,12 +24,12 @@ public class UpdateMovie : InMemoryMovieTestBase
     {
         //Arrange
         MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
-        MovieRenameDto renameMovieData =
-            new(1, "Asterix & Obelix : Mission Cléopatre", "Asterix & Obelix : Mission Cléopatre");
 
         //Act & Assert
         Assert.ThrowsAsync<MovieAlreadyExistException>(() =>
-            movieService.ChangeTitle(renameMovieData), "Asterix & Obelix : Mission Cléopatre is already in the list.");
+                movieService.ChangeTitle(1, "Asterix & Obelix : Mission Cléopatre",
+                    "Asterix & Obelix : Mission Cléopatre"),
+            "Asterix & Obelix : Mission Cléopatre is already in the list.");
     }
 
 
@@ -42,7 +41,7 @@ public class UpdateMovie : InMemoryMovieTestBase
         var updatedMovie = _dbContext.Movies.Single(m => m.Id == 1);
 
         //Act
-        await movieService.SetSeenDate(new MovieSetSeenDateDto(1, DateTime.Now));
+        await movieService.SetSeenDate(1, DateTime.Now);
 
         //Assert
         Assert.That(updatedMovie?.SeenDate?.Date, Is.EqualTo(DateTime.Now.Date));

@@ -1,5 +1,4 @@
-﻿using MovieCrew.Core.Domain.Movies.Dtos;
-using MovieCrew.Core.Domain.Movies.Entities;
+﻿using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Exception;
@@ -55,8 +54,8 @@ public class MovieService : IMovieService
         try
         {
             var metadata = await _thirdPartyMovieProvider.GetDetails(title);
-            return await _movieRepository.Add(new MovieCreationDto(title, metadata.PosterLink, metadata.Description,
-                proposedById));
+            return await _movieRepository.Add(title, metadata.PosterLink, metadata.Description,
+                proposedById);
         }
         catch (NoMetaDataFoundException)
         {
@@ -64,14 +63,14 @@ public class MovieService : IMovieService
         }
     }
 
-    public async Task ChangeTitle(MovieRenameDto renameDto)
+    public async Task ChangeTitle(int movieId, string currentTitle, string newTitle)
     {
-        await _movieRepository.Update(renameDto);
+        await _movieRepository.Update(movieId, currentTitle, newTitle);
     }
 
-    public async Task SetSeenDate(MovieSetSeenDateDto movieSetSeenDateDTO)
+    public async Task SetSeenDate(int movieId, DateTime seenDate)
     {
-        await _movieRepository.Update(movieSetSeenDateDTO);
+        await _movieRepository.Update(movieId, seenDate);
     }
 
     private async Task AddRevenueAndPeopleRatingsToMovie(MovieDetailsEntity movie)

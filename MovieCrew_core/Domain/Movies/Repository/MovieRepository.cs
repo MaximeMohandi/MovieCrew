@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieCrew.Core.Data;
 using MovieCrew.Core.Data.Models;
-using MovieCrew.Core.Domain.Movies.Dtos;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Extension;
@@ -50,21 +49,21 @@ public class MovieRepository : IMovieRepository
         return movies;
     }
 
-    public async Task<MovieEntity> Add(MovieCreationDto creationMovie)
+    public async Task<MovieEntity> Add(string title, string poster, string description, long? proposedById)
     {
-        if (TitleExist(creationMovie.Title))
-            throw new MovieAlreadyExistException(creationMovie.Title);
+        if (TitleExist(title))
+            throw new MovieAlreadyExistException(title);
 
-        if (creationMovie.proposedById != null && !_dbContext.Users.Any(u => u.Id == creationMovie.proposedById))
-            throw new UserNotFoundException(creationMovie.proposedById.Value);
+        if (proposedById != null && !_dbContext.Users.Any(u => u.Id == proposedById))
+            throw new UserNotFoundException(proposedById.Value);
 
         var movie = new Movie
         {
-            Name = creationMovie.Title,
-            Poster = creationMovie.Poster,
-            Description = creationMovie.Description,
+            Name = title,
+            Poster = poster,
+            Description = description,
             DateAdded = DateTime.Now,
-            ProposedById = creationMovie.proposedById
+            ProposedById = proposedById
         };
 
         _dbContext.Movies.Add(movie);
@@ -74,34 +73,33 @@ public class MovieRepository : IMovieRepository
         return movie.ToEntity();
     }
 
-    public async Task Update(MovieRenameDto renameDto)
-    {
-        if (TitleExist(renameDto.NewTitle)) throw new MovieAlreadyExistException(renameDto.NewTitle);
-
-
-        var movieToRename = ExistingMovie(renameDto.MovieID);
-
-        movieToRename.Name = renameDto.NewTitle;
-
-        _dbContext.Movies.Update(movieToRename);
-
-        await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task Update(MovieSetSeenDateDto movieSetSeenDateDTO)
-    {
-        var existingMovie = ExistingMovie(movieSetSeenDateDTO.MovieID);
-        existingMovie.SeenDate = new DateTime(movieSetSeenDateDTO.SeenDate.Year, movieSetSeenDateDTO.SeenDate.Month,
-            movieSetSeenDateDTO.SeenDate.Day);
-        await _dbContext.SaveChangesAsync();
-    }
-
     public async Task<List<MovieEntity>> GetAllUnSeen()
     {
         return await _dbContext.Movies
             .Where(m => !m.SeenDate.HasValue)
             .Select(m => m.ToEntity())
             .ToListAsync();
+    }
+
+    public async Task Update(int movieId, string currentTitle, string newTitle)
+    {
+        if (TitleExist(newTitle)) throw new MovieAlreadyExistException(newTitle);
+
+
+        var movieToRename = ExistingMovie(movieId);
+
+        movieToRename.Name = newTitle;
+
+        _dbContext.Movies.Update(movieToRename);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task Update(int movieId, DateTime seenDate)
+    {
+        var existingMovie = ExistingMovie(movieId);
+        existingMovie.SeenDate = seenDate;
+        await _dbContext.SaveChangesAsync();
     }
 
     private IQueryable<Movie> FetchMoviesWithNavigationProperties()
