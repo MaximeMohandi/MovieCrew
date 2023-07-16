@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieCrew.API.Dtos;
+using MovieCrew.Core.Domain.Users.Entities;
 using MovieCrew.Core.Domain.Users.Exception;
 using MovieCrew.Core.Domain.Users.Services;
 
@@ -31,6 +32,20 @@ public class UserController : ControllerBase
         catch (UserRoleDoNotExistException e)
         {
             return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("login")]
+    public async Task<ActionResult<UserEntity>> Get(UserLoginDto userLoginDto)
+    {
+        try
+        {
+            var user = await _userService.GetUser(userLoginDto.UserId, userLoginDto.UserName);
+            return Ok(user);
+        }
+        catch (UserNotFoundException e)
+        {
+            return NotFound(e.Message);
         }
     }
 }

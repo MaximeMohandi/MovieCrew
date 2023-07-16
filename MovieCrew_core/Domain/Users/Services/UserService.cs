@@ -14,7 +14,7 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<UserEntity> Get(long id, string name)
+    public async Task<UserEntity> GetUser(long id, string name)
     {
         return await _userRepository.GetBy(id, name);
     }
