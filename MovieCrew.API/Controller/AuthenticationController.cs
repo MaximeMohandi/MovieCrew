@@ -1,6 +1,5 @@
 ﻿using System.Security.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Authentication.Model;
 using MovieCrew.Core.Domain.Authentication.Services;
 
@@ -17,12 +16,13 @@ public class AuthenticationController : ControllerBase
         _authenticationService = authenticationService;
     }
 
-    [HttpPost("Login")]
-    public async Task<ActionResult<AuthenticatedUser>> Post([FromBody] UserLoginDto userLoginDto)
+    [HttpPost("token")]
+    public async Task<ActionResult<AuthenticatedClient>> Post([FromQuery] int clientId)
     {
         try
         {
-            var authUser = await _authenticationService.Authenticate(userLoginDto.UserId, userLoginDto.UserName);
+            var apiKey = HttpContext.Request.Headers["ApiKey"];
+            var authUser = await _authenticationService.Authenticate(clientId, apiKey);
             return Ok(authUser);
         }
         catch (AuthenticationException e)

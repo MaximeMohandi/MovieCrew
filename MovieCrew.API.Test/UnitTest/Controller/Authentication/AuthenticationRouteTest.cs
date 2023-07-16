@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using MovieCrew.API.Controller;
-using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Authentication.Model;
 using MovieCrew.Core.Domain.Authentication.Repository;
 using MovieCrew.Core.Domain.Authentication.Services;
@@ -23,39 +22,55 @@ public class AuthenticationRouteTest
             new JwtConfiguration("A.ComplexP4ss3@Phrase", "http://test.issuer", "http://test.audience");
         var authenticationService = new AuthenticationService(_authRepositoryMock.Object, jwtConfiguration);
         _authenticationController = new AuthenticationController(authenticationService);
+        var httpContextMock = new Mock<HttpContext>();
+        httpContextMock.SetupGet(x => x.Request.Headers["ApiKey"]).Returns("test");
+        _authenticationController.ControllerContext.HttpContext = httpContextMock.Object;
     }
 
     [Test]
-    public async Task SuccessLoginShouldReturnAuthenticatedUser()
+    public async Task SuccessAuthenticationShouldReturnToken()
     {
         // Arrange
-        _authRepositoryMock.Setup(x => x.IsUserExist(1, "test"))
+        _authRepositoryMock.Setup(x => x.IsClientValid(1, "test"))
             .ReturnsAsync(true);
 
         // Act
-        var actual = (await _authenticationController.Post(new UserLoginDto(1, "test"))).Result as ObjectResult;
-        var actualAuthenticatedUser = actual.Value as AuthenticatedUser;
+        var actual = (await _authenticationController.Post(1)).Result as ObjectResult;
+        var authenticatedClient = actual?.Value as AuthenticatedClient;
 
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(actualAuthenticatedUser.UserName, Is.EqualTo("test"));
-            Assert.That(actualAuthenticatedUser.UserId, Is.EqualTo(1));
-            Assert.That(actualAuthenticatedUser.Token, Does.Match(IsCorrectToken));
-            Assert.That(actualAuthenticatedUser.TokenExpirationDate.ToShortTimeString(),
+            Assert.That(actual?.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
+            Assert.That(authenticatedClient?.Token, Does.Match(IsCorrectToken));
+            Assert.That(authenticatedClient?.TokenExpirationDate.ToShortTimeString(),
                 Is.EqualTo(DateTime.UtcNow.AddDays(1).ToShortTimeString()));
-            Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
         });
     }
 
     [Test]
-    public async Task ShouldReturnForbiddenWhenInvalidUser()
+    public async Task ShouldReturnForbiddenWhenInvalidClientButCorrectKey()
     {
-        _authRepositoryMock.Setup(x => x.IsUserExist(2, "test"))
+        _authRepositoryMock.Setup(x => x.IsClientValid(2, "test"))
             .ReturnsAsync(false);
 
-        var actual = (await _authenticationController.Post(new UserLoginDto(2, "test"))).Result as ObjectResult;
+        var actual = (await _authenticationController.Post(2)).Result as ObjectResult;
 
-        Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
+        Assert.That(actual?.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
+    }
+
+    [Test]
+    public async Task ShouldReturnForbiddenWhenValidClientButInvalidKey()
+    {
+        _authRepositoryMock.Setup(x => x.IsClientValid(2, "test"))
+            .ReturnsAsync(false);
+
+        var httpContextMock = new Mock<HttpContext>();
+        httpContextMock.SetupGet(x => x.Request.Headers["ApiKey"]).Returns("false key");
+        _authenticationController.ControllerContext.HttpContext = httpContextMock.Object;
+
+        var actual = (await _authenticationController.Post(1)).Result as ObjectResult;
+
+        Assert.That(actual?.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
     }
 }
