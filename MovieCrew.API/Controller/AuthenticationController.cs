@@ -17,7 +17,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpGet("token")]
-    public async Task<ActionResult<AuthenticatedClient>> Get([FromQuery] int clientId)
+    public async Task<ActionResult<AuthenticatedClient>> Get([FromQuery] long clientId)
     {
         try
         {

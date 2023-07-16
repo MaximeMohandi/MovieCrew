@@ -23,7 +23,8 @@ public class AuthenticationRouteTest
         var authenticationService = new AuthenticationService(_authRepositoryMock.Object, jwtConfiguration);
         _authenticationController = new AuthenticationController(authenticationService);
         var httpContextMock = new Mock<HttpContext>();
-        httpContextMock.SetupGet(x => x.Request.Headers["ApiKey"]).Returns("test");
+        httpContextMock.SetupGet(x => x.Request.Headers["ApiKey"])
+            .Returns("/Uui8F1/oyZW/xPucmYF5DFw/wXdchDrwBD6Hv93668w9tFKUKsZE+3uvmP20rUF");
         _authenticationController.ControllerContext.HttpContext = httpContextMock.Object;
     }
 
@@ -31,7 +32,8 @@ public class AuthenticationRouteTest
     public async Task SuccessAuthenticationShouldReturnToken()
     {
         // Arrange
-        _authRepositoryMock.Setup(x => x.IsClientValid(1, "test"))
+        _authRepositoryMock.Setup(x =>
+                x.IsClientValid(1, "/Uui8F1/oyZW/xPucmYF5DFw/wXdchDrwBD6Hv93668w9tFKUKsZE+3uvmP20rUF"))
             .ReturnsAsync(true);
 
         // Act

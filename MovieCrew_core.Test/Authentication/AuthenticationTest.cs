@@ -32,7 +32,7 @@ public class AuthenticationTest
             new()
             {
                 Id = 1,
-                ApiKey = "test"
+                ApiKey = "/Uui8F1/oyZW/xPucmYF5DFw/wXdchDrwBD6Hv93668w9tFKUKsZE+3uvmP20rUF"
             }
         };
 
@@ -49,7 +49,7 @@ public class AuthenticationTest
         var service = new AuthenticationService(_repository, _jwtConfiguration);
 
         // Act
-        var actual = await service.Authenticate(1, "test");
+        var actual = await service.Authenticate(1, "/Uui8F1/oyZW/xPucmYF5DFw/wXdchDrwBD6Hv93668w9tFKUKsZE+3uvmP20rUF");
 
         // Assert
         Assert.Multiple(() =>
