@@ -2,5 +2,5 @@
 
 public interface IAuthenticationRepository
 {
-    Task<bool> IsUserExist(long userId, string userName);
+    Task<bool> IsClientValid(int clientId, string apiKey);
 }

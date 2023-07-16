@@ -16,42 +16,44 @@ public class AuthenticationTest
         .UseInMemoryDatabase("UserDbTest")
         .Options;
 
+    private readonly JwtConfiguration _jwtConfiguration =
+        new("A passphrase with to be secure @123", "https://test.com", "https://test.com");
+
     private AppDbContext _dbContext;
+    private AuthenticationRepository _repository;
 
     [OneTimeSetUp]
     public void SetUp()
     {
         _dbContext = new AppDbContext(_dbContextOptions);
         _dbContext.Database.EnsureCreated();
-
-        User[] users =
+        Client[] clients =
         {
             new()
             {
                 Id = 1,
-                Name = "test",
-                Role = 1
+                ApiKey = "test"
             }
         };
 
-        _dbContext.Users.AddRange(users);
+        _dbContext.Clients.AddRange(clients);
         _dbContext.SaveChanges();
+
+        _repository = new AuthenticationRepository(_dbContext);
     }
 
     [Test]
-    public async Task ShouldAuthenticateUser()
+    public async Task ShouldAuthenticateClient()
     {
-        var jwtConfiguration =
-            new JwtConfiguration("A passphrase with to be secure @123", "https://test.com", "https://test.com");
-        var repository = new AuthenticationRepository(_dbContext);
-        var service = new AuthenticationService(repository, jwtConfiguration);
+        // Arrange
+        var service = new AuthenticationService(_repository, _jwtConfiguration);
 
+        // Act
         var actual = await service.Authenticate(1, "test");
 
+        // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(actual.UserId, Is.EqualTo(1));
-            Assert.That(actual.UserName, Is.EqualTo("test"));
             Assert.That(actual.TokenExpirationDate.ToShortTimeString(),
                 Is.EqualTo(DateTime.UtcNow.AddDays(1).ToShortTimeString()));
             Assert.That(actual.Token, Does.Match(IsCorrectToken));
@@ -59,15 +61,13 @@ public class AuthenticationTest
     }
 
     [Test]
-    public void ShouldThrowsExceptionWhenUserIsInvalid()
+    public void ShouldThrowsExceptionWhenClientInvalid()
     {
-        var repository = new AuthenticationRepository(_dbContext);
-        var service = new AuthenticationService(repository, new JwtConfiguration());
+        var service = new AuthenticationService(_repository, _jwtConfiguration);
 
         Assert.ThrowsAsync<AuthenticationException>(async () => { await service.Authenticate(1, "test2"); },
-            "Invalid user.");
+            "Invalid client.");
     }
-
 
     [OneTimeTearDown]
     public void CleanUp()

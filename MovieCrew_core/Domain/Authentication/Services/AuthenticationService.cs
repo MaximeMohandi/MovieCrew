@@ -20,13 +20,13 @@ public class AuthenticationService : IAuthenticationService
         _repository = repository;
     }
 
-    public async Task<AuthenticatedUser> Authenticate(long userId, string userName)
+    public async Task<AuthenticatedClient> Authenticate(int clientId, string apiKey)
     {
-        var userExist = await _repository.IsUserExist(userId, userName);
-        if (!userExist) throw new AuthenticationException("Invalid user");
+        var userExist = await _repository.IsClientValid(clientId, apiKey);
+        if (!userExist) throw new AuthenticationException("Invalid client");
 
         var token = CreateToken();
-        return new AuthenticatedUser(userId, userName, new JwtSecurityTokenHandler().WriteToken(token),
+        return new AuthenticatedClient(new JwtSecurityTokenHandler().WriteToken(token),
             token.ValidTo);
     }
 
