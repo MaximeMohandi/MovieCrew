@@ -13,18 +13,21 @@ public class MovieDetailsEntity : MovieEntity
         decimal? averageRate,
         decimal? peopleAverageRate,
         decimal? revenue,
+        decimal? budget,
         List<MovieRateEntity>? movieRates,
         UserEntity? proposedBy) :
         base(id, title, poster, descsription, addedDate, seenDate, averageRate)
     {
         PeopleAverageRate = peopleAverageRate;
         Revenue = revenue;
+        Budget = budget;
         MovieRates = movieRates;
         ProposedBy = proposedBy;
     }
 
     public decimal? PeopleAverageRate { get; set; }
     public decimal? Revenue { get; set; }
+    public decimal? Budget { get; set; }
     public List<MovieRateEntity>? MovieRates { get; }
     public MovieRateEntity? BestRate => MovieRates?.MaxBy(r => r.Rate);
     public MovieRateEntity? WorstRate => MovieRates?.MinBy(r => r.Rate);
@@ -42,6 +45,7 @@ public class MovieDetailsEntity : MovieEntity
                && Equals(WorstRate, toCompare.WorstRate)
                && Equals(PeopleAverageRate, toCompare.PeopleAverageRate)
                && Equals(Revenue, toCompare.Revenue)
+               && Equals(Budget, toCompare.Budget)
                && Equals(ProposedBy, toCompare.ProposedBy);
     }
 
@@ -62,6 +66,7 @@ public class MovieDetailsEntity : MovieEntity
         hash = HashCode.Combine(hash, ProposedBy is null ? 0 : ProposedBy.GetHashCode());
         hash = HashCode.Combine(hash, PeopleAverageRate is null ? 0 : PeopleAverageRate.GetHashCode());
         hash = HashCode.Combine(hash, Revenue is null ? 0 : Revenue.GetHashCode());
+        hash = HashCode.Combine(hash, Budget is null ? 0 : Budget.GetHashCode());
         return hash;
     }
 }

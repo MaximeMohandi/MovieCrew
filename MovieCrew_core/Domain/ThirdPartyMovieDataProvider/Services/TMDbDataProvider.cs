@@ -26,7 +26,8 @@ public class TMDbDataProvider : IThirdPartyMovieDataProvider
 
         var details = await FetchFromTmdb<TMDbMovieEntity>($"/movie/{foundMovieId}");
 
-        return new MovieMetadataEntity(details.PosterPath, details.Overview, details.VoteAverage, details.Revenue);
+        return new MovieMetadataEntity(details.PosterPath, details.Overview, details.VoteAverage, details.Revenue,
+            details.Budget);
     }
 
     private static async Task<int> SearchTMDbMovieId(string title)

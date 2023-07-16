@@ -14,7 +14,7 @@ public class DetailsMovieEndpointTest : MovieEndpointTestBase
     public async Task ShouldReturnMovieDetailsWhenCorrectId()
     {
         var expectedDetails = new MovieDetailsEntity(1, "Suzume", "", "", new DateTime(2023, 5, 5),
-            new DateTime(2023, 5, 6), 3, 9, 300.44M, new List<MovieRateEntity>
+            new DateTime(2023, 5, 6), 3, 9, 300.44M, null, new List<MovieRateEntity>
             {
                 new(new UserEntity(2223, "mant", UserRoles.Admin), 3)
             }, new UserEntity(2222, "cat", UserRoles.User));
@@ -38,7 +38,7 @@ public class DetailsMovieEndpointTest : MovieEndpointTestBase
     public async Task ShouldReturnMovieDetailsWhenCorrectTitle()
     {
         var expectedDetails = new MovieDetailsEntity(1, "Suzume", "", "", new DateTime(2023, 5, 5),
-            new DateTime(2023, 5, 6), 3, 9, 300.44M, new List<MovieRateEntity>
+            new DateTime(2023, 5, 6), 3, 9, 300.44M, null, new List<MovieRateEntity>
             {
                 new(new UserEntity(2223, "mant", UserRoles.Admin), 3)
             }, new UserEntity(2222, "cat", UserRoles.User));

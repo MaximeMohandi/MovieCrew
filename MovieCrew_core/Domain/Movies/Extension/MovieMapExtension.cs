@@ -29,7 +29,7 @@ public static class MovieMapExtension
             movie.SeenDate,
             movie.Rates?.Count > 0 ? movie.Rates.Average(r => r.Note) : null,
             null,
-            null,
+            null, null,
             movie.Rates?.Count > 0
                 ? movie.Rates
                     .Select(r => new MovieRateEntity(new UserEntity(r.User.Id, r.User.Name, r.User.Role), r.Note))

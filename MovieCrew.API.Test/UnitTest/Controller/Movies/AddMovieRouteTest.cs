@@ -17,7 +17,7 @@ public class AddMovieRouteTest : MovieTestBase
     {
         // Arrange
         _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8, 0));
         _movieRepositoryMock.Setup(x => x.Add("test", "https://maximemohandi.fr/", "loremp ipsum", 3))
             .ReturnsAsync(new MovieEntity(1, "test", "https://maximemohandi.fr/", "loremp ipsum", DateTime.Now, null,
                 null));
@@ -39,7 +39,7 @@ public class AddMovieRouteTest : MovieTestBase
     {
         // Arrange
         _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0));
+            .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0, 0));
         _movieRepositoryMock.Setup(x => x.Add("test", "", "", 3))
             .ThrowsAsync(new MovieAlreadyExistException("test"));
         var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
@@ -56,7 +56,7 @@ public class AddMovieRouteTest : MovieTestBase
     {
         // Arrange
         _movieDataProviderMock.Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0));
+            .ReturnsAsync(new MovieMetadataEntity("", "", 0, 0, 0));
         _movieRepositoryMock.Setup(x => x.Add("test", "", "", 3))
             .ThrowsAsync(new UserNotFoundException(3));
         var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);

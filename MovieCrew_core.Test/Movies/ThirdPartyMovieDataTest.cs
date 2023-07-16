@@ -20,7 +20,7 @@ public class ThirdPartyMovieDataTest
     {
         // Arrange
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8, 0));
 
         // Act
         var actual = await _fakeDataProvider.Object.GetDetails("Titanic");

@@ -25,14 +25,14 @@ public class MovieService : IMovieService
     public async Task<MovieDetailsEntity> GetMovieDetails(string title)
     {
         var movie = await _movieRepository.GetMovie(title);
-        await AddRevenueAndPeopleRatingsToMovie(movie);
+        await AddExtraDataToMovie(movie);
         return movie;
     }
 
     public async Task<MovieDetailsEntity> GetMovieDetails(int movieId)
     {
         var movie = await _movieRepository.GetMovie(movieId);
-        await AddRevenueAndPeopleRatingsToMovie(movie);
+        await AddExtraDataToMovie(movie);
         return movie;
     }
 
@@ -73,10 +73,11 @@ public class MovieService : IMovieService
         await _movieRepository.Update(movieId, seenDate);
     }
 
-    private async Task AddRevenueAndPeopleRatingsToMovie(MovieDetailsEntity movie)
+    private async Task AddExtraDataToMovie(MovieDetailsEntity movie)
     {
         var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
         movie.PeopleAverageRate = metadata.Ratings;
         movie.Revenue = metadata.Revenue;
+        movie.Budget = metadata.Budget;
     }
 }

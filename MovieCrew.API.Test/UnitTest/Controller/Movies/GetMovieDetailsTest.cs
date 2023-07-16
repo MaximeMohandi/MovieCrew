@@ -17,7 +17,7 @@ public class GetMovieDetailsTest : MovieTestBase
         // Arrange
         _movieDataProviderMock
             .Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("https://titanic", "loremp ipsum", 8M, 340000));
+            .ReturnsAsync(new MovieMetadataEntity("https://titanic", "loremp ipsum", 8M, 340000, 0));
         _movieRepositoryMock
             .Setup(x => x.GetMovie(It.IsAny<int>()))
             .ReturnsAsync(new MovieDetailsEntity(1,
@@ -28,7 +28,7 @@ public class GetMovieDetailsTest : MovieTestBase
                 null,
                 null,
                 null,
-                null,
+                null, null,
                 null,
                 new UserEntity(1, "Maxime", UserRoles.Admin)));
 
@@ -46,7 +46,7 @@ public class GetMovieDetailsTest : MovieTestBase
                 null,
                 null,
                 8M,
-                340000,
+                340000, 0,
                 null,
                 new UserEntity(1, "Maxime", UserRoles.Admin))));
             Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
@@ -59,7 +59,7 @@ public class GetMovieDetailsTest : MovieTestBase
         // Arrange
         _movieDataProviderMock
             .Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("https://titanic", "loremp ipsum", 8M, 340000));
+            .ReturnsAsync(new MovieMetadataEntity("https://titanic", "loremp ipsum", 8M, 340000, 0));
         _movieRepositoryMock
             .Setup(x => x.GetMovie(It.IsAny<string>()))
             .ReturnsAsync(new MovieDetailsEntity(1,
@@ -70,7 +70,7 @@ public class GetMovieDetailsTest : MovieTestBase
                 new DateTime(2023, 3, 18),
                 2M,
                 null,
-                null,
+                null, null,
                 new List<MovieRateEntity>
                 {
                     new(new UserEntity(1, "user", 2), 2)
@@ -91,7 +91,7 @@ public class GetMovieDetailsTest : MovieTestBase
                 new DateTime(2023, 3, 18),
                 2M,
                 8M,
-                340000,
+                340000, 0,
                 new List<MovieRateEntity>
                 {
                     new(new UserEntity(1, "user", 2), 2)

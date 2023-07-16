@@ -15,7 +15,7 @@ public class AddMovieTest : InMemoryMovieTestBase
     {
         //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8, 0));
 
         //Act
         var addedMovie = await new MovieService(_movieRepository, _fakeDataProvider.Object).AddMovie("Pinnochio", 1);
@@ -51,7 +51,7 @@ public class AddMovieTest : InMemoryMovieTestBase
     {
         //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8, 0));
 
         //Act
         MovieService service = new(_movieRepository, _fakeDataProvider.Object);
@@ -65,7 +65,7 @@ public class AddMovieTest : InMemoryMovieTestBase
     {
         //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
-            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8));
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8, 0));
 
         //Act
         MovieService service = new(_movieRepository, _fakeDataProvider.Object);

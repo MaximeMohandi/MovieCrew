@@ -22,7 +22,7 @@ public class RandomMovieEndpointTest : MovieEndpointTestBase
             new DateTime(2023, 5, 6),
             3,
             9,
-            300.44M,
+            300.44M, null,
             new List<MovieRateEntity>
             {
                 new(new UserEntity(2223, "mant", UserRoles.Admin), 3)

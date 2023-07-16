@@ -18,7 +18,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
     {
         //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails("lord of the ring"))
-            .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550));
+            .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550, 0));
         MovieDetailsEntity expected = new(
             1,
             "Lord of the ring",
@@ -28,7 +28,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
             new DateTime(2022, 5, 12),
             5.75M,
             10M,
-            2555550,
+            2555550, 0,
             new List<MovieRateEntity>
             {
                 new(new UserEntity(1, "Jabba", UserRoles.User), 10.0M),
@@ -64,7 +64,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
     {
         //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails("lord of the ring"))
-            .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550));
+            .ReturnsAsync(new MovieMetadataEntity("fakeLink", "Greatest movie on earth", 10M, 2555550, 23230));
 
         MovieDetailsEntity expected = new(
             1,
@@ -75,7 +75,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
             new DateTime(2022, 5, 12),
             5.75M,
             10M,
-            2555550,
+            2555550, 23230,
             new List<MovieRateEntity>
             {
                 new(new UserEntity(1, "Jabba", UserRoles.User), 10.0M),
@@ -111,7 +111,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
     {
         //Arrange
         _fakeDataProvider.Setup(x => x.GetDetails("harry potter"))
-            .ReturnsAsync(new MovieMetadataEntity("", "", 5M, 2555555M));
+            .ReturnsAsync(new MovieMetadataEntity("", "", 5M, 2555555M, 2220));
 
         MovieDetailsEntity expected = new(
             2,
@@ -122,7 +122,7 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
             null,
             null,
             5M,
-            2555555M,
+            2555555M, 2220,
             null,
             null);
 
