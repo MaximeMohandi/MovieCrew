@@ -1,4 +1,6 @@
-﻿using System.Net.Mime;
+﻿using System.Dynamic;
+using System.Net;
+using System.Net.Mime;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -31,6 +33,8 @@ public class LoginEndpointTest
     {
         _userService = new Mock<IUserService>();
         _client = new IntegrationTestServer<IUserService>(_userService).CreateDefaultClient();
+        dynamic data = new ExpandoObject();
+        _client.SetFakeBearerToken((object)data);
     }
 
     [Test]
