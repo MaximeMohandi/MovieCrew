@@ -19,7 +19,7 @@ public class RegisterUserRouteTest
         var controller = new UserController(serviceMock.Object);
 
         // Act
-        var actual = (await controller.Post(new UserCreationDto("John", UserRoles.Admin))).Result as ObjectResult;
+        var actual = (await controller.Post(new UserCreationDto(1234, "John", UserRoles.Admin))).Result as ObjectResult;
 
         // Assert
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
@@ -30,12 +30,12 @@ public class RegisterUserRouteTest
     {
         // Arrange
         var serviceMock = new Mock<IUserService>();
-        serviceMock.Setup(x => x.AddUser(It.IsAny<string>(), It.IsAny<UserRoles>()))
+        serviceMock.Setup(x => x.AddUser(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<UserRoles>()))
             .ThrowsAsync(new UserAlreadyExistException("John"));
         var controller = new UserController(serviceMock.Object);
 
         // Act
-        var actual = (await controller.Post(new UserCreationDto("John", UserRoles.Admin))).Result as ObjectResult;
+        var actual = (await controller.Post(new UserCreationDto(1234, "John", UserRoles.Admin))).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -50,12 +50,13 @@ public class RegisterUserRouteTest
     {
         // Arrange
         var serviceMock = new Mock<IUserService>();
-        serviceMock.Setup(x => x.AddUser(It.IsAny<string>(), It.IsAny<UserRoles>()))
+        serviceMock.Setup(x => x.AddUser(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<UserRoles>()))
             .ThrowsAsync(new UserRoleDoNotExistException("John"));
         var controller = new UserController(serviceMock.Object);
 
         // Act
-        var actual = (await controller.Post(new UserCreationDto("John", UserRoles.Admin))).Result as ObjectResult;
+        var actual =
+            (await controller.Post(new UserCreationDto(12345, "John", UserRoles.Admin))).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>

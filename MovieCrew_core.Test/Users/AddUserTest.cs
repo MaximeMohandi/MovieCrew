@@ -31,9 +31,9 @@ public class AddUserTest
         _dbContext.SaveChanges();
     }
 
-    [TestCase(1, "Ygerne", UserRoles.User)]
-    [TestCase(2, "Tio", UserRoles.Admin)]
-    [TestCase(3, "Gloria", UserRoles.Bot)]
+    [TestCase(1234, "Ygerne", UserRoles.User)]
+    [TestCase(298766, "Tio", UserRoles.Admin)]
+    [TestCase(89999955, "Gloria", UserRoles.Bot)]
     public async Task ShouldAddUser(int id, string name, UserRoles role)
     {
         // Arrange
@@ -48,7 +48,7 @@ public class AddUserTest
         UserService userService = new(userRepository);
 
         // Act
-        await userService.AddUser(name, role);
+        await userService.AddUser(id, name, role);
 
         // Assert
         Assert.That(_dbContext.Users.Contains(expectedUser), Is.True);
@@ -62,7 +62,7 @@ public class AddUserTest
         var userService = new UserService(userRepository);
 
         // Act & Assert
-        Assert.ThrowsAsync<UserAlreadyExistException>(() => userService.AddUser("Arthur", UserRoles.Bot),
+        Assert.ThrowsAsync<UserAlreadyExistException>(() => userService.AddUser(1, "Arthur", UserRoles.Bot),
             "The user Arthur already exist. please verify the name and try again");
     }
 
@@ -74,7 +74,7 @@ public class AddUserTest
         var userService = new UserService(userRepository);
 
         // Act & Assert
-        Assert.ThrowsAsync<UserRoleDoNotExistException>(() => userService.AddUser("Leodagan", (UserRoles)4),
+        Assert.ThrowsAsync<UserRoleDoNotExistException>(() => userService.AddUser(787686, "Leodagan", (UserRoles)4),
             "The role 4 do not exist. please verify the role and try again");
     }
 

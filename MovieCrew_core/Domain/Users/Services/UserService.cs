@@ -19,11 +19,11 @@ public class UserService : IUserService
         return await _userRepository.GetBy(id);
     }
 
-    public async Task AddUser(string name, UserRoles role)
+    public async Task AddUser(long id, string name, UserRoles role)
     {
         if (!Enum.IsDefined(typeof(UserRoles), role))
             throw new UserRoleDoNotExistException(role.ToString());
 
-        await _userRepository.Add(name, (int)role);
+        await _userRepository.Add(id, name, (int)role);
     }
 }

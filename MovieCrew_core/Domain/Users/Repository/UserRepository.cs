@@ -47,12 +47,13 @@ public class UserRepository : IUserRepository
         return new SpectatorDetailsEntity(new UserEntity(user.Id, user.Name, user.Role), spectatorRates);
     }
 
-    public async Task Add(string name, int role)
+    public async Task Add(long id, string name, int role)
     {
-        var isUserExist = await _dbContext.Users.SingleOrDefaultAsync(u => u.Name == name);
+        var isUserExist = await _dbContext.Users.SingleOrDefaultAsync(u => u.Name == name && u.Id == id);
         if (isUserExist is not null) throw new UserAlreadyExistException(name);
         User newUser = new()
         {
+            Id = id,
             Name = name,
             Role = role
         };

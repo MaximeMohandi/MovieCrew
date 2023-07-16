@@ -5,6 +5,6 @@ namespace MovieCrew.Core.Domain.Users.Services;
 
 public interface IUserService
 {
-    Task AddUser(string name, UserRoles role);
+    Task AddUser(long id, string name, UserRoles role);
     Task<UserEntity> GetById(long id);
 }

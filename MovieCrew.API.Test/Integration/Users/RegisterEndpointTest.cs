@@ -35,9 +35,9 @@ public class RegisterEndpointTest
     public async Task ShouldReturnCreated()
     {
         // Arrange
-        _userService.Setup(x => x.AddUser(It.IsAny<string>(), It.IsAny<UserRoles>()))
+        _userService.Setup(x => x.AddUser(1234, "test", UserRoles.Admin))
             .Verifiable();
-        var createUser = new UserCreationDto("test", UserRoles.Admin);
+        var createUser = new UserCreationDto(1234, "test", UserRoles.Admin);
 
         // Act
         var response = await _client.PostAsync("/api/user/register",
@@ -51,9 +51,9 @@ public class RegisterEndpointTest
     public async Task ShouldReturnConflictWhenUserExist()
     {
         // Arrange
-        _userService.Setup(x => x.AddUser(It.IsAny<string>(), It.IsAny<UserRoles>()))
+        _userService.Setup(x => x.AddUser(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<UserRoles>()))
             .ThrowsAsync(new UserAlreadyExistException("test"));
-        var createUser = new UserCreationDto("test", UserRoles.Admin);
+        var createUser = new UserCreationDto(56783, "test", UserRoles.Admin);
 
         // Act
         var response = await _client.PostAsync("/api/user/register",
@@ -73,9 +73,9 @@ public class RegisterEndpointTest
     public async Task ShouldReturnBadRequestWhenInvalidRole()
     {
         // Arrange
-        _userService.Setup(x => x.AddUser(It.IsAny<string>(), It.IsAny<UserRoles>()))
+        _userService.Setup(x => x.AddUser(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<UserRoles>()))
             .ThrowsAsync(new UserRoleDoNotExistException("10"));
-        var createUser = new UserCreationDto("test", (UserRoles)10);
+        var createUser = new UserCreationDto(7874856465, "test", (UserRoles)10);
 
         // Act
         var response = await _client.PostAsync("/api/user/register",

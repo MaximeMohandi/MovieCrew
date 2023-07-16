@@ -4,7 +4,7 @@ namespace MovieCrew.Core.Domain.Users.Repository;
 
 public interface IUserRepository
 {
-    Task Add(string name, int role);
+    Task Add(long id, string name, int role);
     Task<UserEntity> GetBy(long id);
     Task<SpectatorDetailsEntity> GetSpectatorDetails(long idSpectator);
 }
