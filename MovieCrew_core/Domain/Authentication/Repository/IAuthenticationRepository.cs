@@ -2,5 +2,5 @@
 
 public interface IAuthenticationRepository
 {
-    Task<bool> IsClientValid(long clientId, string apiKey);
+    Task<bool> IsClientValid(int clientId, string apiKey);
 }

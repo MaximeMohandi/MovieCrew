@@ -68,7 +68,7 @@ public class TokenEndpointsTest
     public async Task AuthenticationShouldReturnForbiddenIfNotValidClient()
     {
         // Arrange
-        _authenticationService.Setup(x => x.Authenticate(It.IsAny<long>(), It.IsAny<string>()))
+        _authenticationService.Setup(x => x.Authenticate(It.IsAny<int>(), It.IsAny<string>()))
             .ThrowsAsync(new AuthenticationException("Invalid client"));
         _client.DefaultRequestHeaders.Add("ApiKey", "test");
 

@@ -4,5 +4,5 @@ namespace MovieCrew.Core.Domain.Authentication.Services;
 
 public interface IAuthenticationService
 {
-    Task<AuthenticatedClient> Authenticate(long clientId, string apiKey);
+    Task<AuthenticatedClient> Authenticate(int clientId, string apiKey);
 }

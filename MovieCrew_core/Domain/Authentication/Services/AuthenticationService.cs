@@ -20,19 +20,19 @@ public class AuthenticationService : IAuthenticationService
         _repository = repository;
     }
 
-    public async Task<AuthenticatedClient> Authenticate(long clientId, string apiKey)
+    public async Task<AuthenticatedClient> Authenticate(int clientId, string apiKey)
     {
         var isClientValid = await _repository.IsClientValid(clientId, apiKey);
         if (!isClientValid) throw new AuthenticationException("Invalid client");
 
-        var token = CreateToken(apiKey);
+        var token = CreateToken();
         return new AuthenticatedClient(new JwtSecurityTokenHandler().WriteToken(token),
             token.ValidTo);
     }
 
-    private JwtSecurityToken CreateToken(string apiKey)
+    private JwtSecurityToken CreateToken()
     {
-        SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(apiKey));
+        SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.Passphrase));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         return new JwtSecurityToken(
             _jwtConfiguration.Issuer,

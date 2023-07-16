@@ -12,7 +12,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         _dbContext = databaseContext;
     }
 
-    public async Task<bool> IsClientValid(long clientId, string apiKey)
+    public async Task<bool> IsClientValid(int clientId, string apiKey)
     {
         return await _dbContext.Clients.AnyAsync(client => client.Id == clientId && client.ApiKey == apiKey);
     }
