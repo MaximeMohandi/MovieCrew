@@ -16,7 +16,7 @@ jobs:
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
-          files: '../MovieCrew.API/appsettings.json'
+          files: '${{ github.workspace }}/MovieCrew.API/appsettings.json'
         env:
           JwtConfiguration.passphrase: "A good passphrase to be secure on internet"
       - name: SonarScanner for .NET 7 with pull request decoration support
