@@ -13,6 +13,8 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Rate> Rates { get; set; }
 
+    public DbSet<Client> Clients { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -22,6 +24,8 @@ public class AppDbContext : DbContext
         BuildRateTable(modelBuilder);
 
         BuildMovieTable(modelBuilder);
+
+        BuildClientTable(modelBuilder);
     }
 
     private static void BuildMovieTable(ModelBuilder modelBuilder)
@@ -82,5 +86,12 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Role).HasColumnName("role_user")
             .HasConversion<int>();
+    }
+
+    private static void BuildClientTable(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Client>()
+            .ToTable("clients")
+            .Property(c => c.ApiKey).HasColumnName("api_key");
     }
 }
