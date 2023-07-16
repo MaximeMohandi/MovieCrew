@@ -63,9 +63,9 @@ public class MovieService : IMovieService
         }
     }
 
-    public async Task ChangeTitle(int movieId, string currentTitle, string newTitle)
+    public async Task ChangeTitle(int movieId, string newTitle)
     {
-        await _movieRepository.Update(movieId, currentTitle, newTitle);
+        await _movieRepository.Update(movieId, newTitle);
     }
 
     public async Task SetSeenDate(int movieId, DateTime seenDate)

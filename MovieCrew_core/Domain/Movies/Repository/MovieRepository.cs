@@ -81,7 +81,7 @@ public class MovieRepository : IMovieRepository
             .ToListAsync();
     }
 
-    public async Task Update(int movieId, string currentTitle, string newTitle)
+    public async Task Update(int movieId, string newTitle)
     {
         if (TitleExist(newTitle)) throw new MovieAlreadyExistException(newTitle);
 

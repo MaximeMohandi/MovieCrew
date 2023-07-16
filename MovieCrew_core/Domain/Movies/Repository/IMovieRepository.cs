@@ -9,6 +9,6 @@ public interface IMovieRepository
     Task<List<MovieEntity>> GetAllUnSeen();
     Task<MovieDetailsEntity> GetMovie(int id);
     Task<MovieDetailsEntity> GetMovie(string title);
-    Task Update(int movieId, string currentTitle, string newTitle);
+    Task Update(int movieId, string newTitle);
     Task Update(int movieId, DateTime seenDate);
 }

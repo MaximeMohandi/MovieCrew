@@ -89,4 +89,18 @@ public class MovieController : ControllerBase
             return NoContent();
         }
     }
+
+    [HttpPut("{idMovie}/rename")]
+    public async Task<ActionResult> Put([FromRoute] int idMovie, [FromQuery] string newTitle)
+    {
+        try
+        {
+            await _movieService.ChangeTitle(idMovie, newTitle);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return Conflict(e.Message);
+        }
+    }
 }

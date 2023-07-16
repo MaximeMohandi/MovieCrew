@@ -13,7 +13,7 @@ public class UpdateMovie : InMemoryMovieTestBase
         MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
 
         //Act
-        await movieService.ChangeTitle(1, "Asterix & Obelix : Mission Cléopatre", "nouveau nom");
+        await movieService.ChangeTitle(1, "nouveau nom");
 
         //Assert
         Assert.That(_dbContext.Movies.First(m => m.Name == "nouveau nom").Name, Is.EqualTo("nouveau nom"));
@@ -27,7 +27,7 @@ public class UpdateMovie : InMemoryMovieTestBase
 
         //Act & Assert
         Assert.ThrowsAsync<MovieAlreadyExistException>(() =>
-                movieService.ChangeTitle(1, "Asterix & Obelix : Mission Cléopatre",
+                movieService.ChangeTitle(1,
                     "Asterix & Obelix : Mission Cléopatre"),
             "Asterix & Obelix : Mission Cléopatre is already in the list.");
     }
