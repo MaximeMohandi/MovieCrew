@@ -35,7 +35,7 @@ public class AuthenticationRouteTest
             .ReturnsAsync(true);
 
         // Act
-        var actual = (await _authenticationController.Post(1)).Result as ObjectResult;
+        var actual = (await _authenticationController.Get(1)).Result as ObjectResult;
         var authenticatedClient = actual?.Value as AuthenticatedClient;
 
         // Assert
@@ -54,7 +54,7 @@ public class AuthenticationRouteTest
         _authRepositoryMock.Setup(x => x.IsClientValid(2, "test"))
             .ReturnsAsync(false);
 
-        var actual = (await _authenticationController.Post(2)).Result as ObjectResult;
+        var actual = (await _authenticationController.Get(2)).Result as ObjectResult;
 
         Assert.That(actual?.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
     }
@@ -69,7 +69,7 @@ public class AuthenticationRouteTest
         httpContextMock.SetupGet(x => x.Request.Headers["ApiKey"]).Returns("false key");
         _authenticationController.ControllerContext.HttpContext = httpContextMock.Object;
 
-        var actual = (await _authenticationController.Post(1)).Result as ObjectResult;
+        var actual = (await _authenticationController.Get(1)).Result as ObjectResult;
 
         Assert.That(actual?.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));
     }

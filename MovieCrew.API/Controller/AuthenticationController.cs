@@ -16,8 +16,8 @@ public class AuthenticationController : ControllerBase
         _authenticationService = authenticationService;
     }
 
-    [HttpPost("token")]
-    public async Task<ActionResult<AuthenticatedClient>> Post([FromQuery] int clientId)
+    [HttpGet("token")]
+    public async Task<ActionResult<AuthenticatedClient>> Get([FromQuery] int clientId)
     {
         try
         {

@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Json;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
@@ -8,19 +7,18 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
-using MovieCrew.API.Dtos;
 using MovieCrew.Core.Domain.Authentication.Model;
 using MovieCrew.Core.Domain.Authentication.Services;
 
 namespace MovieCrew.API.Test.Integration.Authentication;
 
-public class LoginEndpointsTest
+public class TokenEndpointsTest
 {
     private readonly JsonSerializerOptions _jsonOptions;
     private Mock<IAuthenticationService> _authenticationService;
     private HttpClient _client;
 
-    public LoginEndpointsTest()
+    public TokenEndpointsTest()
     {
         _jsonOptions = new JsonSerializerOptions
         {
@@ -36,17 +34,17 @@ public class LoginEndpointsTest
     }
 
     [Test]
-    public async Task LoginEndpointShouldReturnConnectedUser()
+    public async Task AuthenticateShouldReturnToken()
     {
         // Arrange
-        var expected = new AuthenticatedUser(1, "Maxime", FakeToken(), DateTime.Now.AddDays(1));
+        var expected = new AuthenticatedClient(FakeToken(), DateTime.Now.AddDays(1));
         var expectedJson = JsonSerializer.Serialize(expected, _jsonOptions);
-        _authenticationService.Setup(x => x.Authenticate(It.IsAny<long>(), It.IsAny<string>()))
+        _authenticationService.Setup(x => x.Authenticate(1, "test"))
             .ReturnsAsync(expected);
+        _client.DefaultRequestHeaders.Add("ApiKey", "test");
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/authentication/login",
-            new UserLoginDto(1, "Maxime"));
+        var response = await _client.GetAsync("/api/authentication/token?clientId=1");
         var responseContent = await response.Content.ReadAsStringAsync();
 
         // Assert
@@ -67,15 +65,15 @@ public class LoginEndpointsTest
     }
 
     [Test]
-    public async Task LoginEndpointShouldReturnForbiddenWhenUserIsNotConnected()
+    public async Task AuthenticationShouldReturnForbiddenIfNotValidClient()
     {
         // Arrange
-        _authenticationService.Setup(x => x.Authenticate(It.IsAny<long>(), It.IsAny<string>()))
-            .ThrowsAsync(new AuthenticationException("Invalid User"));
+        _authenticationService.Setup(x => x.Authenticate(It.IsAny<int>(), It.IsAny<string>()))
+            .ThrowsAsync(new AuthenticationException("Invalid client"));
+        _client.DefaultRequestHeaders.Add("ApiKey", "test");
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/authentication/login",
-            new UserLoginDto(1, "Maxime"));
+        var response = await _client.GetAsync("/api/authentication/token?clientId=1");
 
         // Assert
         Assert.That((int)response.StatusCode, Is.EqualTo(StatusCodes.Status403Forbidden));

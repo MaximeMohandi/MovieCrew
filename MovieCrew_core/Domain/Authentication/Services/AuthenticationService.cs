@@ -22,8 +22,8 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<AuthenticatedClient> Authenticate(int clientId, string apiKey)
     {
-        var userExist = await _repository.IsClientValid(clientId, apiKey);
-        if (!userExist) throw new AuthenticationException("Invalid client");
+        var isClientValid = await _repository.IsClientValid(clientId, apiKey);
+        if (!isClientValid) throw new AuthenticationException("Invalid client");
 
         var token = CreateToken();
         return new AuthenticatedClient(new JwtSecurityTokenHandler().WriteToken(token),
