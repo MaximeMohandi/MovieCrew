@@ -21,6 +21,11 @@ public class UserNotFoundException : UserException
         $"User with id: {id} not found. Please check the conformity and try again")
     {
     }
+
+    public UserNotFoundException(string name) : base(
+        $"User {name} not found. Please check the conformity and try again")
+    {
+    }
 }
 
 public class UserIsNotSpectatorException : UserException

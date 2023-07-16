@@ -18,12 +18,12 @@ public class UserRepository : IUserRepository
     }
 
 
-    public async Task<UserEntity> GetBy(long id)
+    public async Task<UserEntity> GetBy(long id, string name)
     {
-        var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
+        var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id && u.Name == name);
 
         return dbUser is null
-            ? throw new UserNotFoundException(id)
+            ? throw new UserNotFoundException(name)
             : new UserEntity(dbUser.Id, dbUser.Name, (UserRoles)dbUser.Role);
     }
 

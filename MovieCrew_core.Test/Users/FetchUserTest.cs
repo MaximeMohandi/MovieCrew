@@ -42,20 +42,30 @@ public class FetchUserTest
         UserService userService = new(userRepository);
 
         // Act
-        var actualUser = await userService.GetById(1);
+        var actualUser = await userService.Get(1, "Arthur");
 
         // Assert
         Assert.That(actualUser, Is.EqualTo(expectedUser));
     }
 
     [Test]
-    public void ShouldThrowExceptionWhenUserNotFound()
+    public void ShouldThrowExceptionWhenUserWithWrongIdNotFound()
     {
         UserRepository userRepository = new(_dbContext);
         UserService userService = new(userRepository);
 
-        Assert.ThrowsAsync<UserNotFoundException>(() => userService.GetById(-1),
-            "User with id: -1 not found. Please check the conformity and try again");
+        Assert.ThrowsAsync<UserNotFoundException>(() => userService.Get(-1, "Arthur"),
+            "The user Arthur already exist. please verify the name and try again");
+    }
+
+    [Test]
+    public void ShouldThrowExceptionWhenUserWithWrongNameNotFound()
+    {
+        UserRepository userRepository = new(_dbContext);
+        UserService userService = new(userRepository);
+
+        Assert.ThrowsAsync<UserNotFoundException>(() => userService.Get(1, "test"),
+            "User test not found. Please check the conformity and try again");
     }
 
     [OneTimeTearDown]
