@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCrew.Core.Test", "Movi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCrew.Core", "MovieCrew_core\MovieCrew.Core.csproj", "{397B415E-0990-4EA6-B14A-B02550A33A3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCrew.API", "MovieCrew.API\MovieCrew.API.csproj", "{141742AF-B48D-44F7-B006-5E03BC11250C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCrew.API", "MovieCrew.API\MovieCrew.API.csproj", "{141742AF-B48D-44F7-B006-5E03BC11250C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCrew.API.Test", "MovieCrew.API.Test\MovieCrew.API.Test.csproj", "{9DEC05DC-D78C-4F65-8C64-013961571F18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCrew.API.Test", "MovieCrew.API.Test\MovieCrew.API.Test.csproj", "{9DEC05DC-D78C-4F65-8C64-013961571F18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
