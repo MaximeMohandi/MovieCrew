@@ -43,13 +43,25 @@ dotnet run
 The application should now be running at http://localhost:5000 in your web browser.
 
 #### Run with Docker
-TO DO 
+
+1. Open a terminal or command prompt, navigate to the root directory of your MovieCrew project (where the Dockerfile is located). 
+2. Build the Docker image using the following command:
+
+```bash
+docker build -t movie-crew-app --build-arg CERT_PASSWORD=<your_password_here> .
+```
+3. Run the Docker container:
+
+```bash
+docker run -d -p 443:443 --name movie-crew-container movie-crew-app
+```
+You can now access the MovieCrew application through your web browser using https://localhost. 
+Since we generated a self-signed SSL certificate for localhost, your browser may show a security warning. You can proceed to the website by clicking "Advanced" or "Proceed" (depending on your browser).
+
+*Note :
+In production environments, it is recommended to use a properly signed SSL certificate issued by a trusted certificate authority
+(CA) to ensure secure communication with the application. Additionally, consider using environment-specific configuration files for better security and manageability when deploying the application to different environments.*
 
 ## API Documentation
 For detailed information on the available API endpoints and their usage, refer 
 to the API documentation.
-
-## Origin Story
-It all begun with me and my friend watching movies on Discord to kill time during quarantine. 
-At this time we were rating movies on a message that we updated each time. 
-Now it has become a real institution.
