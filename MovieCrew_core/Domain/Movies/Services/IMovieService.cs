@@ -10,5 +10,4 @@ public interface IMovieService
     Task<MovieEntity> RandomMovie();
     Task<MovieEntity> AddMovie(string title, long? proposedById);
     Task ChangeTitle(int movieId, string newTitle);
-    Task SetSeenDate(int movieId, DateTime seenDate);
 }

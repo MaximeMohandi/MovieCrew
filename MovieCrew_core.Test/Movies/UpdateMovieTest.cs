@@ -32,21 +32,6 @@ public class UpdateMovie : InMemoryMovieTestBase
             "Asterix & Obelix : Mission Cléopatre is already in the list.");
     }
 
-
-    [Test]
-    public async Task MovieSeenDateShouldChangeWhenSetSeenDate()
-    {
-        //Arrange
-        MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
-        var updatedMovie = _dbContext.Movies.Single(m => m.Id == 1);
-
-        //Act
-        await movieService.SetSeenDate(1, DateTime.Now);
-
-        //Assert
-        Assert.That(updatedMovie?.SeenDate?.Date, Is.EqualTo(DateTime.Now.Date));
-    }
-
     protected override void SeedInMemoryDatas()
     {
         _dbContext.Movies.Add(

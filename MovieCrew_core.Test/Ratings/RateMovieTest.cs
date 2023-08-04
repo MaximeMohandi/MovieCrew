@@ -7,7 +7,7 @@ namespace MovieCrew.Core.Test.Ratings;
 public class RateMovieTest : InMemoryMovieTestBase
 {
     [Test]
-    public async Task RateMovieShouldAddRate()
+    public async Task RateMovieShouldAddRateAndUpdateMovieSeenDate()
     {
         // Arrange
         var expectedRate = new Rate

@@ -68,11 +68,6 @@ public class MovieService : IMovieService
         await _movieRepository.Update(movieId, newTitle);
     }
 
-    public async Task SetSeenDate(int movieId, DateTime seenDate)
-    {
-        await _movieRepository.Update(movieId, seenDate);
-    }
-
     private async Task AddExtraDataToMovie(MovieDetailsEntity movie)
     {
         var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
