@@ -9,15 +9,17 @@ namespace MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Services;
 
 public class TMDbDataProvider : IThirdPartyMovieDataProvider
 {
-    private const string TmdbHostUrl = "https://api.themoviedb.org/3/";
-
     private static readonly HttpClient _client = new();
+    private static string _tmdbHostUrl;
+    private static string _tmdbPosterUrl;
 
     public TMDbDataProvider(IConfiguration configuration)
     {
         _client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("bearer",
                 configuration.GetSection("ThirdPartyMovieDatabaseProvider:ApiKey").Value);
+        _tmdbHostUrl = configuration.GetSection("ThirdPartyMovieDatabaseProvider:BaseUrl").Value;
+        _tmdbPosterUrl = configuration.GetSection("ThirdPartyMovieDatabaseProvider:PosterBaseUrl").Value;
     }
 
     public async Task<MovieMetadataEntity> GetDetails(string title)
@@ -26,7 +28,8 @@ public class TMDbDataProvider : IThirdPartyMovieDataProvider
 
         var details = await FetchFromTmdb<TMDbMovieEntity>($"/movie/{foundMovieId}");
 
-        return new MovieMetadataEntity(details.PosterPath, details.Overview, details.VoteAverage, details.Revenue,
+        return new MovieMetadataEntity(_tmdbPosterUrl + details.PosterPath, details.Overview, details.VoteAverage,
+            details.Revenue,
             details.Budget);
     }
 
@@ -43,7 +46,7 @@ public class TMDbDataProvider : IThirdPartyMovieDataProvider
 
     private static async Task<T> FetchFromTmdb<T>(string pathUrl)
     {
-        var response = await _client.GetAsync($"{TmdbHostUrl}{pathUrl}");
+        var response = await _client.GetAsync($"{_tmdbHostUrl}{pathUrl}");
 
         if (!response.IsSuccessStatusCode) throw new CantFetchThirdPartyApiException();
 
