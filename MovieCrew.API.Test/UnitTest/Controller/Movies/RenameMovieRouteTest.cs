@@ -13,7 +13,7 @@ public class RenameMovieRouteTest : MovieTestBase
     {
         // Act
         var response =
-            await new MovieController(_service).Put(1, "test") as StatusCodeResult;
+            await new MovieController(_service).PutRenameMovie(1, "test") as StatusCodeResult;
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
@@ -23,11 +23,11 @@ public class RenameMovieRouteTest : MovieTestBase
     public async Task PutExistingTitleShouldReturn409()
     {
         // Arrange
-        _movieRepositoryMock.Setup(x => x.Update(1, "test"))
+        _movieRepositoryMock.Setup(x => x.UpdateTitle(1, "test"))
             .ThrowsAsync(new MovieAlreadyExistException("test"));
         // Act
         var response =
-            await new MovieController(_service).Put(1, "test") as ObjectResult;
+            await new MovieController(_service).PutRenameMovie(1, "test") as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>

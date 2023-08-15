@@ -81,24 +81,21 @@ public class MovieRepository : IMovieRepository
             .ToListAsync();
     }
 
-    public async Task Update(int movieId, string newTitle)
+    public async Task UpdateTitle(int movieId, string newTitle)
     {
         if (TitleExist(newTitle)) throw new MovieAlreadyExistException(newTitle);
 
-
-        var movieToRename = ExistingMovie(movieId);
-
+        var movieToRename = FetchMovie(movieId);
         movieToRename.Name = newTitle;
-
         _dbContext.Movies.Update(movieToRename);
-
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task Update(int movieId, DateTime seenDate)
+    public async Task UpdatePoster(int movieId, string newPoster)
     {
-        var existingMovie = ExistingMovie(movieId);
-        existingMovie.SeenDate = seenDate;
+        var movieToRename = FetchMovie(movieId);
+        movieToRename.Poster = newPoster;
+        _dbContext.Movies.Update(movieToRename);
         await _dbContext.SaveChangesAsync();
     }
 
@@ -115,7 +112,7 @@ public class MovieRepository : IMovieRepository
         return _dbContext.Movies.Any(m => m.Name.ToLower() == title.ToLower());
     }
 
-    private Movie ExistingMovie(int id)
+    private Movie FetchMovie(int id)
     {
         return _dbContext.Movies.FirstOrDefault(m => m.Id == id) ?? throw new MovieNotFoundException(id);
     }

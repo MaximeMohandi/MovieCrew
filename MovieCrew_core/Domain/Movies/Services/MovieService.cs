@@ -65,7 +65,12 @@ public class MovieService : IMovieService
 
     public async Task ChangeTitle(int movieId, string newTitle)
     {
-        await _movieRepository.Update(movieId, newTitle);
+        await _movieRepository.UpdateTitle(movieId, newTitle);
+    }
+
+    public async Task ChangePoster(int movieId, string newPoster)
+    {
+        await _movieRepository.UpdatePoster(movieId, newPoster);
     }
 
     private async Task AddExtraDataToMovie(MovieDetailsEntity movie)

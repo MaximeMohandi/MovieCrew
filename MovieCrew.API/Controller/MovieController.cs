@@ -91,7 +91,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut("{idMovie}/rename")]
-    public async Task<ActionResult> Put([FromRoute] int idMovie, [FromQuery] string newTitle)
+    public async Task<ActionResult> PutRenameMovie([FromRoute] int idMovie, [FromQuery] string newTitle)
     {
         try
         {
@@ -101,6 +101,20 @@ public class MovieController : ControllerBase
         catch (Exception e)
         {
             return Conflict(e.Message);
+        }
+    }
+
+    [HttpPut("{idMovie}/poster")]
+    public async Task<ActionResult> PutChangePosterMovie([FromRoute] int idMovie, [FromQuery] string newPoster)
+    {
+        try
+        {
+            await _movieService.ChangePoster(idMovie, newPoster);
+            return Ok();
+        }
+        catch (MovieNotFoundException e)
+        {
+            return NotFound(e.Message);
         }
     }
 }
