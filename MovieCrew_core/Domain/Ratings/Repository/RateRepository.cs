@@ -14,7 +14,7 @@ public class RateRepository : IRateRepository
 
     public async Task Add(int movieId, long userId, decimal rate)
     {
-        var existingRate = ExistingRate(movieId, userId);
+        var existingRate = FetchRate(movieId, userId);
 
         if (existingRate is null)
         {
@@ -42,7 +42,7 @@ public class RateRepository : IRateRepository
         _dbContext.Movies.Update(toRateMovie);
     }
 
-    private Rate? ExistingRate(int movieId, long userId)
+    private Rate? FetchRate(int movieId, long userId)
     {
         return _dbContext.Rates
             .FirstOrDefault(r => r.UserId == userId && r.MovieId == movieId);

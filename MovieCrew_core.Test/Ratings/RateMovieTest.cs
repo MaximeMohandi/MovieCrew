@@ -54,6 +54,21 @@ public class RateMovieTest : InMemoryMovieTestBase
             $"The rate must be between 0 and 10. Actual : {rate}");
     }
 
+    [Test]
+    public async Task RatingMovieShouldNotUpdateSeenDateIfAlreadyExist()
+    {
+        // Arrange
+        var currentSeenDate = _dbContext.Movies.First(m => m.Id == 1).SeenDate?.ToShortDateString();
+
+        // Act
+        await new RatingService(_rateRepository).RateMovie(1, 1, 0.0M);
+
+        var updateMovieRate = _dbContext.Movies.First(m => m.Id == 1).SeenDate?.ToShortDateString();
+
+        // Assert
+        Assert.That(updateMovieRate, Is.EqualTo(currentSeenDate));
+    }
+
     protected override void SeedInMemoryDatas()
     {
         Movie[] movies =
