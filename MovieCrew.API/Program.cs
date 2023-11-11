@@ -1,8 +1,13 @@
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
 using MovieCrew.API.Extension;
 using MovieCrew.Core.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
+    .AddCertificate();
 
 // Add JWT Authentication
 builder.Services.ConfigureAuthentication(builder.Configuration);
