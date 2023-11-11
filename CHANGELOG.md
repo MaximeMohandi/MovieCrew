@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/MaximeMohandi/BillB0ard-API/compare/v1.0.0...v1.1.0) (2023-11-11)
+
+
+### Features
+
+* **security:** 🎸 add certificate authentication ([e777e6e](https://github.com/MaximeMohandi/BillB0ard-API/commit/e777e6e42c03e5e664bd0f0e5995ade50def693a))
+
 ## 1.0.0 (2023-08-16)
 
 
