@@ -117,4 +117,18 @@ public class MovieController : ControllerBase
             return NotFound(e.Message);
         }
     }
+
+    [HttpGet("refreshAll")]
+    public async Task<ActionResult> GetRefreshMovies()
+    {
+        try
+        {
+            await _movieService.RefreshMoviesMetaData();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
 }

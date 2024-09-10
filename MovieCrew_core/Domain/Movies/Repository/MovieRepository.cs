@@ -99,6 +99,14 @@ public class MovieRepository : IMovieRepository
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task UpdateDescription(int movieId, string metadataDescription)
+    {
+        var movieToChange = FetchMovie(movieId);
+        movieToChange.Description = metadataDescription;
+        _dbContext.Movies.Update(movieToChange);
+        await _dbContext.SaveChangesAsync();
+    }
+
     private IQueryable<Movie> FetchMoviesWithNavigationProperties()
     {
         return _dbContext.Movies

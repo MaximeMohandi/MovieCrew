@@ -11,4 +11,5 @@ public interface IMovieService
     Task<MovieEntity> AddMovie(string title, long? proposedById);
     Task ChangeTitle(int movieId, string newTitle);
     Task ChangePoster(int movieId, string newPoster);
+    Task RefreshMoviesMetaData();
 }

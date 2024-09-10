@@ -73,6 +73,25 @@ public class MovieService : IMovieService
         await _movieRepository.UpdatePoster(movieId, newPoster);
     }
 
+    public async Task RefreshMoviesMetaData()
+    {
+        foreach (var movie in await FetchAllMovies())
+        {
+            MovieMetadataEntity? metadata = null;
+            if (movie.Description == string.Empty)
+            {
+                metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
+                await _movieRepository.UpdateDescription(movie.Id, metadata.Description);
+            }
+
+            if (movie.Poster == string.Empty)
+            {
+                metadata ??= await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
+                await _movieRepository.UpdatePoster(movie.Id, metadata.PosterLink);
+            }
+        }
+    }
+
     private async Task AddExtraDataToMovie(MovieDetailsEntity movie)
     {
         var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());

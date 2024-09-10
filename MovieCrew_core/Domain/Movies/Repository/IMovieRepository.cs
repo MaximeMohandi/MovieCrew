@@ -11,4 +11,5 @@ public interface IMovieRepository
     Task<MovieDetailsEntity> GetMovie(string title);
     Task UpdateTitle(int movieId, string newTitle);
     Task UpdatePoster(int movieId, string newPoster);
+    Task UpdateDescription(int movieId, string metadataDescription);
 }
