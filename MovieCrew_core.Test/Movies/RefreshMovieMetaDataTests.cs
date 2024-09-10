@@ -2,6 +2,7 @@
 using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Services;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Exception;
 
 namespace MovieCrew.Core.Test.Movies;
 
@@ -35,6 +36,24 @@ public class RefreshMovieMetaDataTests : InMemoryMovieTestBase
 
         //Assert
         Assert.That(_dbContext.Movies.First(m => m.Id == 2).Poster, Is.EqualTo("https://maximemohandi.fr/"));
+    }
+
+    [Test]
+    public async Task ShouldContinueIfNoMetadataFound()
+    {
+        // Arrange
+        _fakeDataProvider.Setup(x => x.GetDetails(It.Is<string>(x => x == "Asterix & Obelix : Mission Cléopatre")))
+            .ThrowsAsync(new NoMetaDataFoundException(""));
+        _fakeDataProvider.Setup(x =>
+                x.GetDetails(It.Is<string>(x => x == "The Lord of the Rings: The Fellowship of the Ring")))
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8, 0));
+        MovieService movieService = new(_movieRepository, _fakeDataProvider.Object);
+
+        // Act
+        await movieService.RefreshMoviesMetaData();
+
+        // Assert
+        Assert.That(_dbContext.Movies.First(m => m.Id == 1).Description, Is.EqualTo("loremp ipsum"));
     }
 
 

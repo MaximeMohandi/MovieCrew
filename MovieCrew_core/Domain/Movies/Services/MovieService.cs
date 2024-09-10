@@ -75,22 +75,29 @@ public class MovieService : IMovieService
 
     public async Task RefreshMoviesMetaData()
     {
-        foreach (var movie in await FetchAllMovies())
+        var movies = await FetchAllMovies();
+
+        foreach (var movie in movies)
         {
             MovieMetadataEntity? metadata = null;
-            if (movie.Description == string.Empty)
+            try
             {
-                metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
-                await _movieRepository.UpdateDescription(movie.Id, metadata.Description);
-            }
+                if (movie.Description == string.Empty || movie.Poster == string.Empty)
+                    metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
 
-            if (movie.Poster == string.Empty)
+                if (movie.Description == string.Empty && metadata != null)
+                    await _movieRepository.UpdateDescription(movie.Id, metadata.Description);
+
+                if (movie.Poster == string.Empty && metadata != null)
+                    await _movieRepository.UpdatePoster(movie.Id, metadata.PosterLink);
+            }
+            catch (System.Exception e)
             {
-                metadata ??= await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
-                await _movieRepository.UpdatePoster(movie.Id, metadata.PosterLink);
+                // I don't want to stop the process if one movie fails
             }
         }
     }
+
 
     private async Task AddExtraDataToMovie(MovieDetailsEntity movie)
     {
