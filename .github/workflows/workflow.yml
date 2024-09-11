@@ -3,6 +3,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   Build_and_Quality:
     runs-on: ubuntu-latest
@@ -26,8 +27,17 @@ jobs:
   Deploy:
     needs: Build_and_Quality
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
@@ -38,30 +48,35 @@ jobs:
           ThirdPartyMovieDatabaseProvider.BaseUrl: "https://api.themoviedb.org/3"
           ThirdPartyMovieDatabaseProvider.PosterBaseUrl: "https://image.tmdb.org/t/p/original/"
           ThirdPartyMovieDatabaseProvider.ApiKey: "${{ secrets.THIRDPARTYMOVIEAPI }}"
-      - name: Create appsetting env variable
-        run: |
-          appsettings="APPSETTING_JSON=$(cat ${{ github.workspace }}/MovieCrew.API/appsettings.json)"
-          echo $appsettings >> $GITHUB_ENV
-      - name: run app on docker
-        uses: appleboy/ssh-action@v1.0.0
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          envs: GITHUB_TOKEN,GITHUB_REPO,GITHUB_PROJECT_NAME,APPSETTING_JSON
-          script: |
-            git clone https://$GITHUB_TOKEN@github.com/$GITHUB_REPO.git
-            cd $GITHUB_PROJECT_NAME
-            echo "$APPSETTING_JSON" > MovieCrew.API/appsettings.json
-            docker build --tag ${{ vars.DOCKER_IMAGE_NAME }}:latest .
-            if docker stop ${{ vars.DOCKER_CONTAINER_NAME }}; then docker rm ${{ vars.DOCKER_CONTAINER_NAME }}; fi
-            docker run -d -p ${{ vars.MOVIECREW_API_PORT }}:443 --name ${{ vars.DOCKER_CONTAINER_NAME }} ${{ vars.DOCKER_IMAGE_NAME }}
-            cd ..
-            rm -rf $GITHUB_PROJECT_NAME
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME  }}
+          tags: |
+            type=ref,event=branch
+            type=sha
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+
 
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GITHUB_REPO: ${{ github.repository }}
-  GITHUB_PROJECT_NAME: ${{ github.event.repository.name }}
+  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: ghcr.io
