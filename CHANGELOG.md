@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/MaximeMohandi/BillB0ard-API/compare/v1.1.0...v1.2.0) (2024-09-12)
+
+
+### Features
+
+* 🎸 refresh movie to add missing poster and description ([216d7b8](https://github.com/MaximeMohandi/BillB0ard-API/commit/216d7b80835948394a5b2b091a6b2cb370bf5029))
+
+
+### Bug Fixes
+
+* 🐛 CVE-2024-21319: .NET Denial of Service Vulnerability ([d70153d](https://github.com/MaximeMohandi/BillB0ard-API/commit/d70153dc33addba695e3d663e75f029ccbec2465))
+* 🐛 don't stop the refreshing process if one movie fail ([16a6d19](https://github.com/MaximeMohandi/BillB0ard-API/commit/16a6d19b14f933ffc42201de0672275781e95324))
+
 ## [1.1.0](https://github.com/MaximeMohandi/BillB0ard-API/compare/v1.0.0...v1.1.0) (2023-11-11)
 
 
@@ -11,13 +24,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## 1.0.0 (2023-08-16)
 
-
-### ⚠ BREAKING CHANGES
-
-* 🧨 Y
-* 🧨 Y
-* 🧨 N
-* 🧨 N
 
 ### Features
 
