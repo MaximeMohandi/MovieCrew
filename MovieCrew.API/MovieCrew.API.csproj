@@ -10,7 +10,7 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <InternalsVisibleTo Include="MovieCrew.API.Test" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.20" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MovieCrew_core\MovieCrew.Core.csproj" />

@@ -19,7 +19,9 @@ public class AuthenticationRouteTest
     {
         _authRepositoryMock = new Mock<IAuthenticationRepository>();
         var jwtConfiguration =
-            new JwtConfiguration("A.ComplexP4ss3@Phrase", "http://test.issuer", "http://test.audience");
+            new JwtConfiguration(
+                "Virtual-Earflap-Expiring-Gangway-Hatchback-Sabbath-Nape-Skyline3-Angelfish-Whacky-Snowles",
+                "http://test.issuer", "http://test.audience");
         var authenticationService = new AuthenticationService(_authRepositoryMock.Object, jwtConfiguration);
         _authenticationController = new AuthenticationController(authenticationService);
         var httpContextMock = new Mock<HttpContext>();
