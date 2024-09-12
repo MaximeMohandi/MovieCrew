@@ -8,15 +8,16 @@ jobs:
   Build_and_Quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: App Settings Variable Substitution
-        uses: microsoft/variable-substitution@v1
+        uses: im-open/variable-substitution@v2
         with:
           files: ${{ github.workspace }}/MovieCrew.API/appsettings.json
         env:
           JwtConfiguration.passphrase: "Fake phrase for analysis purpose : Virtual-Earflap-Expiring-Gangway-Hatchback-Sabbath-Nape-Skyline3-Angelfish-Whacky-Snowless"
       - name: SonarScanner
-        uses: highbyte/sonarscan-dotnet@v2.2.2
+        uses: highbyte/sonarscan-dotnet@v2.2.6
         with:
           sonarProjectKey: MovieCrew
           sonarProjectName: MovieCrew
@@ -39,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: App Settings Variable Substitution
-        uses: microsoft/variable-substitution@v1
+        uses: im-open/variable-substitution@v2
         with:
           files: ${{ github.workspace }}/MovieCrew.API/appsettings.json
         env:
