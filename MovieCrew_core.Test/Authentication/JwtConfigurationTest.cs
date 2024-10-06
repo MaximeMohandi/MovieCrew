@@ -9,7 +9,7 @@ public class JwtConfigurationTest
     [TestCase("blaqdfqdf@@2413654Rlsjfsddsdddddd")]
     public void PassphraseShouldBeCorrect(string passphrase)
     {
-        var configuration = new JwtConfiguration(passphrase, "https://test.com", "https://test.com");
+        var configuration = new JwtConfiguration(passphrase, "https://test.com", "https://test.com", 1);
         Assert.That(Encoding.Unicode.GetByteCount(configuration.Passphrase), Is.GreaterThanOrEqualTo(64));
     }
 
@@ -36,7 +36,7 @@ public class JwtConfigurationTest
     public void IssuerAndAudienceShouldBeCorrectUrl()
     {
         var configuration = new JwtConfiguration("blaqdfqdf@@2413654Rlsjfsddsdddddd", "https://host.fr",
-            "https://audience.com");
+            "https://audience.com", 1);
 
         Assert.Multiple(() =>
         {
@@ -55,8 +55,14 @@ public class JwtConfigurationTest
     public void ShouldThrowExceptionWhenIssuerIsNotValid(string issuer)
     {
         Assert.Throws<ArgumentException>(() => new JwtConfiguration
-        {
-            Issuer = issuer
-        }, $"{issuer} is not a valid host");
+            {
+                Issuer = issuer
+            }, $"{issuer} is not a valid host");
+    }
+
+    [Test]
+    public void ShouldThrowExceptionWhenNumberDaysBeforeExpirationZeroOrBelow()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new JwtConfiguration("", "", "", -1));
     }
 }

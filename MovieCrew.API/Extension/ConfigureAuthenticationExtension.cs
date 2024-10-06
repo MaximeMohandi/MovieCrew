@@ -12,7 +12,8 @@ public static class ConfigureAuthenticationExtension
         var jwtConfiguration = new JwtConfiguration(
             configuration.GetValue<string>("JwtConfiguration:Passphrase"),
             configuration.GetValue<string>("JwtConfiguration:Issuer"),
-            configuration.GetValue<string>("JwtConfiguration:Audience"));
+            configuration.GetValue<string>("JwtConfiguration:Audience"),
+            configuration.GetValue<int>("JwtConfiguration:MaxTokenValidationDays"));
 
         services.AddSingleton(jwtConfiguration);
 

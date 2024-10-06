@@ -38,7 +38,7 @@ public class AuthenticationService : IAuthenticationService
             _jwtConfiguration.Issuer,
             _jwtConfiguration.Audience,
             new List<Claim>(),
-            expires: DateTime.UtcNow.AddDays(TokenNbValidationsDays),
+            expires: DateTime.UtcNow.AddDays(_jwtConfiguration.MaxTokenValidationDays),
             signingCredentials: signingCredentials
         );
     }

@@ -7,17 +7,19 @@ public class JwtConfiguration
     private const int MinimumPassphraseBytesCount = 64; //see : https://www.rfc-editor.org/rfc/rfc7518#section-3.4
     private readonly string _audience;
     private readonly string _issuer;
+    private readonly int _maxTokenValidationDays;
     private readonly string _passphrase;
 
     public JwtConfiguration()
     {
     }
 
-    public JwtConfiguration(string passphrase, string issuer, string audience)
+    public JwtConfiguration(string passphrase, string issuer, string audience, int maxTokenValidationDays)
     {
-        _passphrase = passphrase;
-        _issuer = issuer;
-        _audience = audience;
+        Passphrase = passphrase;
+        Issuer = issuer;
+        Audience = audience;
+        MaxTokenValidationDays = maxTokenValidationDays;
     }
 
     public string Passphrase
@@ -52,6 +54,17 @@ public class JwtConfiguration
             CheckIfValidHost(value);
 
             _audience = value;
+        }
+    }
+
+    public int MaxTokenValidationDays
+    {
+        get => _maxTokenValidationDays;
+        init
+        {
+            if (value <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(MaxTokenValidationDays)} should be greater than 0");
+            _maxTokenValidationDays = value;
         }
     }
 
