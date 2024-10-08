@@ -17,7 +17,7 @@ public class AuthenticationTest
         .Options;
 
     private readonly JwtConfiguration _jwtConfiguration =
-        new("A passphrase with to be secure @123", 1);
+        new("A passphrase with to be secure @123", "https://test.com", "https://test.com", 1);
 
     private AppDbContext _dbContext;
     private AuthenticationRepository _repository;

@@ -11,6 +11,8 @@ public static class ConfigureAuthenticationExtension
     {
         var jwtConfiguration = new JwtConfiguration(
             configuration.GetValue<string>("JwtConfiguration:Passphrase"),
+            configuration.GetValue<string>("JwtConfiguration:Issuer"),
+            configuration.GetValue<string>("JwtConfiguration:Audience"),
             configuration.GetValue<int>("JwtConfiguration:MaxTokenValidationDays"));
 
         services.AddSingleton(jwtConfiguration);
@@ -28,6 +30,8 @@ public static class ConfigureAuthenticationExtension
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtConfiguration.Issuer,
+                    ValidAudience = jwtConfiguration.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.Passphrase))
                 };
             });
