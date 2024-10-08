@@ -101,9 +101,18 @@ public class MovieService : IMovieService
 
     private async Task AddExtraDataToMovie(MovieDetailsEntity movie)
     {
-        var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
-        movie.PeopleAverageRate = metadata.Ratings;
-        movie.Revenue = metadata.Revenue;
-        movie.Budget = metadata.Budget;
+        try
+        {
+            var metadata = await _thirdPartyMovieProvider.GetDetails(movie.Title.ToLower());
+            movie.PeopleAverageRate = metadata.Ratings;
+            movie.Revenue = metadata.Revenue;
+            movie.Budget = metadata.Budget;
+        }
+        catch (CantFetchThirdPartyApiException e)
+        {
+            movie.PeopleAverageRate = 0;
+            movie.Revenue = 0;
+            movie.Budget = 0;
+        }
     }
 }

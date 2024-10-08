@@ -3,6 +3,7 @@ using MovieCrew.Core.Data.Models;
 using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Services;
+using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Exception;
 using MovieCrew.Core.Domain.Users.Entities;
 using MovieCrew.Core.Domain.Users.Enums;
 
@@ -123,6 +124,38 @@ public class FetchMovieDetailsTest : InMemoryMovieTestBase
             null,
             5M,
             2555555M, 2220,
+            null,
+            null);
+
+        //Act
+        var actual = await new MovieService(_movieRepository, _fakeDataProvider.Object).GetMovieDetails(2);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual, Is.EqualTo(expected));
+            Assert.That(actual.GetHashCode(), Is.EqualTo(expected.GetHashCode()));
+        });
+    }
+
+    [Test]
+    public async Task ShouldFetchMovieDetailsWithoutThirdPartyData()
+    {
+//Arrange
+        _fakeDataProvider.Setup(x => x.GetDetails("harry potter"))
+            .ThrowsAsync(new CantFetchThirdPartyApiException());
+
+        MovieDetailsEntity expected = new(
+            2,
+            "Harry Potter",
+            "",
+            "",
+            new DateTime(2015, 8, 3),
+            null,
+            null,
+            0,
+            0,
+            0,
             null,
             null);
 
