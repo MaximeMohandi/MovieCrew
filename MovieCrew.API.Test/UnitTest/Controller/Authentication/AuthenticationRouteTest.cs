@@ -20,8 +20,7 @@ public class AuthenticationRouteTest
         _authRepositoryMock = new Mock<IAuthenticationRepository>();
         var jwtConfiguration =
             new JwtConfiguration(
-                "Virtual-Earflap-Expiring-Gangway-Hatchback-Sabbath-Nape-Skyline3-Angelfish-Whacky-Snowles",
-                "http://test.issuer", "http://test.audience", 1);
+                "Virtual-Earflap-Expiring-Gangway-Hatchback-Sabbath-Nape-Skyline3-Angelfish-Whacky-Snowles", 1);
         var authenticationService = new AuthenticationService(_authRepositoryMock.Object, jwtConfiguration);
         _authenticationController = new AuthenticationController(authenticationService);
         var httpContextMock = new Mock<HttpContext>();

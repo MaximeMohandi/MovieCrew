@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MovieCrew.Core.Domain.Authentication.Model;
@@ -35,9 +34,6 @@ public class AuthenticationService : IAuthenticationService
         SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.Passphrase));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         return new JwtSecurityToken(
-            _jwtConfiguration.Issuer,
-            _jwtConfiguration.Audience,
-            new List<Claim>(),
             expires: DateTime.UtcNow.AddDays(_jwtConfiguration.MaxTokenValidationDays),
             signingCredentials: signingCredentials
         );

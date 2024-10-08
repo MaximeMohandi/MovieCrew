@@ -5,20 +5,12 @@ namespace MovieCrew.Core.Domain.Authentication.Model;
 public class JwtConfiguration
 {
     private const int MinimumPassphraseBytesCount = 64; //see : https://www.rfc-editor.org/rfc/rfc7518#section-3.4
-    private readonly string _audience;
-    private readonly string _issuer;
     private readonly int _maxTokenValidationDays;
     private readonly string _passphrase;
 
-    public JwtConfiguration()
-    {
-    }
-
-    public JwtConfiguration(string passphrase, string issuer, string audience, int maxTokenValidationDays)
+    public JwtConfiguration(string passphrase, int maxTokenValidationDays)
     {
         Passphrase = passphrase;
-        Issuer = issuer;
-        Audience = audience;
         MaxTokenValidationDays = maxTokenValidationDays;
     }
 
@@ -32,28 +24,6 @@ public class JwtConfiguration
                 throw new ArgumentOutOfRangeException(
                     $"{nameof(Passphrase)} should be at least {MinimumPassphraseBytesCount} bytes long. Actual is {passphraseBytesCount}");
             _passphrase = value;
-        }
-    }
-
-    public string Issuer
-    {
-        get => _issuer;
-        init
-        {
-            CheckIfValidHost(value);
-            _issuer = value;
-        }
-    }
-
-
-    public string Audience
-    {
-        get => _audience;
-        init
-        {
-            CheckIfValidHost(value);
-
-            _audience = value;
         }
     }
 
