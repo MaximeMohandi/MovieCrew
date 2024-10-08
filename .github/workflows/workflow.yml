@@ -55,6 +55,8 @@ jobs:
         env:
           ConnectionStrings.DefaultConnection: "${{ secrets.CONNECTION_STRING }}"
           JwtConfiguration.passphrase: "${{ secrets.JWT_PASSPHRASE }}"
+          JwtConfiguration.issuer: "${{ secrets.JWT_ISSUER }}"
+          JwtConfiguration.audience: "${{ secrets.JWT_AUDIENCE }}"
           JwtConfiguration.maxTokenValidationDays: "${{ secrets.JWT_VALIDATION_DAYS }}"
           ThirdPartyMovieDatabaseProvider.BaseUrl: "https://api.themoviedb.org/3"
           ThirdPartyMovieDatabaseProvider.PosterBaseUrl: "https://image.tmdb.org/t/p/original/"
