@@ -1,6 +1,6 @@
 on:
   workflow_dispatch:
-    
+
   push:
     branches: [main]
   pull_request:
@@ -18,6 +18,11 @@ jobs:
           files: ${{ github.workspace }}/MovieCrew.API/appsettings.json
         env:
           JwtConfiguration.passphrase: "Fake phrase for analysis purpose : Virtual-Earflap-Expiring-Gangway-Hatchback-Sabbath-Nape-Skyline3-Angelfish-Whacky-Snowless"
+          ConnectionStrings.DefaultConnection: "fakeconnectionstring"
+          JwtConfiguration.maxTokenValidationDays: "1"
+          ThirdPartyMovieDatabaseProvider.BaseUrl: "https://api.themoviedb.org/3"
+          ThirdPartyMovieDatabaseProvider.PosterBaseUrl: "https://image.tmdb.org/t/p/original/"
+          ThirdPartyMovieDatabaseProvider.ApiKey: "fakeapikey"
       - name: SonarScanner
         uses: highbyte/sonarscan-dotnet@v2.2.6
         with:
