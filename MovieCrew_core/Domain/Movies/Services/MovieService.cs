@@ -1,4 +1,5 @@
-﻿using MovieCrew.Core.Domain.Movies.Entities;
+﻿using System.Text.RegularExpressions;
+using MovieCrew.Core.Domain.Movies.Entities;
 using MovieCrew.Core.Domain.Movies.Exception;
 using MovieCrew.Core.Domain.Movies.Repository;
 using MovieCrew.Core.Domain.ThirdPartyMovieDataProvider.Exception;
@@ -53,8 +54,10 @@ public class MovieService : IMovieService
     {
         try
         {
-            var metadata = await _thirdPartyMovieProvider.GetDetails(title);
-            return await _movieRepository.Add(title, metadata.PosterLink, metadata.Description,
+            const string consecutiveSpaces = @"\s+";
+            var titleSanitized = Regex.Replace(title.Trim(), consecutiveSpaces, " ");
+            var metadata = await _thirdPartyMovieProvider.GetDetails(titleSanitized);
+            return await _movieRepository.Add(titleSanitized, metadata.PosterLink, metadata.Description,
                 proposedById);
         }
         catch (NoMetaDataFoundException)

@@ -74,6 +74,32 @@ public class AddMovieTest : InMemoryMovieTestBase
         Assert.ThrowsAsync<MovieAlreadyExistException>(() => service.AddMovie("The Fifth element", null));
     }
 
+    [TestCase(" with space before", "with space before")]
+    [TestCase("with space after ", "with space after")]
+    [TestCase(" with space before and after ", "with space before and after")]
+    [TestCase("nominal case", "nominal case")]
+    [TestCase("with extra  spaces  in between", "with extra spaces in between")]
+    public async Task ShouldSanitizeTitleBeforeAddingIt(string title, string expected)
+    {
+        //Arrange
+        _fakeDataProvider.Setup(x => x.GetDetails(It.IsAny<string>()))
+            .ReturnsAsync(new MovieMetadataEntity("https://maximemohandi.fr/", "loremp ipsum", 8, 8, 0));
+
+        //Act
+        var addedMovie = await new MovieService(_movieRepository, _fakeDataProvider.Object).AddMovie(title, 1);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(addedMovie.Title, Is.EqualTo(expected));
+            Assert.That(Uri.TryCreate(addedMovie.Poster, UriKind.Absolute, out var uriResult)
+                        && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps), Is.True);
+            Assert.That(addedMovie.DateAdded.ToShortDateString(), Is.EqualTo(DateTime.Now.ToShortDateString()));
+            Assert.That(addedMovie.Description, Is.EqualTo("loremp ipsum"));
+            Assert.That(_dbContext.Movies.Any(m => m.Name == addedMovie.Title), Is.True);
+        });
+    }
+
     protected override void SeedInMemoryDatas()
     {
         _dbContext.Movies.Add(new Movie
