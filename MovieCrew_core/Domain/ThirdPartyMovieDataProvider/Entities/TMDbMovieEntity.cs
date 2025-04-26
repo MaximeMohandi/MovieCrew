@@ -8,8 +8,8 @@ public class TMDbMovieEntity
 
     [JsonPropertyName("poster_path")] public string PosterPath { get; init; }
 
-    public int Revenue { get; init; }
-    public int Budget { get; init; }
+    public decimal Revenue { get; init; }
+    public decimal Budget { get; init; }
 
     [JsonPropertyName("vote_average")] public decimal VoteAverage { get; init; }
 }
