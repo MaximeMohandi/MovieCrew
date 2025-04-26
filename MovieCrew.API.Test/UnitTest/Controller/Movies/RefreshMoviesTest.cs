@@ -27,7 +27,7 @@ public class RefreshMoviesTest : MovieTestBase
         _movieRepositoryMock.Setup(x => x.GetAll())
             .ReturnsAsync(toUpdateMovie);
         var response =
-            await new MovieController(_service).GetRefreshMovies() as StatusCodeResult;
+            await _controller.GetRefreshMovies() as StatusCodeResult;
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
@@ -41,7 +41,7 @@ public class RefreshMoviesTest : MovieTestBase
             .ThrowsAsync(new NoMoviesFoundException());
 
         // Act
-        var actual = await new MovieController(_service).GetRefreshMovies() as ObjectResult;
+        var actual = await _controller.GetRefreshMovies() as ObjectResult;
 
         // Assert
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));

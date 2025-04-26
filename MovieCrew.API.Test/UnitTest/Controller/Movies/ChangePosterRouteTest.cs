@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using MovieCrew.API.Controller;
 using MovieCrew.Core.Domain.Movies.Exception;
 
 namespace MovieCrew.API.Test.UnitTest.Controller.Movies;
@@ -12,8 +11,7 @@ public class ChangePosterRouteTest : MovieTestBase
     public async Task PutShouldReturn200()
     {
         // Act
-        var response =
-            await new MovieController(_service).PutChangePosterMovie(1, "test") as StatusCodeResult;
+        var response = await _controller.PutChangePosterMovie(1, "test") as StatusCodeResult;
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
@@ -26,8 +24,7 @@ public class ChangePosterRouteTest : MovieTestBase
         _movieRepositoryMock.Setup(x => x.UpdatePoster(1, "test"))
             .ThrowsAsync(new MovieNotFoundException(1));
         // Act
-        var response =
-            await new MovieController(_service).PutChangePosterMovie(1, "test") as ObjectResult;
+        var response = await _controller.PutChangePosterMovie(1, "test") as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>

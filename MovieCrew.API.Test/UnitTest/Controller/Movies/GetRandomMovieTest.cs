@@ -24,7 +24,7 @@ public class GetRandomMovieTest : MovieTestBase
             .ReturnsAsync(unseenMovie);
 
         // Act
-        var actual = (await new MovieController(_service).GetRandomUnseenMovie()).Result as ObjectResult;
+        var actual = (await _controller.GetRandomUnseenMovie()).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -39,9 +39,8 @@ public class GetRandomMovieTest : MovieTestBase
     {
         _movieRepositoryMock.Setup(x => x.GetAllUnSeen())
             .ThrowsAsync(new AllMoviesHaveBeenSeenException());
-        MovieController movieController = new(_service);
 
-        var actual = (await movieController.GetRandomUnseenMovie()).Result as StatusCodeResult;
+        var actual = (await _controller.GetRandomUnseenMovie()).Result as StatusCodeResult;
 
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status204NoContent));
     }

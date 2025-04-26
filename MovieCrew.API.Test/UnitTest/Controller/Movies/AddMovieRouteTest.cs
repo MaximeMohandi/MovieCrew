@@ -24,7 +24,7 @@ public class AddMovieRouteTest : MovieTestBase
         var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
 
         // Act
-        var actual = (await new MovieController(movieService).Post(new NewMovieDto("test", 3))).Result as ObjectResult;
+        var actual = (await _controller.Post(new NewMovieDto("test", 3))).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -45,7 +45,7 @@ public class AddMovieRouteTest : MovieTestBase
         var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
 
         // Act
-        var actual = (await new MovieController(movieService).Post(new NewMovieDto("test", 3))).Result as ObjectResult;
+        var actual = (await _controller.Post(new NewMovieDto("test", 3))).Result as ObjectResult;
 
         // Assert
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status409Conflict));
@@ -62,7 +62,7 @@ public class AddMovieRouteTest : MovieTestBase
         var movieService = new MovieService(_movieRepositoryMock.Object, _movieDataProviderMock.Object);
 
         // Act
-        var actual = (await new MovieController(movieService).Post(new NewMovieDto("test", 3))).Result as ObjectResult;
+        var actual = (await _controller.Post(new NewMovieDto("test", 3))).Result as ObjectResult;
 
         // Assert
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MovieCrew.Core.Domain.Authentication.Model;
+using Serilog;
 
 namespace MovieCrew.API.Extension;
 
@@ -35,5 +36,13 @@ public static class ConfigureAuthenticationExtension
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.Passphrase))
                 };
             });
+
+        services.AddLogging(builder =>
+        {
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+            builder.AddSerilog(logger, true);
+        });
     }
 }

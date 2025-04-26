@@ -33,7 +33,7 @@ public class GetMovieDetailsTest : MovieTestBase
                 new UserEntity(1, "Maxime", UserRoles.Admin)));
 
         // Act
-        var actual = (await new MovieController(_service).GetDetails(1)).Result as ObjectResult;
+        var actual = (await _controller.GetDetails(1)).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -78,7 +78,7 @@ public class GetMovieDetailsTest : MovieTestBase
                 new UserEntity(1, "Maxime", UserRoles.Admin)));
 
         // Act
-        var actual = (await new MovieController(_service).GetDetails(title: "Titanic")).Result as ObjectResult;
+        var actual = (await _controller.GetDetails(title: "Titanic")).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -109,10 +109,8 @@ public class GetMovieDetailsTest : MovieTestBase
             .Setup(x => x.GetMovie(-100))
             .ThrowsAsync(new MovieNotFoundException(-100));
 
-        MovieController controller = new(_service);
-
         // Act
-        var actual = (await controller.GetDetails(-100)).Result as ObjectResult;
+        var actual = (await _controller.GetDetails(-100)).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -127,7 +125,7 @@ public class GetMovieDetailsTest : MovieTestBase
     public async Task ShouldReturn400WhenMovieIdAndTitleAreNull()
     {
         // Act
-        var actual = (await new MovieController(_service).GetDetails()).Result as ObjectResult;
+        var actual = (await _controller.GetDetails()).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -141,7 +139,7 @@ public class GetMovieDetailsTest : MovieTestBase
     public async Task ShouldReturn400WhenMovieIdAndTitleAreGiven()
     {
         // Act
-        var actual = (await new MovieController(_service).GetDetails(100, "titanic")).Result as ObjectResult;
+        var actual = (await _controller.GetDetails(100, "titanic")).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>

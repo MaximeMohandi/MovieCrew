@@ -22,7 +22,7 @@ public class GetAllMoviesTest : MovieTestBase
             });
 
         // Act
-        var actual = (await new MovieController(_service).GetAll()).Result as ObjectResult;
+        var actual = (await _controller.GetAll()).Result as ObjectResult;
 
         // Assert
         Assert.Multiple(() =>
@@ -45,7 +45,7 @@ public class GetAllMoviesTest : MovieTestBase
             .ThrowsAsync(new NoMoviesFoundException());
 
         // Act
-        var actual = (await new MovieController(_service).GetAll()).Result as ObjectResult;
+        var actual = (await _controller.GetAll()).Result as ObjectResult;
 
         // Assert
         Assert.That(actual.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
